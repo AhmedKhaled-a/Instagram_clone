@@ -75,5 +75,17 @@ Route::get('/posts/{id}',[PostController::class,'show'] )-> name ('posts.show') 
 Route::post('/posts/{postId}/like', [LikeController::class, 'like'])->name('posts.like');
 Route::post('/posts/{postId}/unlike', [LikeController::class, 'unlike'])->name('posts.unlike');
 
+});
+
+
+
+Route::get('/users/{id}/edit', [UserController::class, 'edit'])
+->name('users.edit');
+
+Route::put('/users/{id}', [UserController::class, 'update'])
+->name('users.update');
+
+Route::delete('/users/{id}', [UserController::class, 'destroy'])
+->name('users.destroy');
 
 require __DIR__.'/auth.php';
