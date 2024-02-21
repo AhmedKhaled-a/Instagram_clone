@@ -1,0 +1,44 @@
+h1 {
+    margin: 0 auto;
+    margin-top: 5rem;
+    margin-bottom: 2rem;
+    color: red;
+    text-align: center;
+}
+
+.image-preview-container {
+    width: 100%;
+    display: flex;
+    margin: 0 auto;
+    border: 1px solid rgba(0, 0, 0, 0.1);
+    padding: 3rem;
+    border-radius: 20px;
+}
+
+.image-preview-container img {
+    display: flex;
+    width:248px;
+    height:248px;
+    margin: 8px;
+}
+.image-preview-container input {
+    display: none;
+}
+
+.image-preview-container label {
+    display: block;
+    width: 45%;
+    height: 45px;
+    margin-left: 25%;
+    text-align: center;
+    background: #8338ec;
+    color: #fff;
+    font-size: 15px;
+    text-transform: Uppercase;
+    font-weight: 400;
+    border-radius: 5px;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
