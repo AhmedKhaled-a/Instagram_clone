@@ -14,14 +14,14 @@ class PostController extends Controller
      */
     public function index()
     {
-        $posts = Post::all();
-        $posts->load( ['tags','images','comments']);  // eager loading for all related models in one query
+        $posts = Post::with(['tags', 'comments', 'images'])->get();
+        // eager loading for all related models in one query
         
-        return view('posts.index' , [
+        return view('posts.index', [
             'posts' => $posts,
-
         ]);
     }
+    
 
     /**
      * Show the form for creating a new resource.
@@ -46,7 +46,7 @@ class PostController extends Controller
         // validate data
        $data = $request ->validate([ 
             'caption' =>'nullable|string|max:255',
-            'img_path'=>'required|image' ,
+            'img_path'=>'required|image|max:3096' ,
             'tag_text'=>'nullable |array',
             'tag_text.*'=>'string|distinct'
         ]);  
@@ -58,7 +58,7 @@ class PostController extends Controller
         //creating new post
        ;
         $post=Post::create([
-            'caption'=>$data['caption']]);
+         'caption'=>$data['caption']]);
         //assign img path to post
         // Post_image::create([
         //     'post_id'=>$post->id,

@@ -55,8 +55,8 @@
             <label for="caption">Caption:</label>
             <textarea id="caption" name="caption" rows="4" ></textarea>
 
-            < <label for="images">Images:</label>
-        <input type="file" id="images" name="img_path" multiple accept="image/*" required>
+         < <label for="images">Images:</label>
+        <input type="file" id="images" name="img_path" >
 
             <label for="tags">Tags:</label>
             <input type="text" id="tags" name="tag_text[]" placeholder="e.g., tag1, tag2, tag3">
