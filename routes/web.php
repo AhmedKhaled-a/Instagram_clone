@@ -3,6 +3,8 @@
 use App\Mail\testmail;
 use Illuminate\Support\Facades\Mail;
 use Illuminate\Support\Facades\Route;
+use Illuminate\Support\Facades\Route;
+use App\Http\Controllers\PostController;
 use App\Http\Controllers\ProfileController;
 use App\Http\Controllers\FollowerController;
 use App\Http\Controllers\UserController;
@@ -62,4 +64,11 @@ Route::post('/email/verification-notification', function (Request $request) {
  
     return back()->with('message', 'Verification link sent!');
 })->middleware(['auth', 'throttle:6,1'])->name('verification.send');
+});
+
+Route::get('/posts',[PostController::class ,'index'])  -> name ('posts.index') ;
+Route::get('/posts/create',[PostController::class,'create'] )->name('posts.create');
+Route::post('/posts',[PostController::class,'store']   )->name('posts.store');
+Route::get('/posts/{id}',[PostController::class,'show'] )-> name ('posts.show') ;
+
 require __DIR__.'/auth.php';
