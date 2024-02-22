@@ -78,14 +78,13 @@ Route::post('/posts/{postId}/unlike', [LikeController::class, 'unlike'])->name('
 });
 
 
+Route::get('/posts/{id}/edit', [PostController::class, 'edit'])
+->name('posts.edit');
 
-Route::get('/users/{id}/edit', [UserController::class, 'edit'])
-->name('users.edit');
+Route::put('/posts/{id}', [PostController::class, 'update'])
+->name('posts.update');
 
-Route::put('/users/{id}', [UserController::class, 'update'])
-->name('users.update');
-
-Route::delete('/users/{id}', [UserController::class, 'destroy'])
-->name('users.destroy');
+Route::delete('/users/{id}', [PostController::class, 'destroy'])
+->name('posts.destroy');
 
 require __DIR__.'/auth.php';

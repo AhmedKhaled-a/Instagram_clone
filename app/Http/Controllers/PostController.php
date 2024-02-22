@@ -98,7 +98,9 @@ class PostController extends Controller
      */
     public function edit(string $id)
     {
-        //
+        $post = Post::find($id)->with(['tags', 'comments', 'images'])->get();
+        // dd($post[0]);
+        return view("posts.edit" , ["post" => $post[0]]);
     }
 
     /**

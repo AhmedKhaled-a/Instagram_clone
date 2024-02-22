@@ -9,6 +9,8 @@ h1 {
 .image-preview-container {
     width: 100%;
     display: flex;
+    gap: 2px;
+    flex-wrap: wrap;
     margin: 0 auto;
     border: 1px solid rgba(0, 0, 0, 0.1);
     padding: 3rem;
@@ -16,10 +18,9 @@ h1 {
 }
 
 .image-preview-container img {
-    display: flex;
     width:248px;
     height:248px;
-    margin: 8px;
+    image-rendering: auto;
 }
 .image-preview-container input {
     display: none;
