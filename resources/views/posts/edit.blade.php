@@ -20,13 +20,19 @@
                 <input type="file" name="images[]" id="images" multiple="multiple" accept="image/jpeg, image/png, image/jpg" onchange="previewImage(event);">        
             </div>
             <div class="image-preview-container">
+                
+                @foreach ($post->images as $image )
+                    <div class="preview">
+                        <img id="preview-selected-image" src="{{ Storage::disk('public')->url($image->img_path) }}">
+                    </div>
+                @endforeach
 
             </div>
             <div class="mb-3">
                 <label for="body" class="form-label">Post Body</label>
-                <textarea name="body" id="body" cols="10" rows="10" class="form-control">
-                    {{ $post->body }}
-                </textarea>            
+                <div class="container">
+                    <input type="text" value="{{ old("body") }}" name="body" id="body" class="form-control">  
+                </div>         
             </div>
             <button type="submit" class="btn btn-primary">Update</button>
     </form>

@@ -9,6 +9,7 @@
           <li class="nav-item">
             <a class="nav-link" aria-current="page" href="/">Home</a>
           </li>
+          {{-- 
           <li class="nav-item dropdown">
             <a class="nav-link dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false">
               Users
@@ -18,6 +19,7 @@
               <li><a class="{{ Request::is('users/create') ? 'dropdown-item active' : 'dropdown-item'}}" href={{ route('users.create') }}>New User</a></li>
             </ul>
           </li>
+          --}}
 
           <li class="nav-item dropdown">
             <a class="nav-link dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false">

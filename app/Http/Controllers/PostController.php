@@ -57,8 +57,9 @@ class PostController extends Controller
         $imgPath=Storage::putFile('public/posts',$data['img_path']);
         //creating new post
        ;
-        $post=Post::create([
-         'caption'=>$data['caption']]);
+        $post = Post::create([
+            'caption' => $data['caption'],
+        ]);
         //assign img path to post
         // Post_image::create([
         //     'post_id'=>$post->id,
@@ -68,7 +69,8 @@ class PostController extends Controller
         $postImage = new Post_image();
         $postImage->post_id =$post->id;
         $postImage->img_path= $imgPath;
-        $postImage->save();
+        // $postImage->save();
+        $post->images()->save($postImage);
                 // Attach tags to the post
                 if($data['tag_text'] !== null){
                     foreach($data['tag_text'] as $hashtag){
@@ -94,7 +96,9 @@ class PostController extends Controller
      */
     public function edit(string $id)
     {
-        //
+        $post = Post::find($id)->with(['tags', 'comments', 'images'])->get();
+        // dd($post[0]);
+        return view("posts.edit" , ["post" => $post[0]]);
     }
 
     /**

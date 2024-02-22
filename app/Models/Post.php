@@ -20,7 +20,11 @@ class Post extends Model
     }
 
     public function tags(){
-        return $this->belongsToMany(Tag::class);    //many to many relation
+        return $this->belongsToMany(
+            related: Tag::class,
+            foreignPivotKey: 'post_id',
+            relatedPivotKey: 'tag_id'
+        );    
     }
 }
 
