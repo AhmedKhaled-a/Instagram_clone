@@ -8,7 +8,6 @@
     <title>Posts</title>
     <!-- Add your CSS stylesheets if needed -->
     <style>
-        <style>
     body {
         font-family: Arial, sans-serif;
         margin: 0;
@@ -48,7 +47,6 @@
     }
 </style>
 
-    </style>
 </head>
 <body>
     <div class="container">
@@ -59,7 +57,7 @@
                 <div class="card-body">
                     <h2 class="card-title">{{ $post->id }}</h2>
                     <p class="card-text">{{ $post->caption }}</p>
-                    <img src="{{ asset(str_replace('public', 'storage', $post->img_path)) }}" alt="Post Image">
+                    <img width="100" height="100" src="{{ asset(str_replace('public', 'storage', $post->img_path)) }}" alt="Post Image">
                     
                     @if ($post->tags->count() > 0)
                         <div class="mb-2">
