@@ -1,19 +1,19 @@
 
+const fileInput = document.getElementById("images");
 
+const baseUrl = "http://localhost:8000/api";
 
-const previewImage = (event) => {
-    /**
-     * Get the selected files.
-     */
-    const imageFiles = event.target.files;
-    console.log(imageFiles);
+fileInput.addEventListener("change" ,(event) => {
     /**
      * Count the number of files selected.
      */
+    let imageFiles = event.target.files;
+
     const imageFilesLength = imageFiles.length;
     /**
      * If at least one image is selected, then proceed to display the preview.
      */
+
     let image = null;
     let preview = null;
     let container = document.querySelector(".image-preview-container");
@@ -32,12 +32,25 @@ const previewImage = (event) => {
         /**
          * Create an image
          */
-        let image = document.createElement("img");
+        image = document.createElement("img");
+        image.addEventListener("click" , (e) => {imageClick(e.target)});
         image.id = "preview-selected-image";
         image.src = imageSrc;
+
         preview.insertAdjacentElement("afterbegin" , image);
         preview.style.display = "block";
         container.insertAdjacentElement("beforeend" , preview);
         imageCounter--;
     }
-};
+});
+
+async function imageClick (target) {
+    let imageId = (target.children)[0].getAttribute("id"); 
+    console.log(imageId);
+    target.remove();
+    await fetch(baseUrl + '/images/' + imageId, {
+        method: 'DELETE',
+    }).then((res) => {
+    console.log(res);
+    });      
+}

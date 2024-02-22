@@ -1,5 +1,4 @@
 <?php
-
 namespace App\Http\Controllers;
 use App\Models\Tag;
 use App\Models\Post;
@@ -44,19 +43,22 @@ class PostController extends Controller
     public function store(Request $request)
     {
         // validate data
-       $data = $request ->validate([ 
+       $data = $request->validate([ 
             'caption' =>'nullable|string|max:255',
-            'img_path'=>'required|image|max:3096' ,
+            'images'=>'required|image|max:3096' ,
             'tag_text'=>'nullable |array',
             'tag_text.*'=>'string|distinct'
         ]);  
 
         // dd($data) ;
-        
+        $imagePath = '';
+        // dd($request->file('images'));
         //save image in storage 
-        $imgPath=Storage::putFile('public/posts',$data['img_path']);
+        if($request->file('images')->isValid()) {
+            $imagePath = $request->file('images')->store('posts' , 'public');
+        }
         //creating new post
-       ;
+        
         $post = Post::create([
             'caption' => $data['caption'],
         ]);
@@ -68,7 +70,7 @@ class PostController extends Controller
 
         $postImage = new Post_image();
         $postImage->post_id =$post->id;
-        $postImage->img_path= $imgPath;
+        $postImage->img_path= $imagePath;
         // $postImage->save();
         $post->images()->save($postImage);
                 // Attach tags to the post
@@ -96,9 +98,14 @@ class PostController extends Controller
      */
     public function edit(string $id)
     {
-        $post = Post::find($id)->with(['tags', 'comments', 'images'])->get();
-        // dd($post[0]);
-        return view("posts.edit" , ["post" => $post[0]]);
+        // authentication
+        $authenticated = true;
+        if($authenticated) {
+            // $post = Post::findOrFail($id)->with(["images", "tags", "comments"])->get();
+            // dd($post[$id -1]);
+            $post = Post::findOrFail($id);
+            return view("posts.edit" , ["post" => $post]);
+        }
     }
 
     /**
@@ -106,7 +113,45 @@ class PostController extends Controller
      */
     public function update(Request $request, string $id)
     {
-        //
+        $post = Post::findOrFail($id);
+        $data = $request->validate([ 
+            'caption' =>'nullable|max:255',
+            'images'=>'required'
+        ]);
+
+        $extractedTags = PostController::getTags($data['caption']);
+        // dd($extractedTags);
+        $imagePath = '';
+        
+        $imageFiles = $request->file('images');
+        // dd($imageFiles);
+
+        foreach ($imageFiles as $imageFile) {    
+            // Todo: Add multiple post images
+            $imagePath = $imageFile->store('posts' , 'public');
+            $postImage = new Post_image();
+            $postImage->post_id =$post->id;
+            $postImage->img_path = $imagePath;
+
+            // $postImage->save();
+            $post->images()->save($postImage);
+        }
+
+        //creating new post
+        $post->update(["caption" => $data["caption"]]);
+        
+        // Attach tags to the post
+        if($extractedTags !== null){
+            foreach($extractedTags as $hashtag){
+                $tag = Tag::firstOrCreate(['tag_text' => $hashtag]);
+                $exists = $post->tags->contains($tag);
+                if(!$exists) {
+                    $post->tags()->attach($tag->id); 
+                }    
+            }
+        }
+
+        return redirect()->route('posts.index');
     }
 
     /**
@@ -114,6 +159,31 @@ class PostController extends Controller
      */
     public function destroy(string $id)
     {
-        //
+        
+    }
+
+    public static function getTags($str) {
+        $chars = str_split($str);
+        $hashTag = "";
+        $hashTags = [];
+        $found_hash = false;
+        foreach($chars as $char) {
+            // echo $char;
+            if($found_hash) {
+                $hashTag .= $char;
+            }
+            if($char == ' ' && $found_hash == true) {
+                $found_hash = false;
+                array_push($hashTags, $hashTag);
+                $hashTag = "";
+            }
+            if($char == '#') {
+                $found_hash = true;
+            }
+        }
+        if(!empty($hashTag))
+            array_push($hashTags, $hashTag);
+
+        return $hashTags;
     }
 }
