@@ -12,8 +12,6 @@
 @else
 <h1>Editing Post {{ $post->id }} </h1>
 <div class="border border-3 border-radius-50">
-
-
     <form method="post" action={{ route("posts.update" ,["id" => $post->id]) }}> 
             @csrf
             @method('PUT')
