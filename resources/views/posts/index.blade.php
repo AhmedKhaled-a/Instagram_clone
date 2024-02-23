@@ -57,8 +57,9 @@
                 <div class="card-body">
                     <h2 class="card-title">{{ $post->id }}</h2>
                     <p class="card-text">{{ $post->caption }}</p>
-                    <img width="100" height="100" src="{{ asset(str_replace('public', 'storage', $post->img_path)) }}" alt="Post Image">
-                    
+                    @foreach($post->images as $image)
+                    <img width="100" height="100" src="{{ asset(str_replace('public', 'storage', $image->img_path)) }}" alt="Post Image">
+                    @endforeach
                     @if ($post->tags->count() > 0)
                         <div class="mb-2">
                             <strong>Tags:</strong>

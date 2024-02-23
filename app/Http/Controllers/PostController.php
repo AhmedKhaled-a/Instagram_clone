@@ -43,43 +43,46 @@ class PostController extends Controller
      */
     public function store(Request $request)
     {
-        // validate data
-       $data = $request ->validate([ 
-            'caption' =>'nullable|string|max:255',
-            'img_path'=>'required|image|max:3096' ,
-            'tag_text'=>'nullable |array',
-            'tag_text.*'=>'string|distinct'
+        // Validate data
+        $data = $request->validate([ 
+            'caption' => 'nullable|string|max:255',
+            'images' => 'required|array',
+            'images.*' => 'image|max:3096',
+            'tag_text' => 'nullable|array',
+            'tag_text.*' => 'string|distinct'
         ]);  
-
-        // dd($data) ;
+    
+        $imgPaths = [];
         
-        //save image in storage 
-        $imgPath=Storage::putFile('public/posts',$data['img_path']);
-        //creating new post
-       ;
-        $post=Post::create([
-         'caption'=>$data['caption']]);
-        //assign img path to post
-        // Post_image::create([
-        //     'post_id'=>$post->id,
-        //     'img_path'=>$imgPath
-        // ]);
-
-        $postImage = new Post_image();
-        $postImage->post_id =$post->id;
-        $postImage->img_path= $imgPath;
-        $postImage->save();
-                // Attach tags to the post
-                if($data['tag_text'] !== null){
-                    foreach($data['tag_text'] as $hashtag){
-                        $tag = Tag::firstOrCreate(['tag_text' => $hashtag]);
-                        $post->tags()->attach($tag->id);     
-                    }
-                }
-       
-                return redirect()->route('posts.index');
-        
+        // Store each image and collect its path
+        foreach ($request->file('images') as $image) {
+            $imgPaths[] = $image->store('public/posts');
         }
+    
+        // Create new post
+        $post = Post::create([
+            'caption' => $data['caption']
+        ]);
+    
+        // Associate each image with the post
+        foreach ($imgPaths as $imgPath) {
+            $postImage = new Post_image();
+            $postImage->post_id= $post->id; 
+            $postImage->img_path = $imgPath;
+            $post->images()->save($postImage);
+        }
+    
+        // Attach tags to the post
+        if ($data['tag_text'] !== null) {
+            foreach ($data['tag_text'] as $hashtag) {
+                $tag = Tag::firstOrCreate(['tag_text' => $hashtag]);
+                $post->tags()->attach($tag->id);     
+            }
+        }
+    
+        return redirect()->route('posts.index');
+    }
+    
 
     /**
      * Display the specified resource.
