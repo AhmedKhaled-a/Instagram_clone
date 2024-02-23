@@ -39,8 +39,10 @@
         </div>
     </div>
 
-    <h3 class="text-center mt-5">posts</h3>
-    <hr class="mb-0">
+    <div class="col-12">
+        <h3 class="text-center mt-5 col-11 d-inline-block">posts</h3>
+        <a href="" title="saved posts" class="col-1"><img src="{{ asset('imgs/icons/save-icon.png') }}" alt="save icon" style="width:30px;"></a>
+    </div>
     <div class="row pt-5">
         {{-- @foreach($user->posts as $post)
         <div class="col-4 pb-4">
