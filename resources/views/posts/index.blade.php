@@ -66,12 +66,13 @@
                             <strong>Tags:</strong>
                             @foreach ($post->tags as $tag)
                                 <span class="badge badge-secondary">{{ $tag->tag_text }}</span>
-                                <form method="POST" action={{ route("posts.destroy" ,["id" => $post->id]) }}>
-                                    @csrf
-                                    @method('DELETE')
-                                    <input type="submit" value="Delete" class="btn btn-danger">
-                                </form>
                             @endforeach
+
+                            <form method="POST" action={{ route("posts.destroy" ,["id" => $post->id]) }}>
+                                @csrf
+                                @method('DELETE')
+                                <input type="submit" value="Delete" class="btn btn-danger">
+                            </form>
                             
                         </div>
                     @endif

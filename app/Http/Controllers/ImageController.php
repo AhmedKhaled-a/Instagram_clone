@@ -60,7 +60,14 @@ class ImageController extends Controller
      */
     public function destroy(string $id)
     {
-        Post_image::destroy($id);
+        $image = Post_image::find($id);
+        // remove image from public
+        if(Storage::disk('public')->exists($image->img_path)) {
+            Storage::disk('public')->delete($image->img_path);
+        }
+        
+        $image->delete();
+
         return response('Done', 200)
         ->header('Content-Type', 'text/plain');
     }
