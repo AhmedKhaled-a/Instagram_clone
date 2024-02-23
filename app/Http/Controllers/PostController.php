@@ -6,6 +6,7 @@ use App\Models\Comment;
 use App\Models\Post_image;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Storage;
+use Illuminate\Support\Facades\File;
 class PostController extends Controller
 {
     /**
@@ -159,7 +160,22 @@ class PostController extends Controller
      */
     public function destroy(string $id)
     {
-        
+        // remove all comments associated with post
+
+        // remove all images associated with post
+        $post = Post::find($id);
+        $images = $post->images;
+        // dd($images);
+        foreach($images as $image) {
+            Storage::disk('public')->delete($image->img_path);
+            $image->delete();
+        }
+
+
+        // remove post itself
+        $post->delete();
+
+        return redirect()->route('posts.index');
     }
 
     public static function getTags($str) {
