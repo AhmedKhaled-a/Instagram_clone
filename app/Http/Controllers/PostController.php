@@ -167,7 +167,9 @@ class PostController extends Controller
         $images = $post->images;
         // dd($images);
         foreach($images as $image) {
-            Storage::disk('public')->delete($image->img_path);
+            if(Storage::disk('public')->exists($image->img_path)) {
+                Storage::disk('public')->delete($image->img_path);
+            }
             $image->delete();
         }
 

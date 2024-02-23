@@ -38,7 +38,6 @@ fileInput.addEventListener("change" ,(event) => {
          * Create an image
          */
         image = document.createElement("img");
-        image.addEventListener("click" , (e) => {imageClick(e.target)});
         image.classList = "preview-selected-image";
         image.src = imageSrc;
 
