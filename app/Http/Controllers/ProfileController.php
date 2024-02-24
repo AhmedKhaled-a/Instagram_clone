@@ -11,6 +11,7 @@ use Illuminate\Support\Facades\Redirect;
 use Illuminate\Support\Facades\Storage;
 use Illuminate\View\View;
 
+
 class ProfileController extends Controller
 {
     public function index(User $user) {
@@ -19,6 +20,10 @@ class ProfileController extends Controller
     /**
      * Display the user's profile form.
      */
+    public function index(User $user) {
+        return view('profiles.index', ['user'=>$user]);
+    }
+
     public function edit(Request $request): View
     {
         return view('profile.edit', [
