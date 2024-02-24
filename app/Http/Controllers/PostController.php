@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 use App\Models\Tag;
 use App\Models\Post;
+use App\Models\User;
 use App\Models\Comment;
 use App\Models\Post_image;
 use Illuminate\Http\Request;
