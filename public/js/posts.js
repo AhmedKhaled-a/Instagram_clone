@@ -48,15 +48,20 @@ fileInput.addEventListener("change" ,(event) => {
     }
 });
 
-async function imageClick (target) {
+function imageClick (target) {
     let imageId = (target.children)[0].getAttribute("id"); 
     console.log(imageId);
     target.remove();
+    if(imageId != undefined)
+        sendDeleteReq(imageId);
+}
+
+async function sendDeleteReq(imageId) {
     await fetch(BASE_URL + '/api/images/' + imageId, {
         method: 'DELETE',
     }).then((res) => {
     console.log(res);
-    });      
+    });    
 }
 
 function resetImages() {
@@ -64,4 +69,8 @@ function resetImages() {
     images.forEach((image) => {
         image.remove();
     });
+}
+
+function postClick(target) {
+    window.open(BASE_URL + '/posts/' + target.getAttribute("id"));
 }

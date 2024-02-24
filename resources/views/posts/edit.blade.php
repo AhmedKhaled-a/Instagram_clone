@@ -45,5 +45,5 @@
 
 @section("scripts")
 @parent
-    <script src="{{ asset("js/edit.js") }}"></script>
+    <script src="{{ asset("js/posts.js") }}"></script>
 @endsection
