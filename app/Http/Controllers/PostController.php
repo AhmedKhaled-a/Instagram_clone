@@ -10,6 +10,9 @@ use Illuminate\Http\Response;
 use Illuminate\Support\Facades\Storage;
 use Illuminate\Support\Facades\File;
 use Illuminate\Support\Facades\Auth;
+use Intervention\Image\ImageManager;
+use Intervention\Image\Drivers\Gd\Driver;
+use Illuminate\Support\Str;
 
 
 class PostController extends Controller
@@ -22,7 +25,7 @@ class PostController extends Controller
         // Todo: Change user id to Auth
         $user = Auth::user();
 
-        $posts = Post::with(['tags', 'comments', 'images'])->get();
+        $posts = Post::with(['tags', 'comments', 'images'])->paginate(6);
 
 
         $likedPostsIDs = [];
@@ -94,10 +97,15 @@ class PostController extends Controller
         
         $imageFiles = $request->file('images');
         // dd($imageFiles);
+        $manager = new ImageManager(new Driver());
 
         foreach ($imageFiles as $imageFile) {    
+            $image_name = Str::random(18) . "." . $imageFile->extension();
+            $img = $manager->read($imageFile);
+            $img = $img->resize(400, 400);
+            $img = $img->toJpeg(80)->save(storage_path("app/public/posts/" . $image_name));
             // Todo: Add multiple post images
-            $imagePath = $imageFile->store('posts' , 'public');
+            $imagePath = "posts/" . $image_name;
             $postImage = new Post_image();
             $postImage->post_id =$post->id;
             $postImage->img_path = $imagePath;
