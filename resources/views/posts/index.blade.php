@@ -69,9 +69,39 @@
                         </div>
                     @endif
                 </div>
+                <button id='like' class="like-button" data-post-id="{{ $post->id }}" onclick="toggleLike(this)">Like</button>
             </div>
         @endforeach
+        <meta name="csrf-token" content="{{ csrf_token() }}">
 
     </div>
 </body>
 </html>
+
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
+<script>
+    function toggleLike(button) {
+        var postId = button.getAttribute('data-post-id');
+        console.log(postId);
+        const baseUrl='http://localhost:8000';
+        var url = baseUrl+'/api'+'/posts/' + postId + '/toggle-like';
+
+        // Make AJAX request
+        fetch(url, {
+            method: 'put',
+            headers: {
+                'Content-Type': 'application/json',
+                'X-CSRF-TOKEN': '{{ csrf_token() }}' // Add CSRF token if using CSRF protection
+            }
+        })
+        .then(response => {
+            if (response.ok) {
+                console.log('Toggle like successful');
+                // Update UI or handle response as needed
+            } 
+        })
+        .catch(error => {
+            console.error('Toggle like error:', error);
+        });
+    }
+</script>

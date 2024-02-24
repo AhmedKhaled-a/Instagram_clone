@@ -94,4 +94,8 @@ class User extends Authenticatable implements MustVerifyEmail
 
         return  asset('img/default_user_img.png');
     }
+
+    public function likes(){
+        return $this->hasMany(Like::class);
+    }
 }
