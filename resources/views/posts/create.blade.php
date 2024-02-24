@@ -30,5 +30,5 @@
 
 @section("scripts")
 @parent
-    <script src="{{ asset("js/posts.js") }}"></script>
+    <script src="{{ asset("js/posts.create.update.js") }}"></script>
 @endsection

@@ -6,8 +6,12 @@ use App\Models\User;
 use App\Models\Comment;
 use App\Models\Post_image;
 use Illuminate\Http\Request;
+use Illuminate\Http\Response;
 use Illuminate\Support\Facades\Storage;
 use Illuminate\Support\Facades\File;
+use Illuminate\Support\Facades\Auth;
+
+
 class PostController extends Controller
 {
     /**
@@ -15,11 +19,29 @@ class PostController extends Controller
      */
     public function index()
     {
+        // Todo: Change user id to Auth
+        $user = Auth::user();
+
         $posts = Post::with(['tags', 'comments', 'images'])->get();
-        // eager loading for all related models in one query
+
+
+        $likedPostsIDs = [];
         
+            $result = Post::join('likes', 'posts.id', '=', 'likes.post_id')
+            ->join('users', 'likes.user_id', '=', 'users.id')->get();
+            // dd($result);
+            
+        
+        foreach($result as $likedPost) {
+            // dd($likedPost);
+            array_push($likedPostsIDs, $likedPost->post_id);
+        }
+        // dd($result);
+        // dd($likedPostsIDs);       
         return view('posts.index', [
             'posts' => $posts,
+            'likedPostsIDs' => $likedPostsIDs,
+
         ]);
     }
     
@@ -46,7 +68,7 @@ class PostController extends Controller
     {
         // TODO: get authenticatede user
 
-        $user_id = 1;
+        $user_id = Auth::id();
 
         // Validate data
         $data = $request->validate([ 
@@ -182,20 +204,27 @@ class PostController extends Controller
 
         // remove all images associated with post
         $post = Post::find($id);
-        $images = $post->images;
-        // dd($images);
-        foreach($images as $image) {
-            if(Storage::disk('public')->exists($image->img_path)) {
-                Storage::disk('public')->delete($image->img_path);
+        if($post) {
+            $images = $post->images;
+            // dd($images);
+            foreach($images as $image) {
+                if(Storage::disk('public')->exists($image->img_path)) {
+                    Storage::disk('public')->delete($image->img_path);
+                }
+                $image->delete();
             }
-            $image->delete();
+
+
+            // remove post itself
+            $post->delete();
         }
+        return response()->redirect()->route('posts.index');
 
+    }
 
-        // remove post itself
-        $post->delete();
-
-        return redirect()->route('posts.index');
+    public function likes(string $id) {
+        $likes = Post::find($id)->likes;
+        return response()->json($likes, 200);
     }
 
     public static function getTags($str) {

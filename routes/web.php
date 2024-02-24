@@ -87,7 +87,7 @@ Route::get('/posts/{id}/edit', [PostController::class, 'edit'])
 Route::put('/posts/{id}', [PostController::class, 'update'])
 ->name('posts.update');
 
-Route::delete('/users/{id}', [PostController::class, 'destroy'])
+Route::delete('/posts/{id}', [PostController::class, 'destroy'])
 ->name('posts.destroy');
 
 
