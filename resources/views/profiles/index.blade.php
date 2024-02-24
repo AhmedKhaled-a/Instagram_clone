@@ -8,40 +8,56 @@
 <div class="container">
     <div class="row">
         <div class="col-4 d-flex align-items-start justify-content-center">
-            <img src="https://th.bing.com/th/id/R.c68f81082d59285a4b2fae43f7778772?rik=tVn5GUk8crzqaA&riu=http%3a%2f%2fwww.pngall.com%2fwp-content%2fuploads%2f5%2fUser-Profile-PNG-Clipart.png&ehk=XjMZT9I1logRUJAs%2bo2aZelxooUclPwYXWlh3%2b7V9g0%3d&risl=&pid=ImgRaw&r=0" class="rounded-circle w-50" style="border: 1px solid #e4e3e1">
+            <img src="{{ $user->getAvatarUrl() }}" class="rounded-circle w-50" style="border: 1px solid #e4e3e1">
         </div>
         <div class="col-8">
             <div class="d-flex justify-content-between align-items-baseline">
                 <div class="d-flex align-items-start pb-2">
-                    <h3 class="font-weight-light mr-3">{{ $user->name }}</h3>
-                    @if ((Auth::check()) && (Auth::id() != $user->id))
+                    <h3 class="font-weight-light me-4">{{ $user->name }}</h3>
+                    @auth
+                        @if (Auth::id() != $user->id)
+                            <button user_id='{{ Auth::id() }}' follows='{{ $user->id }}' class="btn btn-primary">Follow</button>
+                        @else
+                            <a href="{{ route('profile.edit') }}" class="btn btn-success">Edit Profile</a>
+                        @endif
+                    @endauth
+                    {{-- @if ((Auth::check()) && (Auth::id() != $user->id))
                     <button user_id='{{ Auth::id() }}' follows='{{ $user->id }}' class="btn btn-primary">Follow</button>
-                    {{-- <follow-button user-id="1" follows="23">Follow</follow-button> --}}
-                    @endif
+                    <follow-button user-id="1" follows="23">Follow</follow-button>
+                    @else
+                    <a href="{{ route('profile.edit') }}" class="btn btn-success">Edit Profile</a>
+                    @endif --}}
                 </div>
-                @can('update', $user->profile)
+                {{-- @can('update', $user->profile)
                 <a href="/p/create">Add New Post</a>
-                @endcan
+                @endcan --}}
             </div>
-
-            @if ((Auth::check()) && (Auth::id() == $user->id))
-            <a href="{{ route('profile.edit') }}">Edit Profile</a>
-            @endif
 
             <div class="d-flex pt-4">
-                <div class="pr-5"><strong>3</strong> posts</div>
-                <div class="pr-5"><strong>165</strong> followers</div>
-                <div class="pr-5"><strong>176</strong> following</div>
+                <div class="pe-5"><strong>3</strong> posts</div>
+                <div class="pe-5"><strong>165</strong> followers</div>
+                <div class="pe-5"><strong>176</strong> following</div>
             </div>
-            <div class="pt-3"><strong>{{ $user->name }}</strong></div>
-            <div>This place i can feel its pain...</div>
-            <div><a href="#">www.mahmouddwidar.com</a></div>
+            <div class="pt-3">
+                <strong>{{ $user->name }}</strong>
+                <span class="badge {{ ($user->gender == 'male') ? 'text-bg-primary' : 'text-bg-danger' }}">{{ $user->gender }} </span>
+            </div>
+
+            <div class="mt-2">{{ $user->bio }}</div>
+
+            <div class="mt-3">
+                <a class="icon-link icon-link-hover" style="--bs-link-hover-color-rgb: 25, 135, 84;" href="{{ $user->website }}">
+                    {{ $user->website }}
+                    <svg class="bi" aria-hidden="true"><use xlink:href="#arrow-right"></use></svg>
+                </a>
+            </div>
         </div>
     </div>
 
     <div class="col-12">
         <h3 class="text-center mt-5 col-11 d-inline-block">posts</h3>
-        <a href="" title="saved posts" class="col-1"><img src="{{ asset('imgs/icons/save-icon.png') }}" alt="save icon" style="width:30px;"></a>
+        <a href="" title="saved posts" class="col-1 link-dark link-offset-2 link-underline-opacity-25 link-underline-opacity-100-hover"><img src="{{ asset('imgs/icons/save-icon.png') }}" alt="save icon" style="width:30px;">Saved</a>
+        <hr class="mb-0">
     </div>
     <div class="row pt-5">
         {{-- @foreach($user->posts as $post)

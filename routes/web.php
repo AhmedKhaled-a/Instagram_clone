@@ -28,6 +28,6 @@ Route::middleware('auth')->group(function () {
     Route::delete('/profile', [ProfileController::class, 'destroy'])->name('profile.destroy');
 });
 
-Route::get('/profile/{user}', [ProfileController::class, 'index'])->name('profile.index')->where('user', '[0-9]+');
+Route::get('/profile/{user}', [ProfileController::class, 'index'])->name('profile.index')->where('id', '[0-9]+');
 
 require __DIR__.'/auth.php';

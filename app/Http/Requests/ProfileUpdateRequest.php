@@ -21,6 +21,8 @@ class ProfileUpdateRequest extends FormRequest
             'bio' => ['string', 'nullable', 'max:255'],
             'website' => ['url', 'nullable', 'max:255'],
             'avatar' => ['image', 'nullable'],
+            'phone' => ['required', 'string', 'regex:/^(01|1)\d{9}$/'],
+            'gender' => ['required', 'string', Rule::in(['male', 'female'])],
         ];
     }
 }

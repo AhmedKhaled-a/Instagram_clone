@@ -24,6 +24,10 @@ class User extends Authenticatable
         'bio',
         'website',
         'image',
+        'username',
+        'phone',
+        'gender',
+        'phone',
     ];
 
     /**
@@ -45,4 +49,12 @@ class User extends Authenticatable
         'email_verified_at' => 'datetime',
         'password' => 'hashed',
     ];
+
+    public function getAvatarUrl() {
+        if ($this->avatar) {
+            return url('/storage/'.$this->avatar);
+        }
+
+        return 'https://th.bing.com/th/id/OIP.tQYFfqM9HEki3rZPgBodgQHaHa?rs=1&pid=ImgDetMain';
+    }
 }

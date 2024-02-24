@@ -52,8 +52,9 @@
 
         <!-- Bio -->
         <div>
-            <x-input-label for="bio" :value="__('Bio')" class=""/>
-            <textarea id="bio" name="bio" class="mt-1 block w-full dark:bg-gray-900 dark:text-white border border-gray-900 border-1 rounded-md focus:ring-indigo-500 dark:focus:ring-offset-gray-800">{{ old('bio', $user->bio) }}</textarea>
+            <x-input-label for="bio" :value="__('Bio')" class="" />
+            <textarea id="bio" name="bio"
+                class="mt-1 block w-full dark:bg-gray-900 dark:text-white border border-gray-900 border-1 rounded-md focus:ring-indigo-500 dark:focus:ring-offset-gray-800">{{ old('bio', $user->bio) }}</textarea>
             <x-input-error class="mt-2" :messages="$errors->get('bio')" />
         </div>
 
@@ -64,10 +65,33 @@
             <x-input-error class="mt-2" :messages="$errors->get('website')" />
         </div>
 
+        <!-- Phone -->
+        <div>
+            <x-input-label for="phone" :value="__('Phone')" />
+            <x-text-input id="phone" name="phone" type="tel" class="mt-1 block w-full" :value="old('phone', $user->phone)" />
+            <x-input-error class="mt-2" :messages="$errors->get('phone')" />
+        </div>
+
+        <!-- Gender -->
+        <p class="dark:text-white">Gender</p>
+        <div class="form-check">
+            <input class="form-check-input" type="radio" name="gender" id="male" value="male" {{ ($user->gender == 'male') ? 'checked' : '' }}>
+            <label class="form-check-label dark:text-white" for="male">
+                Male
+            </label>
+        </div>
+        <div class="form-check">
+            <input class="form-check-input" type="radio" name="gender" id="female" value="female" {{ ($user->gender == 'female') ? 'checked' : '' }}>
+            <label class="form-check-label dark:text-white" for="female">
+                Female
+            </label>
+        </div>
+
         <!-- Avatar -->
         <div>
-            <x-input-label for="avatar" :value="__('Avatar')"/>
-            <input type="file" id="avatar" name="avatar" class="mt-1 block w-full dark:text-white" accept="image/*">
+            <x-input-label for="avatar" :value="__('Avatar')" />
+            <input type="file" id="avatar" name="avatar" class="mt-1 block w-full dark:text-white"
+                accept="image/*">
             <x-input-error class="mt-2" :messages="$errors->get('avatar')" />
         </div>
 

@@ -8,15 +8,12 @@
     @yield('title')
     {{-- <title>Instagram</title> --}}
 
-    <!-- Scripts -->
-    <script src="{{ asset('js/app.js') }}" defer></script>
-
     <!-- Fonts -->
     <link rel="dns-prefetch" href="//fonts.gstatic.com">
     <link href="https://fonts.googleapis.com/css?family=Nunito" rel="stylesheet">
 
     <!-- Styles -->
-    <link href="{{ asset('css/app.css') }}" rel="stylesheet">
+    <link href="{{ asset('css/bootstrap.css') }}" rel="stylesheet">
 </head>
 
 <body>
@@ -24,10 +21,10 @@
         <nav class="navbar navbar-expand-md navbar-light bg-white shadow-sm">
             <div class="container">
                 <a class="navbar-brand d-flex" href="{{ url('/') }}">
-                    <div class="pr-2" style="border-right: 1px solid #333333">
+                    <div class="pe-2" style="border-right: 1px solid #333333">
                         <img src="https://th.bing.com/th/id/R.0768c020c0fa1573b84bfdf665d341b7?rik=1mf%2binWPP3jAGw&riu=http%3a%2f%2fandersonmgt.com%2fwp-content%2fuploads%2f2020%2f05%2fInstagram-icon.jpg&ehk=hK6l5LWS7A7lvg4vNPOAdW5e6BgImpLTgUMzGlg8F9g%3d&risl=&pid=ImgRaw&r=0" width="25px" class="pb-1">
                     </div>
-                    <div class="pl-2">Instagram</div>
+                    <div class="ps-2">Instagram</div>
                 </a>
                 <button class="navbar-toggler" type="button" data-toggle="collapse"
                     data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false"
@@ -35,7 +32,7 @@
                     <span class="navbar-toggler-icon"></span>
                 </button>
 
-                <div class="collapse navbar-collapse" id="navbarSupportedContent">
+                <div class="collapse navbar-collapse justify-content-end" id="navbarSupportedContent">
                     <!-- Left Side Of Navbar -->
                     <ul class="navbar-nav mr-auto">
 
@@ -84,6 +81,8 @@
             @yield('content')
         </main>
     </div>
+    <script src="{{ asset('js/app.js') }}"></script>
+    <script src="{{ asset('js/bootstrap.bundle.js') }}"></script>
 </body>
 
 </html>
