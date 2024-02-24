@@ -71,6 +71,6 @@ function resetImages() {
     });
 }
 
-function postClick(target) {
-    window.open(BASE_URL + '/posts/' + target.getAttribute("id"));
-}
+// function postClick(target) {
+//     window.open(BASE_URL + '/posts/' + target.getAttribute("id"));
+// }

@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 use App\Models\Post_image;
+use Illuminate\Support\Facades\Storage;
 
 class ImageController extends Controller
 {
