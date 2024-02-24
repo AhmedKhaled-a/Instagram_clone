@@ -8,7 +8,7 @@ use Illuminate\Database\Eloquent\Model;
 class Post extends Model
 {
     use HasFactory;
-    protected $fillable =['caption'];
+    protected $fillable =['caption', 'user_id'];
 
 
     public function comments(){
@@ -20,7 +20,11 @@ class Post extends Model
     }
 
     public function tags(){
-        return $this->belongsToMany(Tag::class);    //many to many relation
+        return $this->belongsToMany(
+            related: Tag::class,
+            foreignPivotKey: 'post_id',
+            relatedPivotKey: 'tag_id'
+        );    
     }
 
     public function likes(){

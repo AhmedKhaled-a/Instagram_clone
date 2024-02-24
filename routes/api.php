@@ -4,6 +4,8 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\LikeController;
 
+use App\Http\Controllers\ImageController;
+
 
 /*
 |--------------------------------------------------------------------------
@@ -20,3 +22,7 @@ Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
     return $request->user();
 });
 Route::put('/posts/{postId}/toggle-like', [LikeController::class, 'toggleLike'])->name('posts.toggle-like');
+
+// delete image
+Route::delete('/images/{id}', [ImageController::class, 'destroy'])
+->name('images.destroy');
