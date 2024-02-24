@@ -8,7 +8,7 @@
     <div class="container">
         <div class="row">
             <div class="col-4 d-flex align-items-start justify-content-center">
-                <img src="{{ asset('img/default_user_img.png') }}" class=" w-50">
+                <img src="{{ $user->getAvatarUrl() }}" class=" w-50 rounded-circle">
             </div>
             <div class="col-8">
                 <div class="d-flex justify-content-between align-items-baseline">
@@ -71,16 +71,29 @@
                         </div>
                     </div>
                 </div>
-                <div class="pt-3"><strong>{{ $user->name }}</strong></div>
-                <div>bio here</div>
-                <div><a href="#">www.loremlorem.com</a></div>
+                <div class="pt-3">
+                    <strong>{{ $user->name }}</strong>
+                    <span class="badge {{ ($user->gender == 'male') ? 'text-bg-primary' : 'text-bg-danger' }}">{{ $user->gender }} </span>
+                </div>
+    
+                <div class="mt-2">{{ $user->bio }}</div>
+    
+                <div class="mt-3">
+                    <a class="icon-link icon-link-hover" style="--bs-link-hover-color-rgb: 25, 135, 84;" href="{{ $user->website }}">
+                        {{ $user->website }}
+                        <svg class="bi" aria-hidden="true"><use xlink:href="#arrow-right"></use></svg>
+                    </a>
+                </div>
             </div>
         </div>
 
-        <h3 class="text-center mt-5">posts</h3>
+    <div class="col-12">
+        <h3 class="text-center mt-5 col-11 d-inline-block">posts</h3>
+        <a href="" title="saved posts" class="col-1 link-dark link-offset-2 link-underline-opacity-25 link-underline-opacity-100-hover"><img src="{{ asset('imgs/icons/save-icon.png') }}" alt="save icon" style="width:30px;">Saved</a>
         <hr class="mb-0">
-        <div class="row pt-5">
-            {{-- @foreach ($user->posts as $post)
+    </div>
+    <div class="row pt-5">
+        {{-- @foreach($user->posts as $post)
         <div class="col-4 pb-4">
             <a href="/p/{{ $post->id }}">
                 <img src="/storage/{{ $post->image }}" class="w-100">

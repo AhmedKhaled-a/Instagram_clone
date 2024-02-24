@@ -21,9 +21,13 @@ class User extends Authenticatable
         'name',
         'email',
         'password',
+        'bio',
+        'website',
+        'image',
         'username',
         'phone',
-        'gender'
+        'gender',
+        'phone',
     ];
 
     /**
@@ -62,5 +66,13 @@ class User extends Authenticatable
     // check if we follow a user
     public function follows(User $user){
         return $this->following()->where('user_id',$user->id)->exists();
+    }
+
+    public function getAvatarUrl() {
+        if ($this->avatar) {
+            return url('/storage/'.$this->avatar);
+        }
+
+        return  asset('img/default_user_img.png');
     }
 }
