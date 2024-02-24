@@ -30,6 +30,5 @@ class Post extends Model
     public function likes(){
         return $this->hasMany(Like::class);   //one to many relation
     }
-    
 }
 

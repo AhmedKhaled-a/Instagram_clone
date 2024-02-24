@@ -14,8 +14,11 @@
                     <h5 class="card-title">
                         <a class="link-dark link-opacity-100-hover link-opacity-50 link-offset-3-hover link-underline  link-underline-opacity-0 link-underline-opacity-100-hover" href="{{ route("posts.show" ,["id" => $post->id]) }}">{{ $post->caption }}</a>
                     </h5>
-
-                    <img class="card-img-top" src="{{ Storage::disk('public')->url($post->images[0]->img_path) }}" alt="Card image cap">
+                    @if(count($post->images) > 0)
+                        <img class="card-img-top" src="{{ Storage::disk('public')->url($post->images[0]->img_path) }}" alt="Card image cap">
+                    @else
+                        <img class="card-img-top" src="{{ Storage::disk('public')->url("posts/8ENpYSGJZ88eJWKMkz5lQNswtSs5QdaRWCOd1M6Y.jpg") }}" alt="Card image cap">
+                    @endif
                     <div class="card-body">
                     <div class="row">
                         <div class="col-3">
@@ -51,7 +54,11 @@
                 </div>
             
                 @endforeach
+                <div class="row justify-content-center align-items-center w-75 my-auto">
+                {!! $posts->links() !!}
+                </div>
             </div>
+        
 @endsection
 
 @section('scripts')
