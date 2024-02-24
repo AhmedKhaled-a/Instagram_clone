@@ -1,0 +1,24 @@
+.followers-container, .followings-container {
+    position: fixed;
+    top: 0;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    background-color: rgba(0, 0, 0, 0.164);
+    z-index: 9999;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.followers-container .followers-list,
+.followings-container .followings-list{
+    background-color: #262626;
+    color: white;
+    border-radius: 20px;
+    padding: 10px 20px;
+}
+
+.followers,.followings{
+    cursor: pointer;
+}
