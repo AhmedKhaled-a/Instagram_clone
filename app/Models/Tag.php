@@ -4,6 +4,8 @@ namespace App\Models;
 use App\Http\Controllers\PostController;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
+use App\Models\Post;
+
 
 class Tag extends Model
 {
@@ -13,7 +15,7 @@ class Tag extends Model
     
     public function posts(){
         return $this->belongsToMany(
-            related: Tag::class,
+            related: Post::class,
             foreignPivotKey: 'tag_id',
             relatedPivotKey: 'post_id'
         ); //, 'tag_text', 'tag_id', 'post_id' Many to many relationship

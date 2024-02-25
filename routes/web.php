@@ -4,6 +4,9 @@ use App\Http\Controllers\LikeController;
 use App\Http\Controllers\PostController;
 use App\Http\Controllers\CommentController;
 use App\Http\Controllers\ProfileController;
+use App\Http\Controllers\LikeController;
+use App\Http\Controllers\TagController;
+use App\Http\Controllers\CommentController;
 
 
 
@@ -60,3 +63,9 @@ require __DIR__.'/auth.php';
 Auth::routes();
 
 Route::get('/home', [App\Http\Controllers\HomeController::class, 'index'])->name('home');
+
+// comments route
+Route::post('/posts/{id}/comments',[CommentController::class,('store')]) ->name('comment.store');
+Route::delete('/posts/{id}/comments', [CommentController::class, 'destroy'])->name('comment.destroy');
+
+Route::get('/tags/{id}',[TagController::class,'show'] )-> name ('tags.show');

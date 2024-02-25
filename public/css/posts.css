@@ -110,8 +110,182 @@ button {
 }
 
    */
-.active {
-    fill:red;
+
+/* Khalil Css */
+.post {
+    width: 40%;
+    margin: auto;
+    margin-bottom: 20px;
+    padding: 20px;
+    border: 1px solid #ccc;
+    border-radius: 10px;
+}
+
+.post-title {
+    margin-bottom: 10px;
+}
+
+.post-image {
+    width: 100%;
+    height: auto;
+    border-radius: 10px;
+}
+
+.like-button {
+    cursor: pointer;
+}
+
+.likes-count {
+    margin-left: 5px;
+}
+
+.comment-form {
+    margin-top: 20px;
+}
+
+.comment {
+background-color: #f0f0f0; 
+border-radius: 10px; 
+padding: 20px; 
+margin-top: 20px; 
+box-shadow: 0 0 10px rgba(0, 0, 0, 0.1); 
+}
+
+
+.comment {
+    margin-bottom: 10px;
+}
+
+.comment-delete-button {
+    margin-left: 5px;
+}
+
+/* Additional CSS for Instagram-like design */
+.post-container {
+    background-color: #fff;
+    border-radius: 10px;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+    padding: 20px;
+    margin-top: 20px;
+    display: flex; /* Use flexbox for layout */
+}
+
+.post-header {
+    display: flex;
+    align-items: center;
+    margin-bottom: 10px;
+}
+
+.post-header img {
+    width: 40px;
+    height: 40px;
+    border-radius: 50%;
+    margin-right: 10px;
+}
+
+.post-header h2 {
+    margin: 0;
+    font-size: 18px;
+    font-weight: bold;
+    color: #333; /* Darker text color for username */
+}
+
+.post-images {
+    width: 50%; /* Set width to 50% */
+    height: 100%; /* Set height to 100% */
+    position: relative; /* Position the user info relative to this container */
+}
+
+.post-images .carousel-inner .carousel-item img {
+    border-radius: 10px;
+    height: 100%; /* Make images fill the height */
+}
+
+.post-caption {
+    font-size: 16px;
+    margin-bottom: 10px;
+    color: #333; /* Darker text color for caption */
+}
+
+.tag {
+    margin-right: 5px;
+    font-size: 14px;
+    color: #3897f0; /* Tag text color */
+    background-color: #f0f0f0; /* Background color for hashtags */
+    padding: 3px 8px;
+    border-radius: 5px;
+}
+
+.comments-container {
+
+    width: 50%; /* Set width to 50% */
+    padding-left: 20px; /* Add some left padding for spacing */
+    position: relative;
+    
+    top:70%;/* Position the user info relative to this container */
+}
+
+.comment {
+    border-bottom: 1px solid #ddd;
+    padding-bottom: 15px;
+    margin-bottom: 15px;
+    color: #333; /* Darker text color for comments */
+}
+
+.comment img {
+    width: 30px;
+    height: 30px;
+    border-radius: 50%;
+    margin-right: 10px;
+}
+
+.comment p {
+    margin: 0;
+    font-size: 16px; 
+}
+
+.comment small {
+    font-size: 12px;
+    color: #999; 
+}
+
+.comment-form {
+    margin-top: 30px;
+}
+
+.comment-form textarea {
+    width: calc(100% - 20px); 
+    border-radius: 5px;
+    border: 1px solid #ddd;
+    padding: 10px;
+    resize: none;
+}
+
+.comment-form button {
+    margin-top: 10px;
+    padding: 8px 20px;
+    background-color: #3897f0;
+    color: #fff;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+}
+
+.user-info {
+    position: absolute;
+    top: 0; 
+    left: 20px;
+    display: flex;
+    align-items: center;
+    padding: 10px;
+    border-radius: 5px;
+}
+
+.user-info img {
+    width: 30px;
+    height: 30px;
+    border-radius: 50%;
+    margin-right: 10px;
 }
   
   

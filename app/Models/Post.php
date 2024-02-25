@@ -5,7 +5,8 @@ use Illuminate\Database\Eloquent\Model;
 use App\Http\Controllers\PostController;
 use App\Http\Controllers\CommentController;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
-
+use Illuminate\Database\Eloquent\Model;
+use App\Models\Tag;
 
 
 class Post extends Model
@@ -33,7 +34,7 @@ class Post extends Model
     public function likes(){
         return $this->hasMany(Like::class);   //one to many relation
     }
-    
+
     public function user(){
         return $this->belongsTo(User::class);
     }
