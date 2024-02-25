@@ -1,8 +1,10 @@
 <?php
 
-use App\Http\Controllers\FollowerController;
-use App\Http\Controllers\ProfileController;
+use App\Mail\testmail;
+use Illuminate\Support\Facades\Mail;
 use Illuminate\Support\Facades\Route;
+use App\Http\Controllers\ProfileController;
+use App\Http\Controllers\FollowerController;
 
 /*
 |--------------------------------------------------------------------------
@@ -17,6 +19,10 @@ use Illuminate\Support\Facades\Route;
 
 Route::get('/', function () {
     return view('welcome');
+});
+Route::get('/send', function () {
+    Mail::to('may.ahmed.kassem@gmail.com')->send( new testmail());
+    return response ('sending');
 });
 
 Route::get('/dashboard', function () {
