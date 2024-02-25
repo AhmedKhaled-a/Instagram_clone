@@ -71,6 +71,29 @@
                 </div>
                 <button id='like' class="like-button" data-post-id="{{ $post->id }}" onclick="toggleLike(this)">Like</button>
             </div>
+            <form action="{{ route('comment.store', $post->id) }}" method="post">
+                @csrf
+                <div class='mb-3'>
+                   <textarea class="fs-6 form-control" name="comment_body" cols="100" rows="2"></textarea> 
+                </div>
+                <div>
+                    <button type="submit" class="btn btn-primary btn-sm">Post comment</button>
+                </div>
+            </form>
+            @foreach($post->comments as $comment )
+            <a href="">{{$post->user->name}}</a>
+            <p>
+                {{$comment->comment_body}}
+                ({{$comment->created_at}})
+
+                <form method="POST" action="{{ route('comment.destroy' ,$comment->id)}}">
+                            @csrf
+                            @method('DELETE')
+                            <input type="submit" value="Delete" class="btn btn-danger">
+                        </form>
+                <hr>
+            </p>
+            @endforeach
         @endforeach
         <meta name="csrf-token" content="{{ csrf_token() }}">
 

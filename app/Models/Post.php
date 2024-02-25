@@ -1,9 +1,12 @@
 <?php
 
 namespace App\Models;
-use App\Http\Controllers\PostController;
-use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
+use App\Http\Controllers\PostController;
+use App\Http\Controllers\CommentController;
+use Illuminate\Database\Eloquent\Factories\HasFactory;
+
+
 
 class Post extends Model
 {
@@ -27,5 +30,8 @@ class Post extends Model
         return $this->hasMany(Like::class);   //one to many relation
     }
     
+    public function user(){
+        return $this->belongsTo(User::class);
+    }
 }
 

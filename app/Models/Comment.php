@@ -3,8 +3,8 @@
 namespace App\Models;
 use Illuminate\Database\Eloquent\Model;
 use App\Http\Controllers\PostController;
+use App\Http\Controllers\CommentController;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
-
 class Comment extends Model
 {
     use HasFactory;
