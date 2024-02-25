@@ -1,0 +1,118 @@
+h1 {
+    margin: 0 auto;
+    margin-top: 5rem;
+    margin-bottom: 2rem;
+    color: red;
+    text-align: center;
+}
+
+.image-preview-container {
+    width: 100%;
+    display: flex;
+    gap: 2px;
+    flex-wrap: wrap;
+    margin: 0 auto;
+    border: 1px solid rgba(0, 0, 0, 0.1);
+    padding: 3rem;
+    border-radius: 20px;
+}
+
+.preview {
+    position: relative;
+    width: 33%;
+}
+
+.image-preview-container img {
+    width:100%;
+    height:22vw;
+    image-rendering: auto;
+    opacity: 1;
+    display: block;
+    transition: .5s ease;
+    backface-visibility: hidden;
+}
+
+.middle {
+    transition: .5s ease;
+    opacity: 0;
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    -ms-transform: translate(-50%, -50%);
+    text-align: center;
+}
+.text {
+    background-color: red;
+    color: white;
+    font-size: 2vw;
+    padding: 1rem 2rem;
+}
+
+  .preview:hover .image {
+    opacity: 0.3;
+}
+  
+  .preview:hover .middle {
+    opacity: 1;
+}
+
+
+.image-preview-container img:hover {
+    opacity: .5;
+
+}
+.image-preview-container input {
+    display: inline;
+}
+
+#imageDelBtn {
+    display :inline;
+    float: right;
+}
+
+.image-preview-container label {
+    display: block;
+    width: 45%;
+    height: 45px;
+    margin-left: 25%;
+    text-align: center;
+    background: #8338ec;
+    color: #fff;
+    font-size: 15px;
+    text-transform: Uppercase;
+    font-weight: 400;
+    border-radius: 5px;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.image {
+    opacity: 1;
+    display: block;
+    width: 100%;
+    height: auto;
+    transition: .5s ease;
+    backface-visibility: hidden;
+}
+
+
+/* Bootstrap Customization */
+.carousel-inner{
+    width:100%;
+    max-height: 20% !important;
+}
+/* 
+button {
+    background-color: red !important;
+}
+
+   */
+.active {
+    fill:red;
+}
+  
+  
+  

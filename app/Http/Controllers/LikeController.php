@@ -6,27 +6,33 @@ use App\Models\Like;
 use App\Models\Post;
 use App\Models\User;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\DB;
+
+
 
 class LikeController extends Controller
 {
-    public function toggleLike(Request $request, $postId)
+    public function toggleLike(Request $request, String $id)
     {
         // Find the authenticated user
         $user = User::findOrFail(1);
     
         // Check if the user has already liked the post
-        $existingLike = Like::where('user_id', $user->id)->where('post_id', $postId)->first();
-    
+        $existingLike = Like::where('user_id', $user->id)->where('post_id', $id)->first();
+        $post = Post::find($id);
         if ($existingLike) {
             // If the user has already liked the post, unlike it
             $existingLike->delete();
+            
+            $post->decrement('likes');
             return response()->json(['message' => 'Post unliked successfully']);
         } else {
             // If the user has not liked the post, like it
             $like = new Like();
             $like->user_id = $user->id;
-            $like->post_id = $postId;
+            $like->post_id = $id;
             $like->save();
+            $post->increment('likes');
             return response()->json(['message' => 'Post liked successfully']);
         }
     }

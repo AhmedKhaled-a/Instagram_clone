@@ -15,8 +15,8 @@ return new class extends Migration
             $table->id();
             $table->string('caption');
             $table->unsignedBigInteger('likes');
-            $table->BigInteger('user_id')->unsigned()->default(1);
-            $table->foreign('user_id')->references('id')->on('users');
+            $table->biginteger('user_id')->unsigned();
+            $table->foreign('user_id')->references('id')->on('users')->onDelete('cascade');
             $table->timestamps();
         });
     }

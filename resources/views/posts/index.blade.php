@@ -1,75 +1,56 @@
-<!-- resources/views/posts/index.blade.php -->
+@extends("layouts.main")
 
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Posts</title>
-    <!-- Add your CSS stylesheets if needed -->
-    <style>
-    body {
-        font-family: Arial, sans-serif;
-        margin: 0;
-        padding: 0;
-        background-color: #f8f9fa;
-    }
+@section("title" , "Posts")
 
-    .container {
-        max-width: 800px;
-        margin: 20px auto;
-        padding: 0 20px;
-    }
+@section("custom-css")
 
-    .card {
-        background-color: #fff;
-        border-radius: 8px;
-        box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
-        margin-bottom: 20px;
-    }
+@endsection
 
-    .card-title {
-        font-size: 1.5rem;
-        margin-bottom: 10px;
-    }
-
-    .card-text {
-        color: #333;
-        margin-bottom: 20px;
-    }
-
-    .badge {
-        background-color: #007bff;
-        color: #fff;
-        border-radius: 4px;
-        padding: 4px 8px;
-        margin-right: 5px;
-    }
-</style>
-
-</head>
-<body>
-    <div class="container">
+@section("content")
         <h1>Posts</h1>
-        
-        @foreach ($posts as $post)
-            <div class="card mb-3">
-                <div class="card-body">
-                    <h2 class="card-title">{{ $post->id }}</h2>
-                    <p class="card-text">{{ $post->caption }}</p>
-                    @foreach($post->images as $image)
-                    <img width="100" height="100" src="{{ asset(str_replace('public', 'storage', $image->img_path)) }}" alt="Post Image">
-                    @endforeach
+            <div class="row gap-3 justify-content-center align-items-center">
+                @foreach ($posts as $post)
+                <div id="{{ $post->id }}" class="post card col-4" style="width:33%; my-auto; height:40vw">
+                    <h5 class="card-title">
+                        <a class="link-dark link-opacity-100-hover link-opacity-50 link-offset-3-hover link-underline  link-underline-opacity-0 link-underline-opacity-100-hover" href="{{ route("posts.show" ,["id" => $post->id]) }}">{{ $post->caption }}</a>
+                    </h5>
+
+                    <img class="card-img-top" src="{{ Storage::disk('public')->url($post->images[0]->img_path) }}" alt="Card image cap">
+                    <div class="card-body">
+                    <div class="row">
+                        <div class="col-3">
+                            @if(in_array($post->id, $likedPostsIDs))
+                                <i onclick="toggleLike(this)" id="{{ $post->id }}" class="fa-solid fa-heart"></i>
+                            @else
+                                <i onclick="toggleLike(this)" id="{{ $post->id }}" class="fa-regular fa-heart"></i>
+                            @endif
+                        </div>
+                        <div class="col-3">
+                            <p class="likesCount-{{ $post->id }}">{{ $post->likes }}</p>
+                        </div>
+                        <!-- {{-- <form method="POST" action="{{ route(posts.destroy ,["id" => $post->id]) }}>
+                            @csrf
+                            @method('DELETE')
+                            <input type="submit" value="Delete" class="btn btn-danger">
+                        </form> --}} -->
+                        <div class="col-3">
+                            <button id="{{ $post->id }}" onclick="deletePost(this)" class="btn btn-danger">Delete</button>
+                        </div>
+                    </div>  
+                    
+                    {{-- Start Tags --}}
                     @if ($post->tags->count() > 0)
                         <div class="mb-2">
-                            <strong>Tags:</strong>
                             @foreach ($post->tags as $tag)
-                                <span class="badge badge-secondary">{{ $tag->tag_text }}</span>
+                            <span class="badge badge-light text-light bg-dark">{{ $tag->tag_text }}</span>
                             @endforeach
                         </div>
                     @endif
+                {{-- End Tags --}}
                 </div>
-                <button id='like' class="like-button" data-post-id="{{ $post->id }}" onclick="toggleLike(this)">Like</button>
+                </div>
+            
+                @endforeach
             </div>
             <form action="{{ route('comment.store', $post->id) }}" method="post">
                 @csrf
@@ -97,34 +78,6 @@
         @endforeach
         <meta name="csrf-token" content="{{ csrf_token() }}">
 
-    </div>
-</body>
-</html>
-
-<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
-<script>
-    function toggleLike(button) {
-        var postId = button.getAttribute('data-post-id');
-        console.log(postId);
-        const baseUrl='http://localhost:8000';
-        var url = baseUrl+'/api'+'/posts/' + postId + '/toggle-like';
-
-        // Make AJAX request
-        fetch(url, {
-            method: 'put',
-            headers: {
-                'Content-Type': 'application/json',
-                'X-CSRF-TOKEN': '{{ csrf_token() }}' // Add CSRF token if using CSRF protection
-            }
-        })
-        .then(response => {
-            if (response.ok) {
-                console.log('Toggle like successful');
-                // Update UI or handle response as needed
-            } 
-        })
-        .catch(error => {
-            console.error('Toggle like error:', error);
-        });
-    }
-</script>
+@section('scripts')
+<script src="{{ asset('js/posts.index.js') }}"></script>
+@endsection
