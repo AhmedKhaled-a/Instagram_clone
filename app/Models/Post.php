@@ -4,6 +4,8 @@ namespace App\Models;
 use App\Http\Controllers\PostController;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
+use App\Models\Tag;
+
 
 class Post extends Model
 {
