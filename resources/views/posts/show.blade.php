@@ -143,11 +143,11 @@ No post with this id
 
 <div class="container post-container">
     <div class="post-images">
-        <div id="carouselExampleIndicators" class="carousel slide " data-bs-ride="carousel">
+        <div id="carouselExampleIndicators" class="carousel slide" data-bs-ride="carousel">
             <div class="carousel-inner">
-                @foreach($post->images as $index => $image)
+                @foreach($post->images as $index=>$image)
                 <div class="carousel-item @if($index === 0) active @endif">
-                    <img src="{{ Storage::disk('public')->url($image->img_path) }}" class="d-block w-100" alt="Post image">
+                    <img src="{{Storage::disk('public')->url($image->img_path) }}" class="d-block w-100" alt="Post image">
                 </div>
                 @endforeach
             </div>
@@ -156,12 +156,12 @@ No post with this id
 
     <div class="comments-container">
         <div class="post-header">
-            <img src="imgs/p-5.jpg" alt="User Image">
+            <img src="{{asset('imgs/p-5.jpg')}}" alt="User Image">
             <a href="" class="text-dark text-decoration-none mb-3 text-lg">{{ $post->user->name }} </a>
         </div>
 
         <div class="post-caption">
-            <p>{{ $post->caption }}</p>
+            <p>{{$post->caption }}</p>
         </div>
 
         <h3>Comments</h3>
@@ -173,12 +173,12 @@ No post with this id
           </div>
           <div class="d-flex justify-content-between">
           <div>
-              <p>{{ $comment->comment_body }}</p>
+              <p>{{$comment->comment_body }}</p>
             <small>{{ $comment->created_at->diffForHumans() }}</small>
             </div>
             <div>
             <form method="POST" action="{{ route('comment.destroy' ,$comment->id) }}">
-              @csrf
+            @csrf
             @method('DELETE')
               <button type="submit" class="btn btn-danger btn-sm comment-delete-button">Delete</button>
             </form>
