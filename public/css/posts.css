@@ -110,8 +110,54 @@ button {
 }
 
    */
-.active {
-    fill:red;
+
+/* Khalil Css */
+.post {
+    width: 40%;
+    margin: auto;
+    margin-bottom: 20px;
+    padding: 20px;
+    border: 1px solid #ccc;
+    border-radius: 10px;
+}
+
+.post-title {
+    margin-bottom: 10px;
+}
+
+.post-image {
+    width: 100%;
+    height: auto;
+    border-radius: 10px;
+}
+
+.like-button {
+    cursor: pointer;
+}
+
+.likes-count {
+    margin-left: 5px;
+}
+
+.comment-form {
+    margin-top: 20px;
+}
+
+.comment {
+background-color: #f0f0f0; 
+border-radius: 10px; 
+padding: 20px; 
+margin-top: 20px; 
+box-shadow: 0 0 10px rgba(0, 0, 0, 0.1); 
+}
+
+
+.comment {
+    margin-bottom: 10px;
+}
+
+.comment-delete-button {
+    margin-left: 5px;
 }
   
   

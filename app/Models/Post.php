@@ -30,5 +30,9 @@ class Post extends Model
     public function likes(){
         return $this->hasMany(Like::class);   //one to many relation
     }
+
+    public function user(){
+        return $this->belongsTo(User::class);
+    }
 }
 

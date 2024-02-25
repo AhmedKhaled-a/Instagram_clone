@@ -50,51 +50,10 @@ class User extends Authenticatable implements MustVerifyEmail
         'password' => 'hashed',
     ];
 
-
-    // follower_id = our id
-    // user_id = followed users id
-
-    // users that the current user follows function
-    public function following(){
-        return $this->belongsToMany(User::class,'follower_user', 'follower_id', 'user_id')->withTimestamps();
+    public function posts(){
+        return $this->hasMany(Post::class);
     }
-    // users who follow current user function
-    public function followers(){
-        return $this->belongsToMany(User::class,'follower_user', 'user_id', 'follower_id')->withTimestamps();
-    }
-
-    // check if we follow a user
-    public function follows(User $user){
-        return $this->following()->where('user_id',$user->id)->exists();
-    }
-
-
-    public function blockedUsers()
-    {
-        return $this->belongsToMany(User::class, 'user_blocks', 'user_id', 'blocked_user_id')->withTimestamps();
-    }
-
-    public function blockingUsers()
-    {
-        return $this->belongsToMany(User::class, 'user_blocks', 'blocked_user_id', 'user_id')->withTimestamps();
-    }
-
-    public function isBlocking(User $user = null) {
-        if ($user) {
-            return $this->blockedUsers()->where('blocked_user_id', $user->id)->exists();
-        }
-        return false;
-    }
-
-
-    public function getAvatarUrl() {
-        if ($this->avatar) {
-            return url('/storage/'.$this->avatar);
-        }
-
-        return  asset('img/default_user_img.png');
-    }
-
+    
     public function likes(){
         return $this->hasMany(Like::class);
     }
