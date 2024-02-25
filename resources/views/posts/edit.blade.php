@@ -3,7 +3,7 @@
 
 @section("title" , "edit")
 @section("custom-css")
-    <link rel="stylesheet" href="{{ asset("css/edit.css")}}">
+    <link rel="stylesheet" href="{{ asset('css/edit.css')}}">
 @endsection
 
 @section("content")
@@ -12,7 +12,7 @@
 @else
 <h1>Editing Post {{ $post->id }} </h1>
 <div class="border border-3 border-radius-50">
-    <form method="post" action={{ route("posts.update" ,["id" => $post->id]) }} enctype="multipart/form-data"> 
+    <form method="post" action="{{ route('posts.update', $post->id) }}" enctype="multipart/form-data"> 
             @csrf
             @method('PUT')
             <div class="mb-3">
@@ -22,7 +22,7 @@
             <div class="mb-3">
                 <label for="caption" class="form-label">Caption</label>
                 <div class="container">
-                    <input type="text" value="{{ $post->caption != "" ? $post->caption : old("caption")  }}" name="caption" id="caption" class="form-control">  
+                    <input type="text" value="{{ $post->caption != '' ? $post->caption : old('caption')  }}" name="caption" id="caption" class="form-control">  
                 </div>         
             </div>
             <button type="submit" class="btn btn-primary">Update</button>
@@ -45,5 +45,5 @@
 
 @section("scripts")
 @parent
-    <script src="{{ asset("js/posts.create.update.js") }}"></script>
+    <script src="{{ asset('js/posts.create.update.js') }}"></script>
 @endsection

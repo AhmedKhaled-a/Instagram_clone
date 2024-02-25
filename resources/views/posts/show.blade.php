@@ -3,7 +3,7 @@
 
 @section("title" , "Post " . $post->id)
 @section("custom-css")
-    <link rel="stylesheet" href="{{ asset("css/posts.css")}}">
+    <link rel="stylesheet" href="{{ asset('css/posts.css')}}">
 @endsection
 
 @section("content")
@@ -102,7 +102,7 @@
 
 @section("title" , "Post " . $post->id)
 @section("custom-css")
-    <link rel="stylesheet" href="{{ asset("css/posts.css")}}">
+    <link rel="stylesheet" href="{{ asset('css/posts.css')}}">
 @endsection
 
 @section("content")
