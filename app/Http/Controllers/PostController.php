@@ -68,7 +68,7 @@ class PostController extends Controller
     {
         // TODO: get authenticatede user
 
-        $user_id = Auth::id();
+        // $user_id = Auth::id();
 
         // Validate data
         $data = $request->validate([ 
@@ -79,7 +79,7 @@ class PostController extends Controller
         ]);
         
             
-    
+    $user=User::findOrFail(1);
         // Create new post
         $extractedTags = PostController::getTags($data['caption']);
         $caption = trim($extractedTags[0]);
@@ -87,7 +87,7 @@ class PostController extends Controller
 
         $post = Post::create([
             'caption' => $caption,
-            'user_id' => $user_id,
+            'user_id' => $user->id,
         ]);
     
         $imagePath = '';

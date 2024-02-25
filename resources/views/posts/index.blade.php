@@ -15,7 +15,7 @@
                         <a class="link-dark link-opacity-100-hover link-opacity-50 link-offset-3-hover link-underline  link-underline-opacity-0 link-underline-opacity-100-hover" href="{{ route("posts.show" ,["id" => $post->id]) }}">{{ $post->caption }}</a>
                     </h5>
 
-                    <img class="card-img-top" src="{{ Storage::disk('public')->url($post->images[0]->img_path) }}" alt="Card image cap">
+                    <img class="card-img-top" src="{{ Storage::disk('public')->url($post->images[]->img_path) }}" alt="Card image cap">
                     <div class="card-body">
                     <div class="row">
                         <div class="col-3">
@@ -74,7 +74,6 @@
                         </form>
                 <hr>
             </p>
-            @endforeach
         @endforeach
         <meta name="csrf-token" content="{{ csrf_token() }}">
 

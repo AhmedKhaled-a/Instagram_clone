@@ -1,14 +1,14 @@
 @extends("layouts.main")
 @section("title" , "create")
 @section("custom-css")
-    <link rel="stylesheet" href="{{ asset("css/posts.css")}}">
+    <link rel="stylesheet" href="{{ asset('css/posts.css')}}">
 @endsection
 
 @section("content")
 <h1>Create Post </h1>
 
 <div class="border border-3 border-radius-50 p-5">
-    <form method="post" action={{ route("posts.store") }} enctype="multipart/form-data"> 
+    <form method="post" action="{{ route('posts.store') }}" enctype="multipart/form-data"> 
             @csrf
             @method('POST')
             <div class="mb-3 p-5">
@@ -18,7 +18,7 @@
             <div class="mb-3">
                 <label for="caption" class="form-label">Caption</label>
                 <div class="container">
-                    <input type="text" value="{{  old("caption")  }}" name="caption" id="caption" class="form-control">  
+                    <input type="text" value="{{  old('caption')  }}" name="caption" id="caption" class="form-control">  
                 </div>         
             </div>
             <button type="submit" class="btn btn-primary">Add Post</button>
