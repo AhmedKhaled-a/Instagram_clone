@@ -23,6 +23,8 @@ class PostController extends Controller
         $user = Auth::user();
 
         $posts = Post::with(['tags', 'comments', 'images'])->get();
+        $posts = Post::paginate(3);
+
 
 
         $likedPostsIDs = [];
