@@ -3,6 +3,7 @@ namespace App\Http\Controllers;
 use App\Models\Tag;
 use App\Models\Post;
 use App\Models\User;
+use App\Models\Like;
 use App\Models\Comment;
 use App\Models\Post_image;
 use Illuminate\Http\Request;
@@ -25,19 +26,16 @@ class PostController extends Controller
         // Todo: Change user id to Auth
         $user = Auth::user();
 
-        $posts = Post::with(['tags', 'comments', 'images'])->paginate(6);
+        $posts = Post::with(['tags', 'comments', 'images'])->paginate(5);
 
 
         $likedPostsIDs = [];
         
-            $result = Post::join('likes', 'posts.id', '=', 'likes.post_id')
-            ->join('users', 'likes.user_id', '=', 'users.id')->get();
-            // dd($result);
-            
+            $result = Like::join('posts', 'posts.id', '=', 'likes.post_id')
+            ->join('users', 'likes.user_id', '=', 'users.id')->where('users.id', '=', $user->id)->get();            
         
-        foreach($result as $likedPost) {
-            // dd($likedPost);
-            array_push($likedPostsIDs, $likedPost->post_id);
+        foreach($result as $like) {
+            array_push($likedPostsIDs, $like->post_id);
         }
         // dd($result);
         // dd($likedPostsIDs);       
