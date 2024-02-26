@@ -1,0 +1,7 @@
+pagination > .page-item {
+    background: rgba(33, 34, 36, 0.1) !important;
+}
+
+.page-item.active  {
+    background: rgba(67, 71, 80, 0.1) !important;
+}

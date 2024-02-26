@@ -2,8 +2,6 @@
 @import 'https://unpkg.com/open-props/normalize.dark.min.css'
   layer(demo.support);
 
-@import url('https://fonts.googleapis.com/css2?family=Inter:wght@200..900&display=swap');
-
 @layer demo.base {
   :root {
     font-family: 'Inter', sans-serif;
@@ -11,7 +9,7 @@
     --size: min(470px, 100dvw);
   }
   body {
-    display: grid;
+    /* display: grid; */
     place-content: center;
     background-color: black;
     padding-block: var(--size-fluid-3);
@@ -115,7 +113,7 @@
       }
     }
 
-    .pagination {
+    .pag {
       position: absolute;
       z-index: 1;
       inset-inline: 0;
@@ -185,7 +183,7 @@
     }
   }
 
-  .pagination > button {
+  .pag > button {
     /* every dot use the scale animation */
     animation: scale linear both;
   }

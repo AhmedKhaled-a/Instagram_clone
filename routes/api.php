@@ -27,7 +27,10 @@ Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
 });
 
 // like / unlike
-Route::post('/posts/{id}/toggle-like', [LikeController::class, 'toggleLike'])->name('posts.toggle-like');
+Route::post('/posts/likes/{id}', [LikeController::class, 'toggleLike']);
+
+Route::get('/posts/likes/{id}', [PostController::class, 'likes']);
+
 
 // delete image
 Route::delete('/images/{id}', [ImageController::class, 'destroy'])
@@ -36,4 +39,3 @@ Route::delete('/images/{id}', [ImageController::class, 'destroy'])
 // delete post
 Route::delete('/posts/{id}', [PostController::class, 'destroy']);
 
-Route::get('/posts/{id}/likes', [PostController::class, 'likes'] );
