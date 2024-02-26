@@ -16,15 +16,15 @@ class CommentController extends Controller
 
         $data= $request->validate([
             'comment_body' => 'required|string|max:255',
-            'post_id'=>'exists:posts,id',
-            'user_id'=>'exists:users,id'
+            'id'=>'exists:posts,id',
         ]);
+
         // $user = User::findOrFail(1);
         $user = Auth::user();
-        $post=Post::findOrFail($id);
+        $post = Post::findOrFail($id);
         $comment= new Comment();
-        $comment->user_id=$user->id;
-        $comment->post_id=$post->id;
+        $comment->user_id = $user->id;
+        $comment->post_id = $post->id;
         $comment->comment_body= $data['comment_body'];
             // $comment->user_id=auth()->user()->id;
         $comment->save();

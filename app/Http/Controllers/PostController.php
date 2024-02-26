@@ -103,7 +103,7 @@ class PostController extends Controller
         foreach ($imageFiles as $imageFile) {    
             $image_name = Str::random(18) . "." . $imageFile->extension();
             $img = $manager->read($imageFile);
-            $img = $img->resize(400, 400);
+            $img = $img->resize(800, 800);
             $img = $img->toJpeg(80)->save(storage_path("app/public/posts/" . $image_name));
             // Todo: Add multiple post images
             $imagePath = "posts/" . $image_name;

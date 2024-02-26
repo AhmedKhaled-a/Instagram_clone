@@ -26,7 +26,7 @@
             <div class="carousel-inner">
                 @foreach ($post->images as $index => $image)
                 <div class="carousel-item @if ($index === 0) active @endif">
-                    <img class="my-auto d-block w-75 post-image" style="height: 200px;" src="{{ Storage::disk('public')->url($image->img_path) }}" alt="Post image">
+                    <img class="my-auto d-block w-75 post-image" src="{{ Storage::disk('public')->url($image->img_path) }}" alt="Post image">
                 </div>
                 @endforeach
             </div>
@@ -82,7 +82,7 @@
                 <div class="comment">
                 <div class="d-flex mb-3">
                    <img src="{{asset('imgs/p-5.jpg')}}" alt="" class='w-10 rounded-circle'>
-                   <a href="" class="text-dark text-decoration-none text-lg">{{ $post->user->name }} </a>
+                   <a href="" class="text-dark text-decoration-none text-lg"> {{ $comment->user->name }} </a>
                   </div>
                   <div class="d-flex justify-content-between">
                   <div>
