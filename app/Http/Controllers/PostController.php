@@ -4,6 +4,7 @@ use App\Models\Tag;
 use App\Models\Post;
 use App\Models\User;
 use App\Models\Comment;
+use App\Models\Like;
 use App\Models\Post_image;
 use Illuminate\Http\Request;
 use Illuminate\Http\Response;
@@ -25,14 +26,13 @@ class PostController extends Controller
         // Todo: Change user id to Auth
         $user = Auth::user();
 
-        $posts = Post::with(['tags', 'comments', 'images'])->paginate(6);
+        $posts = Post::with(['tags', 'comments', 'images', 'user'])->paginate(6);
 
 
         $likedPostsIDs = [];
         
-            $result = Post::join('likes', 'posts.id', '=', 'likes.post_id')
-            ->join('users', 'likes.user_id', '=', 'users.id')->get();
-            // dd($result);
+        $result = Like::join('posts', 'posts.id', '=', 'likes.post_id')
+        ->join('users', 'likes.user_id', '=', 'users.id')->where('users.id', '=', $user->id)->get();
             
         
         foreach($result as $likedPost) {
@@ -260,6 +260,32 @@ class PostController extends Controller
     public function likes(string $id) {
         $likes = Post::find($id)->likes;
         return response()->json($likes, 200);
+    }
+
+    public function toggleLike(string $id, Request $request) 
+    {
+        $data = json_decode($request->getContent(), true);
+        // dd($data);
+        $user = User::find($data['userId']);
+        // dd($user);
+        // Check if the user has already liked the post
+        $existingLike = Like::where('user_id', $user->id)->where('post_id', $id)->first();
+        $post = Post::find($id);
+        if ($existingLike) {
+            // If the user has already liked the post, unlike it
+            $existingLike->delete();
+            
+            $post->decrement('likes');
+            return response()->json(['message' => 'Post unliked successfully']);
+        } else {
+            // If the user has not liked the post, like it
+            $like = new Like();
+            $like->user_id = $user->id;
+            $like->post_id = $id;
+            $like->save();
+            $post->increment('likes');
+            return response()->json(['message' => 'Post liked successfully']);
+        }
     }
 
     public static function getTags($str) {

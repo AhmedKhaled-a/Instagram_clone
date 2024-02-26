@@ -8,10 +8,10 @@
   :root {
     font-family: 'Inter', sans-serif;
     --sm-font-size: 0.875rem;
-    --size: min(470px, 100dvw);
+    --size: min(470px, 400dvw);
   }
   body {
-    display: grid;
+    /* display: grid; */
     place-content: center;
     background-color: black;
     padding-block: var(--size-fluid-3);
