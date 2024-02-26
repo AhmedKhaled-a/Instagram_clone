@@ -11,6 +11,7 @@ use Illuminate\Support\Facades\Auth;
 
 
 
+
 class LikeController extends Controller
 {
     // public function toggleLike(Request $request, String $id)
@@ -46,29 +47,7 @@ class LikeController extends Controller
 
     public function toggleLike(Request $request, String $id)
     {
-        // Find the authenticated user
-        // $user = User::findOrFail(1);
-        $user_id = Auth::id();
-        // Check if the user has already liked the post
-        $existingLike = Like::where('user_id', $user_id)->where('post_id', $id)->first();
-
-        $post = Post::findOrFail($id);
-        $user = User::findOrFail($user_id);
-        if ($existingLike) {
-            // If the user has already liked the post, unlike it
-            $existingLike->delete();
-            
-            $post->decrement('likes');
-            return response()->json(['message' => 'Post unliked successfully']);
-        } else {
-            // If the user has not liked the post, like it
-            $like = new Like();
-            $like->user_id = $user->id;
-            $like->post_id = $id;
-            $like->save();
-            $post->increment('likes');
-            return response()->json(['message' => 'Post liked successfully']);
-        }
+        
     }
 }               
 
