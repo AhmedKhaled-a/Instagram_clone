@@ -27,11 +27,11 @@ public function store($id,Request $request){
   return redirect()->route('posts.index');
 }
 
-public function destroy($id){
-
-  $comment=Comment::findOrFail($id);
+public function destroy($id) {
+  $comment = Comment::findOrFail($id);
+  $postId = $comment->post->id; 
   $comment->delete();
-  return redirect()->route('posts.index');
-
+  return redirect()->route('posts.show', ['id' => $postId]);
 }
+
 }

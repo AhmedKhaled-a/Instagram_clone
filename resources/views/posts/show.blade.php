@@ -1,18 +1,57 @@
 @extends("layouts.main")
 
+@section("title", "Post " . $post->id)
 
-@section("title" , "Post " . $post->id)
 @section("custom-css")
     <link rel="stylesheet" href="{{ asset('css/posts.css')}}">
+    <style>
+    .comments-container {
+        max-height: 400px; /* Adjust as needed */
+        overflow-y: auto; /* Enable vertical scrolling */
+        scrollbar-width: none; /* Hide scrollbar for Firefox */
+    }
+
+    .comments-container::-webkit-scrollbar {
+        display: none; /* Hide scrollbar for Chrome, Safari, and Opera */
+    }
+    #comment_body {
+        position:fixed;
+        width:40%;
+        top:450px;
+        right:138px
+    }
+    #postButton{
+        position:fixed;
+        bottom:201px;
+        right:140px;
+        font-weight:bold;
+        z-index: 33;
+    }
+    #comment_body:focus {
+        outline: none;
+        box-shadow: 0 1px 6px 0 rgba(0, 0, 0, 0.5);
+        border-radius: 0.5rem;    
+    }
+    #btn{
+        position: absolute;
+        right:50px;
+        top:0px
+    }
+    
+    </style>
 @endsection
+
 
 @section("content")
 
 @if ($post == '') 
-No post with this id
+    No post with this id
 @else
 
 <div class="container post-container">
+    <!-- Button to go back to the index page -->
+    <a id="btn" href="{{ route('posts.index') }}" class="btn btn-secondary h-9 py-2 mt-3">X</a>
+
     <div class="post-images">
         <div id="carouselExampleIndicators" class="carousel slide " data-bs-ride="carousel">
             <div class="carousel-inner">
@@ -25,7 +64,17 @@ No post with this id
         </div>
     </div>
 
-    <div class="comments-container">
+    <div class="comments-container" style="max-height: 400px; overflow-y: auto;">
+        <div class="comment-form mt-3">
+            <form id="commentForm" action="{{ route('comment.store', $post->id) }}" method="post">
+                @csrf
+                <div class="input-group">
+                    <textarea class="form-control" name="comment_body" id="comment_body" rows="1" placeholder="Add a comment..."></textarea>
+                    <button type="submit" id="postButton" class="bg-transparent text-primary mt-2" style="display: none">Post</button>
+                </div>
+            </form>
+        </div>
+
         <div class="post-header">
             <img src="{{ asset('avatar/avatar.jpg') }}" alt="User Image">
             <a href="" class="text-dark text-decoration-none mb-3 text-lg">{{ $post->user->name }} </a>
@@ -35,145 +84,140 @@ No post with this id
             <p>{{ $post->caption }}</p>
         </div>
 
-        <h3>Comments</h3>
-        @foreach($post->comments as $comment)
+        <h6 class="text-dark">Comments</h6>
+        @foreach($post->comments->take(4) as $comment)
         <div class="comment">
-        <div class="d-flex mb-3">
-           <img src="{{ asset('avatar/avatar.jpg') }}" alt="" class='w-10 rounded-circle'>
-           <a href="" class="text-dark text-decoration-none text-lg">{{ $post->user->name }} </a>
-          </div>
-          <div class="d-flex justify-content-between">
-          <div>
-              <p>{{ $comment->comment_body }}</p>
-            <small>{{ $comment->created_at->diffForHumans() }}</small>
+            <div class="d-flex mb-3">
+                <img src="{{ asset('avatar/avatar.jpg') }}" alt="" class='w-10 rounded-circle'>
+                <a href="" class="text-dark text-decoration-none text-lg">{{ $post->user->name }} </a>
             </div>
-            <div>
-            <form method="POST" action="{{ route('comment.destroy' ,$comment->id) }}">
-              @csrf
-            @method('DELETE')
-              <button type="submit" class="btn btn-danger btn-sm comment-delete-button">Delete</button>
-            </form>
-            </div>
+            <div class="d-flex justify-content-between">
+                <div>
+                    <p>{{ $comment->comment_body }}</p>
+                    <small>{{ $comment->created_at->diffForHumans() }}</small>
+                </div>
+                <div>
+                    <form method="POST" action="{{ route('comment.destroy' ,$comment->id) }}">
+                        @csrf
+                        @method('DELETE')
+                        <button type="submit" class="btn btn-danger btn-sm comment-delete-button">Delete</button>
+                    </form>
+                </div>
             </div>
         </div>
         @endforeach
 
-        <div class="comment-form">
-            <form action="{{ route('comment.store', $post->id) }}" method="post">
-                @csrf
-                <textarea class="text-dark" name="comment_body" rows="3" placeholder="Add a comment..."></textarea>
-                <button type="submit">Post</button>
-            </form>
-        </div>
-    </div>
-</div>
+        @if($post->comments->count() > 4)
+        <button class="btn btn-primary mt-3" onclick="showMoreComments()">Show More Comments</button>
+        @endif
 
-@endif
-
-@endsection
-
-@section("scripts")
-<script src="https://code.jquery.com/jquery-3.2.1.slim.min.js" integrity="sha384-KJ3o2DKtIkvYIK3UENzmM7KCkRr/rE9/Qpg6aAZGJwFDMVNA/GpGFF93hXpG5KkN" crossorigin="anonymous"></script>
-<script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.9/umd/popper.min.js" integrity="sha384-ApNbgh9B+Y1QKtv3Rn7W3mgPxhU9K/ScQsAP7hUibX39j7fakFPskvXusvfa0b4Q" crossorigin="anonymous"></script>
-@parent
-
-@endsection
-
-@extends("layouts.main")
-
-
-@section("title" , "Post " . $post->id)
-@section("custom-css")
-    <link rel="stylesheet" href="{{ asset('css/posts.css')}}">
-@endsection
-
-@section("content")
-
-@if ($post == '') 
-    No post with this id
-@else
-
-<div class="p-5 container row justify-content-center align-items-center">
-    {{-- <div id="carouselExampleIndicators" class="carousel slide" data-bs-ride="carousel">
-        <div class="carousel-indicators">
-          <button type="button" data-bs-target="#carouselExampleIndicators" data-bs-slide-to="0" class="active" aria-current="true" aria-label="Slide 1"></button>
-          <button type="button" data-bs-target="#carouselExampleIndicators" data-bs-slide-to="1" aria-label="Slide 2"></button>
-          <button type="button" data-bs-target="#carouselExampleIndicators" data-bs-slide-to="2" aria-label="Slide 3"></button>
-        </div>
-        <div class="carousel-inner">
-          <div class="carousel-item active">
-            <img src="..." class="d-block w-100" alt="...">
-          </div>
-          <div class="carousel-item">
-            <img src="..." class="d-block w-100" alt="...">
-          </div>
-          <div class="carousel-item">
-            <img src="..." class="d-block w-100" alt="...">
-          </div>
-        </div>
-        <button class="carousel-control-prev" type="button" data-bs-target="#carouselExampleIndicators" data-bs-slide="prev">
-          <span class="carousel-control-prev-icon" aria-hidden="true"></span>
-          <span class="visually-hidden">Previous</span>
-        </button>
-        <button class="carousel-control-next" type="button" data-bs-target="#carouselExampleIndicators" data-bs-slide="next">
-          <span class="carousel-control-next-icon" aria-hidden="true"></span>
-          <span class="visually-hidden">Next</span>
-        </button>
-      </div> --}}
-
-      
-    {{-- Slider --}}
-    <div id="carouselExampleIndicators" class="carousel slide col-12  w-75" data-bs-ride="carousel">
-        <div class="carousel-indicators">
-            <button type="button" data-bs-target="#carouselExampleIndicators" data-bs-slide-to="0" class="active" aria-current="true"></button>
-            @for($i = 1; $i < sizeof($post->images); $i++)
-                <button type="button" data-bs-target="#carouselExampleIndicators" data-bs-slide-to="{{ $i }}" aria-label="Slide 3"></button>
-            @endfor
-        </div>      
-
-        <div class="carousel-inner">
-            <div class="carousel-item active w-100">
-                <img class="d-block w-100" style="height: 32em" src="{{ Storage::disk('public')->url($post->images[0]->img_path) }}" alt="Post image">
-            </div>
-            @foreach( $post->images as $image)
-                @if ($loop->first) @continue @endif
-                <div class="carousel-item w-100">
-                    <img class="d-block w-100" style="height: 32em" src="{{ Storage::disk('public')->url($image->img_path) }}" alt="Post image">
+        <div class="remaining-comments" style="display: none;">
+            @foreach($post->comments->slice(4) as $comment)
+            <div class="comment">
+                <div class="d-flex mb-3">
+                    <img src="{{ asset('avatar/avatar.jpg') }}" alt="" class='w-10 rounded-circle'>
+                    <a href="" class="text-dark text-decoration-none text-lg">{{ $post->user->name }} </a>
                 </div>
+                <div class="d-flex justify-content-between">
+                    <div>
+                        <p>{{ $comment->comment_body }}</p>
+                        <small>{{ $comment->created_at->diffForHumans() }}</small>
+                    </div>
+                    <div>
+                        <form method="POST" action="{{ route('comment.destroy' ,$comment->id) }}">
+                         @csrf
+                         @method('DELETE')
+                        <button type="submit" class="btn btn-danger btn-sm comment-delete-button">Delete</button>
+                       </form>
+                     </div>
+                </div>
+            </div>
             @endforeach
         </div>
-
-        <button class="carousel-control-prev" type="button" data-bs-target="#carouselExampleIndicators" data-bs-slide="prev">
-            <span class="carousel-control-prev-icon" aria-hidden="true"></span>
-            <span class="visually-hidden">Previous</span>
-          </button>
-          <button class="carousel-control-next" type="button" data-bs-target="#carouselExampleIndicators" data-bs-slide="next">
-            <span class="carousel-control-next-icon" aria-hidden="true"></span>
-            <span class="visually-hidden">Next</span>
-        </button>
     </div>
+
 </div>
-    {{-- End Slider --}}
 
-    <p>{{ $post->caption }}</p>    
-    {{-- Start Tags --}}
-    @if ($post->tags->count() > 0)
-    <div class="mb-2">
-        <strong>Tags:</strong>
-        @foreach ($post->tags as $tag)
-        <span class="badge badge-light text-light bg-dark">{{ $tag->tag_text }}</span>
-        @endforeach
-    </div>
-    @endif
-    {{-- End Tags --}}
 @endif
 
 @endsection
 
 @section("scripts")
-<script src="https://code.jquery.com/jquery-3.2.1.slim.min.js" integrity="sha384-KJ3o2DKtIkvYIK3UENzmM7KCkRr/rE9/Qpg6aAZGJwFDMVNA/GpGFF93hXpG5KkN" crossorigin="anonymous"></script>
-<script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.9/umd/popper.min.js" integrity="sha384-ApNbgh9B+Y1QKtv3Rn7W3mgPxhU9K/ScQsAP7hUibX39j7fakFPskvXusvfa0b4Q" crossorigin="anonymous"></script>
-<script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js" integrity="sha384-JZR6Spejh4U02d8jOt6vLEHfe/JQGiRRSQQxSfFWpi1MquVdAyjUar5+76PVCmYl" crossorigin="anonymous"></script>
-@parent
+<script>
+    function showMoreComments() {
+        document.querySelector('.remaining-comments').style.display = 'block';
+        document.querySelector('.btn-primary').style.display = 'none';
+    }
 
+    // Function to toggle the visibility of the post button based on textarea content
+    document.getElementById('comment_body').addEventListener('input', function() {
+        let postButton = document.getElementById('postButton');
+        if (this.value.trim() !== '') {
+            postButton.style.display = 'inline-block';
+        } else {
+            postButton.style.display = 'none';
+        }
+    });
+
+document.getElementById('commentForm').addEventListener('submit', function(event) {
+    event.preventDefault();
+    let form = event.target;
+    let formData = new FormData(form);
+    fetch(form.action, {
+        method: 'POST',
+        body: formData,
+        headers: {
+            'X-CSRF-TOKEN': '{{ csrf_token() }}'
+        }
+    })
+    .then(response => response.json())
+    .then(data => {
+        if (data.success) {
+            // Add the new comment to the comments container
+            let commentContainer = document.querySelector('.comments-container');
+            let newCommentHTML = `
+                <div class="comment">
+                    <div class="d-flex mb-3">
+                        <img src="{{ asset('avatar/avatar.jpg') }}" alt="" class='w-10 rounded-circle'>
+                        <a href="" class="text-dark text-decoration-none text-lg">${data.comment.user.name}</a>
+                    </div>
+                    <div class="d-flex justify-content-between">
+                        <div>
+                            <p>${data.comment.comment_body}</p>
+                            <small>${data.comment.created_at}</small>
+                        </div>
+                        <div>
+                            <form method="POST" action="{{ route('comment.destroy', $comment->id) }}">
+                                @csrf
+                                @method('DELETE')
+                                <button type="submit" class="btn btn-danger btn-sm comment-delete-button">Delete</button>
+                            </form>
+                        </div>
+                    </div>
+                </div>
+            `;
+            commentContainer.insertAdjacentHTML('beforeend', newCommentHTML);
+
+            // Clear the comment textarea and hide the post button
+            document.getElementById('comment_body').value = '';
+            document.getElementById('postButton').style.display = 'none';
+        } else {
+            console.error(data.message); // Log any error messages returned from the server
+        }
+        document.getElementById('comment_body').addEventListener('keydown', function(event) {
+    // Check if the enter key was pressed (keyCode 13) and not in combination with shift key (to allow multiline)
+    if (event.keyCode === 13 && !event.shiftKey) {
+        // Prevent the default behavior of the enter key
+        event.preventDefault();
+        // Trigger a submit event on the form
+        document.getElementById('commentForm').submit();
+    }
+});
+
+    })
+    .catch(error => console.error('Error:', error));
+});
+
+    
+</script>
 @endsection

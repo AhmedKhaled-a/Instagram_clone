@@ -5,7 +5,6 @@ use Illuminate\Database\Eloquent\Model;
 use App\Http\Controllers\PostController;
 use App\Http\Controllers\CommentController;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
-use Illuminate\Database\Eloquent\Model;
 use App\Models\Tag;
 
 

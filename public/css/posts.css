@@ -127,7 +127,7 @@ button {
 
 .post-image {
     width: 100%;
-    height: auto;
+    height: 100%;
     border-radius: 10px;
 }
 
@@ -167,20 +167,21 @@ box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
     box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
     padding: 20px;
     margin-top: 20px;
-    display: flex; /* Use flexbox for layout */
+    display: flex; /* Use flexbox for layout */ 
+    height: 70vh;    
+
 }
 
 .post-header {
     display: flex;
     align-items: center;
-    margin-bottom: 10px;
 }
 
 .post-header img {
     width: 40px;
     height: 40px;
     border-radius: 50%;
-    margin-right: 10px;
+
 }
 
 .post-header h2 {
@@ -193,12 +194,12 @@ box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
 .post-images {
     width: 50%; /* Set width to 50% */
     height: 100%; /* Set height to 100% */
-    position: relative; /* Position the user info relative to this container */
 }
 
 .post-images .carousel-inner .carousel-item img {
     border-radius: 10px;
-    height: 100%; /* Make images fill the height */
+    height: 100%;
+    margin-top: 10px; /* Make images fill the height */
 }
 
 .post-caption {
@@ -220,9 +221,6 @@ box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
 
     width: 50%; /* Set width to 50% */
     padding-left: 20px; /* Add some left padding for spacing */
-    position: relative;
-    
-    top:70%;/* Position the user info relative to this container */
 }
 
 .comment {
