@@ -11,8 +11,8 @@ class TagController extends Controller
 {
     public function show(string $id) 
     {
-        $user_id = Auth::id();
-
+        $user = Auth::user();
+        $user_id = $user->id;
         $result = Post::join('likes', 'posts.id', '=', 'likes.post_id')
             ->join('users', 'likes.user_id', '=', 'users.id')->get();
             // dd($result);
@@ -26,6 +26,10 @@ class TagController extends Controller
         $tag = Tag::find($id);
         $posts = $tag->posts()->paginate(6);
         // dd($posts, $tag);
-        return view("tags.show" , ["tag" => $tag , "posts" => $posts , "likedPostsIDs" => $likedPostsIDs]);
+        return view("tags.show" , [
+            "tag" => $tag , "posts" => $posts , 
+            "likedPostsIDs" => $likedPostsIDs,
+            "currentUser" => $user
+        ]);
     }
 }

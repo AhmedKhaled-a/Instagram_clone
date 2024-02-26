@@ -10,7 +10,7 @@
 </head>
 <body class="bg-dark text-white">
     @include('layouts.navbar')
-    <div class="container">
+    <div class="container-fluid">
         @section("content")
         @show
     </div>
