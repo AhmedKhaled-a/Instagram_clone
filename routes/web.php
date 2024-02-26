@@ -81,8 +81,6 @@ Route::get('/search', [PostController::class, 'search'])
 ->name('posts.search');
 
 Route::get('/posts/{id}',[PostController::class,'show'] )->name ('posts.show');
-Route::post('/posts/{postId}/like', [LikeController::class, 'like'])->name('posts.like')->middleware('auth');
-Route::post('/posts/{postId}/unlike', [LikeController::class, 'unlike'])->name('posts.unlike')->middleware('auth');
 
 });
 

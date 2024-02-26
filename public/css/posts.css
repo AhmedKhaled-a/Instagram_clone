@@ -308,6 +308,8 @@ box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
 
 .box{
     position: relative;
+    display: flex;
+    justify-content:start;
 }
 
 .input {
@@ -325,7 +327,7 @@ box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
     transition: .5s;
 }
 .box:hover input{
-    width: 350px;
+    width: 600px;
     background: #3b3640;
     border-radius: 10px;
 }
@@ -343,22 +345,10 @@ box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
     z-index: -1;
 }
 
-/* YouTube icon */
-#ytb {
-  height: 50px;
-  width: 50px;
-  text-align: center;
-  line-height: 52px;
-  border: 2px solid transparent;
-  color: #ff1717;
-  font-size: 25px;
-  transition: 0.3s;
-}
+#searchIcon {
+    position: relative;
+    top:16px;
+    right:42px;
 
-#ytb:hover{
-  border-radius: 50%;
-  border-color: #ff1717;
-  box-shadow: 0 0 10px #ff4040;
 }
-  
   
