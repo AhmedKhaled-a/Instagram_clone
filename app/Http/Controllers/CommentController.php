@@ -6,6 +6,8 @@ use Illuminate\Http\Request;
 use App\Models\Comment;
 use App\Models\Post;
 use App\Models\User;
+use Illuminate\Support\Facades\Auth;
+
 
 class CommentController extends Controller
 {
@@ -17,7 +19,8 @@ class CommentController extends Controller
             'post_id'=>'exists:posts,id',
             'user_id'=>'exists:users,id'
         ]);
-        $user = User::findOrFail(1);
+        // $user = User::findOrFail(1);
+        $user = Auth::user();
         $post=Post::findOrFail($id);
         $comment= new Comment();
         $comment->user_id=$user->id;

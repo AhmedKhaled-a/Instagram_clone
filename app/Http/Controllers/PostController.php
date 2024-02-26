@@ -44,6 +44,7 @@ class PostController extends Controller
         return view('posts.index', [
             'posts' => $posts,
             'likedPostsIDs' => $likedPostsIDs,
+            'currentUser' => $user,
 
         ]);
     }
@@ -228,6 +229,32 @@ class PostController extends Controller
         }
         return response()->redirect()->route('posts.index');
 
+    }
+
+    public function search(Request $request) 
+    {
+        $user = Auth::user();
+
+        $posts = Post::with(['tags', 'comments', 'images'])->where("caption", "LIKE" , "%" . $request->search . "%")->paginate(6);
+        // dd($posts);
+
+        $likedPostsIDs = [];
+        
+            $result = Post::join('likes', 'posts.id', '=', 'likes.post_id')
+            ->join('users', 'likes.user_id', '=', 'users.id')->get();
+            // dd($result);
+            
+        
+        foreach($result as $likedPost) {
+            // dd($likedPost);
+            array_push($likedPostsIDs, $likedPost->post_id);
+        }
+     
+        return view('posts.index', [
+            'posts' => $posts,
+            'likedPostsIDs' => $likedPostsIDs,
+            'currentUser' => $user,
+        ]);
     }
 
     public function likes(string $id) {

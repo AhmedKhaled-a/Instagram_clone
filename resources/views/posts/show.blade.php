@@ -1,7 +1,7 @@
 @extends("layouts.main")
 
 
-@section("title" , "Post " . $post->id)
+@section("title" , "Post")
 @section("custom-css")
     <link rel="stylesheet" href="{{ asset("css/posts.css")}}">
 @endsection
