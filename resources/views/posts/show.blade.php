@@ -41,7 +41,6 @@
     </style>
 @endsection
 
-
 @section("content")
 
 @if ($post == '') 
@@ -57,7 +56,7 @@
             <div class="carousel-inner">
                 @foreach($post->images as $index => $image)
                 <div class="carousel-item @if($index === 0) active @endif">
-                    <img src="{{ Storage::disk('public')->url($image->img_path) }}" class="d-block w-100" alt="Post image">
+                    <img src="{{ Storage::disk('public')->url($image->img_path) }}" class="d-block w-100" id="post-img" alt="Post image">
                 </div>
                 @endforeach
             </div>
@@ -69,7 +68,7 @@
             <form id="commentForm" action="{{ route('comment.store', $post->id) }}" method="post">
                 @csrf
                 <div class="input-group">
-                    <textarea class="form-control" name="comment_body" id="comment_body" rows="1" placeholder="Add a comment..."></textarea>
+                    <input type="text" class="form-control" name="comment_body" id="comment_body" rows="1" placeholder="Add a comment..."></input>
                     <button type="submit" id="postButton" class="bg-transparent text-primary mt-2" style="display: none">Post</button>
                 </div>
             </form>
@@ -85,38 +84,11 @@
         </div>
 
         <h6 class="text-dark">Comments</h6>
-        @foreach($post->comments->take(4) as $comment)
-        <div class="comment">
-            <div class="d-flex mb-3">
-                <img src="{{ asset('avatar/avatar.jpg') }}" alt="" class='w-10 rounded-circle'>
-                <a href="" class="text-dark text-decoration-none text-lg">{{ $post->user->name }} </a>
-            </div>
-            <div class="d-flex justify-content-between">
-                <div>
-                    <p>{{ $comment->comment_body }}</p>
-                    <small>{{ $comment->created_at->diffForHumans() }}</small>
-                </div>
-                <div>
-                    <form method="POST" action="{{ route('comment.destroy' ,$comment->id) }}">
-                        @csrf
-                        @method('DELETE')
-                        <button type="submit" class="btn btn-danger btn-sm comment-delete-button">Delete</button>
-                    </form>
-                </div>
-            </div>
-        </div>
-        @endforeach
-
-        @if($post->comments->count() > 4)
-        <button class="btn btn-primary mt-3" onclick="showMoreComments()">Show More Comments</button>
-        @endif
-
-        <div class="remaining-comments" style="display: none;">
-            @foreach($post->comments->slice(4) as $comment)
+        @foreach($post->comments->reverse() as $comment)
             <div class="comment">
                 <div class="d-flex mb-3">
                     <img src="{{ asset('avatar/avatar.jpg') }}" alt="" class='w-10 rounded-circle'>
-                    <a href="" class="text-dark text-decoration-none text-lg">{{ $post->user->name }} </a>
+                    <a href="" class="text-dark text-decoration-none text-lg">{{ $post->user->name }}</a>
                 </div>
                 <div class="d-flex justify-content-between">
                     <div>
@@ -124,16 +96,43 @@
                         <small>{{ $comment->created_at->diffForHumans() }}</small>
                     </div>
                     <div>
-                        <form method="POST" action="{{ route('comment.destroy' ,$comment->id) }}">
-                         @csrf
-                         @method('DELETE')
-                        <button type="submit" class="btn btn-danger btn-sm comment-delete-button">Delete</button>
-                       </form>
-                     </div>
+                        <form id="deleteCommentForm_{{ $comment->id }}" method="POST" action="{{ route('comment.destroy', ['id' => $comment->id]) }}">
+                            @csrf
+                            @method('DELETE')
+                            <button type="submit" class="btn btn-danger btn-sm comment-delete-button" data-comment-id="{{ $comment->id }}">Delete</button>
+                        </form>
+                    </div>
                 </div>
             </div>
+        @endforeach
+
+        <div class="remaining-comments" style="display: none;">
+            @foreach($post->comments->reverse()->slice(4) as $comment)
+                <div class="comment">
+                    <div class="d-flex mb-3">
+                        <img src="{{ asset('avatar/avatar.jpg') }}" alt="" class='w-10 rounded-circle'>
+                        <a href="" class="text-dark text-decoration-none text-lg">{{ $post->user->name }} </a>
+                    </div>
+                    <div class="d-flex justify-content-between">
+                        <div>
+                            <p>{{ $comment->comment_body }}</p>
+                            <small>{{ $comment->created_at->diffForHumans() }}</small>
+                        </div>
+                        <div>
+                            <form method="POST" action="{{ route('comment.destroy' ,$comment->id) }}">
+                                @csrf
+                                @method('DELETE')
+                                <button type="submit" class="btn btn-danger btn-sm comment-delete-button">Delete</button>
+                            </form>
+                        </div>
+                    </div>
+                </div>
             @endforeach
         </div>
+
+        @if($post->comments->count() > 4)
+            <button id="showMoreCommentsButton" class="btn btn-primary mt-3">Show More Comments</button>
+        @endif
     </div>
 
 </div>
@@ -144,13 +143,24 @@
 
 @section("scripts")
 <script>
-    function showMoreComments() {
-        document.querySelector('.remaining-comments').style.display = 'block';
-        document.querySelector('.btn-primary').style.display = 'none';
-    }
+   document.addEventListener('DOMContentLoaded', function () {
+    // Event listener for delete comment buttons
+    document.querySelectorAll('.comment-delete-button').forEach(button => {
+        button.addEventListener('click', function (event) {
+            event.preventDefault();
+            let commentId = this.getAttribute('data-comment-id');
+            // Use commentId variable in your logic
+            console.log('Comment ID:', commentId);
+            // Other logic to delete the comment
+            // Add your delete comment logic here
+
+            // Submit the form for deleting the comment
+            document.getElementById(`deleteCommentForm_${commentId}`).submit();
+        });
+    });
 
     // Function to toggle the visibility of the post button based on textarea content
-    document.getElementById('comment_body').addEventListener('input', function() {
+    document.getElementById('comment_body').addEventListener('input', function () {
         let postButton = document.getElementById('postButton');
         if (this.value.trim() !== '') {
             postButton.style.display = 'inline-block';
@@ -159,65 +169,65 @@
         }
     });
 
-document.getElementById('commentForm').addEventListener('submit', function(event) {
-    event.preventDefault();
-    let form = event.target;
-    let formData = new FormData(form);
-    fetch(form.action, {
-        method: 'POST',
-        body: formData,
-        headers: {
-            'X-CSRF-TOKEN': '{{ csrf_token() }}'
-        }
-    })
-    .then(response => response.json())
-    .then(data => {
-        if (data.success) {
-            // Add the new comment to the comments container
-            let commentContainer = document.querySelector('.comments-container');
-            let newCommentHTML = `
-                <div class="comment">
-                    <div class="d-flex mb-3">
-                        <img src="{{ asset('avatar/avatar.jpg') }}" alt="" class='w-10 rounded-circle'>
-                        <a href="" class="text-dark text-decoration-none text-lg">${data.comment.user.name}</a>
-                    </div>
-                    <div class="d-flex justify-content-between">
-                        <div>
-                            <p>${data.comment.comment_body}</p>
-                            <small>${data.comment.created_at}</small>
-                        </div>
-                        <div>
-                            <form method="POST" action="{{ route('comment.destroy', $comment->id) }}">
-                                @csrf
-                                @method('DELETE')
-                                <button type="submit" class="btn btn-danger btn-sm comment-delete-button">Delete</button>
-                            </form>
-                        </div>
-                    </div>
-                </div>
-            `;
-            commentContainer.insertAdjacentHTML('beforeend', newCommentHTML);
-
-            // Clear the comment textarea and hide the post button
-            document.getElementById('comment_body').value = '';
-            document.getElementById('postButton').style.display = 'none';
-        } else {
-            console.error(data.message); // Log any error messages returned from the server
-        }
-        document.getElementById('comment_body').addEventListener('keydown', function(event) {
-    // Check if the enter key was pressed (keyCode 13) and not in combination with shift key (to allow multiline)
-    if (event.keyCode === 13 && !event.shiftKey) {
-        // Prevent the default behavior of the enter key
+    // Event listener for comment form submission
+    document.getElementById('commentForm').addEventListener('submit', function (event) {
         event.preventDefault();
-        // Trigger a submit event on the form
-        document.getElementById('commentForm').submit();
-    }
+        let form = event.target;
+        let formData = new FormData(form);
+        fetch(form.action, {
+            method: 'POST',
+            body: formData,
+            headers: {
+                'X-CSRF-TOKEN': '{{ csrf_token() }}'
+            }
+        })
+            .then(response => response.json())
+            .then(data => {
+                if (data.success) {
+                    // Add the new comment to the comments container
+                    let commentContainer = document.querySelector('.comments-container');
+                    let newCommentHTML = `
+                        <div class="comment">
+                            <div class="d-flex mb-3">
+                                <img src="{{ asset('avatar/avatar.jpg') }}" alt="" class='w-10 rounded-circle'>
+                                <a href="" class="text-dark text-decoration-none text-lg">${data.comment.user.name}</a>
+                            </div>
+                            <div class="d-flex justify-content-between">
+                                <div>
+                                    <p>${data.comment.comment_body}</p>
+                                    <small>${data.comment.created_at}</small>
+                                </div>
+                                <div>
+                                    <form id="deleteCommentForm_${data.comment.id}" method="POST" action="{{ route('comment.destroy', ['id' => ':id']) }}">
+                                        @csrf
+                                        @method('DELETE')
+                                        <input type="hidden" name="comment_id" value="${data.comment.id}">
+                                        <button type="submit" class="btn btn-danger btn-sm comment-delete-button" data-comment-id="${data.comment.id}">Delete</button>
+                                    </form>
+                                </div>
+                            </div>
+                        </div>
+                    `;
+                    commentContainer.insertAdjacentHTML('beforeend', newCommentHTML);
+
+                    // Clear the comment textarea and hide the post button
+                    document.getElementById('comment_body').value = '';
+                    document.getElementById('postButton').style.display = 'none';
+                } else {
+                    console.error(data.message); // Log any error messages returned from the server
+                }
+            })
+            .catch(error => console.error('Error:', error));
+    });
+
+    // Event listener for "Show More Comments" button
+    document.getElementById('showMoreCommentsButton').addEventListener('click', function () {
+        document.querySelectorAll('.remaining-comments .comment').forEach(comment => {
+            document.querySelector('.comments-container').appendChild(comment);
+        });
+        this.style.display = 'none'; // Hide the button after clicking
+    });
 });
 
-    })
-    .catch(error => console.error('Error:', error));
-});
-
-    
 </script>
 @endsection
