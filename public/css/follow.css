@@ -1,4 +1,6 @@
-.followers-container, .followings-container {
+.followers-container,
+.followings-container,
+.blocked-container {
     position: fixed;
     top: 0;
     bottom: 0;
@@ -12,13 +14,22 @@
 }
 
 .followers-container .followers-list,
-.followings-container .followings-list{
+.followings-container .followings-list,
+.blocked-container .blocked-list{
     background-color: #262626;
     color: white;
     border-radius: 20px;
     padding: 10px 20px;
 }
 
-.followers,.followings{
+.followers,
+.followings,
+.blocked {
     cursor: pointer;
+}
+
+.alert {
+    position: absolute;
+    bottom: 25px;
+    right: 40px;
 }

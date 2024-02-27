@@ -68,6 +68,25 @@ class User extends Authenticatable
         return $this->following()->where('user_id',$user->id)->exists();
     }
 
+
+    public function blockedUsers()
+    {
+        return $this->belongsToMany(User::class, 'user_blocks', 'user_id', 'blocked_user_id')->withTimestamps();
+    }
+
+    public function blockingUsers()
+    {
+        return $this->belongsToMany(User::class, 'user_blocks', 'blocked_user_id', 'user_id')->withTimestamps();
+    }
+
+    public function isBlocking(User $user = null) {
+        if ($user) {
+            return $this->blockedUsers()->where('blocked_user_id', $user->id)->exists();
+        }
+        return false;
+    }
+
+
     public function getAvatarUrl() {
         if ($this->avatar) {
             return url('/storage/'.$this->avatar);

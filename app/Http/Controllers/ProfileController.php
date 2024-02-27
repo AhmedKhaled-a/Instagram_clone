@@ -15,9 +15,12 @@ use Illuminate\View\View;
 class ProfileController extends Controller
 {
     public function index(User $user) {
+        if ($user->isBlocking(Auth::user())) {
+            return view('errors.403');
+        }
         return view('profiles.index', ['user'=>$user]);
     }
-    
+
     public function edit(Request $request): View
     {
         return view('profile.edit', [
