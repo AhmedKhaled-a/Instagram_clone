@@ -2866,7 +2866,7 @@ return array(
     'Laravel\\Ui\\ControllersCommand' => $vendorDir . '/laravel/ui/src/ControllersCommand.php',
     'Laravel\\Ui\\Presets\\Bootstrap' => $vendorDir . '/laravel/ui/src/Presets/Bootstrap.php',
     'Laravel\\Ui\\Presets\\Preset' => $vendorDir . '/laravel/ui/src/Presets/Preset.php',
-    // 'Laravel\\Ui\\Presets\\React' => $vendorDir . '/laravel/ui/src/Presets/React.php',
+    'Laravel\\Ui\\Presets\\React' => $vendorDir . '/laravel/ui/src/Presets/React.php',
     'Laravel\\Ui\\Presets\\Vue' => $vendorDir . '/laravel/ui/src/Presets/Vue.php',
     'Laravel\\Ui\\UiCommand' => $vendorDir . '/laravel/ui/src/UiCommand.php',
     'Laravel\\Ui\\UiServiceProvider' => $vendorDir . '/laravel/ui/src/UiServiceProvider.php',
