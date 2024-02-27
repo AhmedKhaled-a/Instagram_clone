@@ -68,3 +68,5 @@ Route::post('/posts/{id}/comments',[CommentController::class,('store')]) ->name(
 Route::delete('/posts/{id}/comments', [CommentController::class, 'destroy'])->name('comment.destroy');
 
 Route::get('/tags/{id}',[TagController::class,'show'] )-> name ('tags.show');
+
+Route::get('/posts/saved/index',[PostController::class,'showSaved'] )-> name ('saved-posts.show');

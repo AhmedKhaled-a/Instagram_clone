@@ -3,10 +3,10 @@ namespace App\Http\Controllers;
 use App\Models\Tag;
 use App\Models\Post;
 use App\Models\User;
-use App\Models\Like;
 use App\Models\Comment;
 use App\Models\Like;
 use App\Models\Post_image;
+use App\Models\SavedPost;
 use Illuminate\Http\Request;
 use Illuminate\Http\Response;
 use Illuminate\Support\Facades\Storage;
@@ -26,10 +26,15 @@ class PostController extends Controller
     {
         // Todo: Change user id to Auth
         $user = Auth::user();
+        // $userSaved = User::find($user->id)->with(['savedPosts'])->get();
+        
 
-        $posts = Post::with(['tags', 'comments', 'images', 'user'])->paginate(6);
+        $savedPosts = SavedPost::join('posts', 'posts.id', '=', 'saved_posts.post_id')
+        ->join('users', 'saved_posts.user_id', '=', 'users.id')->where('users.id', '=', $user->id)->get();
 
-
+        // dd($savedPosts);
+        $posts = Post::with(['tags', 'images', 'user'])->paginate(6);
+        $savedPostsIds = $savedPosts->map(function($savedpost) { return $savedpost->post_id; });
         $likedPostsIDs = [];
         
         $result = Like::join('posts', 'posts.id', '=', 'likes.post_id')
@@ -45,6 +50,7 @@ class PostController extends Controller
             'posts' => $posts,
             'likedPostsIDs' => $likedPostsIDs,
             'currentUser' => $user,
+            'savedPostsIds' => $savedPostsIds->toArray()
 
         ]);
     }
@@ -238,12 +244,15 @@ class PostController extends Controller
         $posts = Post::with(['tags', 'comments', 'images'])->where("caption", "LIKE" , "%" . $request->search . "%")->paginate(6);
         // dd($posts);
 
+        $savedPosts = SavedPost::join('posts', 'posts.id', '=', 'saved_posts.post_id')
+        ->join('users', 'saved_posts.user_id', '=', 'users.id')->where('users.id', '=', $user->id)->get();
+
         $likedPostsIDs = [];
         
-            $result = Post::join('likes', 'posts.id', '=', 'likes.post_id')
-            ->join('users', 'likes.user_id', '=', 'users.id')->get();
-            // dd($result);
-            
+        $result = Post::join('likes', 'posts.id', '=', 'likes.post_id')
+        ->join('users', 'likes.user_id', '=', 'users.id')->get();
+        $savedPostsIds = $savedPosts->map(function($savedpost) { return $savedpost->post_id; });
+        
         
         foreach($result as $likedPost) {
             // dd($likedPost);
@@ -254,6 +263,7 @@ class PostController extends Controller
             'posts' => $posts,
             'likedPostsIDs' => $likedPostsIDs,
             'currentUser' => $user,
+            'savedPostsIds' => $savedPostsIds->toArray()
         ]);
     }
 
@@ -286,6 +296,60 @@ class PostController extends Controller
             $post->increment('likes');
             return response()->json(['message' => 'Post liked successfully']);
         }
+    }
+
+    public function savePost(Request $request)  {
+        $data = json_decode($request->getContent(), true);
+        // dd($data);
+
+        $user = User::find($data['userId']);
+        // dd($user);
+        // Check if the user has already liked the post
+        $existingSavedPost = SavedPost::where('user_id', $user->id)->where('post_id', $data['postId'])->first();
+        if ($existingSavedPost) {
+            // If the user has already liked the post, unlike it
+            $existingSavedPost->delete();
+            return response()->json(['message' => 'Post unsaved']);
+        } else {
+            // If the user has not liked the post, like it
+            $savedpost = new SavedPost();
+            $savedpost->user_id = $user->id;
+            $savedpost->post_id = $data['postId'];
+            $savedpost->save();
+            return response()->json(['message' => 'Post saved']);
+        }
+
+    }
+
+    public function showSaved() {
+        $user = Auth::user();
+        // $userSaved = User::find($user->id)->with(['savedPosts'])->get();
+        
+
+        $posts = Post::join('saved_posts', 'posts.id', '=', 'saved_posts.post_id')
+        ->where('saved_posts.user_id', '=', $user->id)
+        ->with(['tags', 'images', 'user'])
+        ->select("posts.*") 
+        ->paginate(6);
+
+        $savedPostsIds = $posts->map(function($savedpost) { return $savedpost->id; });
+        // dd($savedPostsIds);
+        $likedPostsIDs = [];
+        
+        $result = Like::join('posts', 'posts.id', '=', 'likes.post_id')
+        ->join('users', 'likes.user_id', '=', 'users.id')->where('users.id', '=', $user->id)->get();
+
+        foreach($result as $like) {
+            array_push($likedPostsIDs, $like->post_id);
+        }
+
+
+        return view('posts.index', [
+            'posts' => $posts,
+            'likedPostsIDs' => $likedPostsIDs,
+            'currentUser' => $user,
+            'savedPostsIds' => $savedPostsIds->toArray()
+        ]);
     }
 
     public static function getTags($str) {
