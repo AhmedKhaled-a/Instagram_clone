@@ -7,7 +7,7 @@
 @section("content")
 <h1>Create Post </h1>
 
-<div class="border border-3 border-radius-50 p-5">
+<div class="border border-3 rounded p-5">
     <form method="post" action={{ route("posts.store") }} enctype="multipart/form-data"> 
             @csrf
             @method('POST')
