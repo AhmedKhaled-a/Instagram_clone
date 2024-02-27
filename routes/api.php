@@ -40,3 +40,5 @@ Route::get('/posts/{id}/likes', [PostController::class, 'likes'] );
 // toggle like
 Route::post('/posts/{id}/togglelike', [PostController::class, 'toggleLike'])->name('posts.toggle-like');
 
+Route::post('/posts/save', [PostController::class, 'savePost'])->name('posts.save-post');
+

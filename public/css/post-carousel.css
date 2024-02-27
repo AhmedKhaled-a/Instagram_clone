@@ -89,6 +89,7 @@
         inset-inline: var(--size-2);
 
         inset-block-start: 50%;
+        z-index: 100px;
         display: flex;
         justify-content: space-between;
       }

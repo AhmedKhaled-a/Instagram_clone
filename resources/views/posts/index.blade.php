@@ -11,18 +11,19 @@
 @endsection
 
 @section("content")
-        <h1>Posts</h1>        
-        <div class="box my-5">
-            <form method="get" action={{ route('posts.search') }}>
-                @csrf
-                    <input type="text" class="input" name="search" onmouseout="this.value = ''; this.blur();">
-                    <i id="searchIcon" class="fas fa-search"></i>
-            </form>
-        </div>
-@include('posts.posts')
-<div class="row justify-content-center align-items-center w-75 my-auto">
-    {!! $posts->links() !!}
-</div>
+    <h1>Histogram</h1>        
+    <div class="box my-5 d-flex justify-content-center">
+        <form method="get" action={{ route('posts.search') }}>
+            @csrf
+                <input type="text" class="input" name="search" onmouseout="this.value = ''; this.blur();">
+                <i id="searchIcon" class="fas fa-search"></i>
+        </form>
+    </div>
+    <h2 class="d-none" id="userId" userId="{{ $currentUser->id }}"></h2>
+    @include('posts.posts')
+    <div class="row justify-content-center align-items-center w-75 my-auto">
+        {!! $posts->links() !!}
+    </div>
 @endsection
 
 @section('scripts')
