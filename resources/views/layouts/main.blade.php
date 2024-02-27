@@ -6,12 +6,13 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>@yield("title")</title>
     <link rel="stylesheet" href="{{ asset('css/navigation.css') }}">
+    
     @section("custom-css")
     @show
 </head>
 <body class="bg-dark text-white">
     @include('layouts.navbar')
-    <div class="container-fluid">
+    <div class="container py-5 px-5">
         @section("content")
         @show
     </div>

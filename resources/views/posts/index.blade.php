@@ -19,7 +19,9 @@
                 <i id="searchIcon" class="fas fa-search"></i>
         </form>
     </div>
-    <h2 class="d-none" id="userId" userId="{{ $currentUser->id }}"></h2>
+    @if($currentUser)
+        <h2 class="d-none" id="userId" userId="{{ $currentUser->id }}"></h2>
+    @endif
     @include('posts.posts')
     <div class="row justify-content-center align-items-center w-75 my-auto">
         {!! $posts->links() !!}

@@ -71,16 +71,16 @@ Route::post('/email/verification-notification', function (Request $request) {
 })->middleware(['auth', 'throttle:6,1'])->name('verification.send');
 });
 
-Route::get('/posts',[PostController::class ,'index'])  -> name ('posts.index') ;
+Route::get('/posts',[PostController::class ,'index'])->name('posts.index')->middleware('auth');
 
 Route::get('/posts/create',[PostController::class,'create'])->name('posts.create')->middleware('auth');
 
 Route::post('/posts',[PostController::class,'store'])->name('posts.store')->middleware('auth');
 
 Route::get('/search', [PostController::class, 'search'])
-->name('posts.search');
+->name('posts.search')->middleware('auth');
 
-Route::get('/posts/{id}',[PostController::class,'show'] )->name ('posts.show');
+Route::get('/posts/{id}',[PostController::class,'show'] )->name('posts.show');
 
 });
 
@@ -108,4 +108,4 @@ Route::delete('/posts/{id}/comments', [CommentController::class, 'destroy'])->na
 
 Route::get('/tags/{id}',[TagController::class,'show'] )-> name ('tags.show');
 
-Route::get('/posts/saved/index',[PostController::class,'showSaved'] )-> name ('saved-posts.show');
+Route::get('/posts/saved/index',[PostController::class,'showSaved'] )->name('saved-posts.show');

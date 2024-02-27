@@ -3,15 +3,15 @@
 
 @section("title" , "edit")
 @section("custom-css")
-    <link rel="stylesheet" href="{{ asset("css/edit.css")}}">
+    <link rel="stylesheet" href="{{ asset("css/posts.css")}}">
 @endsection
 
 @section("content")
-@if ($post == '') 
+@if ($post == '')
     No post with this id
 @else
 <h1>Editing Post {{ $post->id }} </h1>
-<div class="border border-3 border-radius-50">
+<div class="border border-3 rounded p-5">
     <form method="post" action={{ route("posts.update" ,["id" => $post->id]) }} enctype="multipart/form-data"> 
             @csrf
             @method('PUT')

@@ -28,31 +28,31 @@ class PostController extends Controller
         $user = Auth::user();
         // $userSaved = User::find($user->id)->with(['savedPosts'])->get();
         
+        if($user) {
+            $savedPosts = SavedPost::join('posts', 'posts.id', '=', 'saved_posts.post_id')
+            ->join('users', 'saved_posts.user_id', '=', 'users.id')->where('users.id', '=', $user->id)->get();
 
-        $savedPosts = SavedPost::join('posts', 'posts.id', '=', 'saved_posts.post_id')
-        ->join('users', 'saved_posts.user_id', '=', 'users.id')->where('users.id', '=', $user->id)->get();
-
-        // dd($savedPosts);
-        $posts = Post::with(['tags', 'images', 'user'])->paginate(6);
-        $savedPostsIds = $savedPosts->map(function($savedpost) { return $savedpost->post_id; });
-        $likedPostsIDs = [];
-        
-        $result = Like::join('posts', 'posts.id', '=', 'likes.post_id')
-        ->join('users', 'likes.user_id', '=', 'users.id')->where('users.id', '=', $user->id)->get();
+            // dd($savedPosts);
+            $posts = Post::with(['tags', 'images', 'user'])->paginate(6);
+            $savedPostsIds = $savedPosts->map(function($savedpost) { return $savedpost->post_id; });
+            $likedPostsIDs = [];
             
-        
-        foreach($result as $like) {
-            array_push($likedPostsIDs, $like->post_id);
-        }
-        // dd($result);
-        // dd($likedPostsIDs);       
-        return view('posts.index', [
-            'posts' => $posts,
-            'likedPostsIDs' => $likedPostsIDs,
-            'currentUser' => $user,
-            'savedPostsIds' => $savedPostsIds->toArray()
+            $result = Like::join('posts', 'posts.id', '=', 'likes.post_id')
+            ->join('users', 'likes.user_id', '=', 'users.id')->where('users.id', '=', $user->id)->get();
+                
+            
+            foreach($result as $like) {
+                array_push($likedPostsIDs, $like->post_id);
+            }
+     
+            return view('posts.index', [
+                'posts' => $posts,
+                'likedPostsIDs' => $likedPostsIDs,
+                'currentUser' => $user,
+                'savedPostsIds' => $savedPostsIds->toArray()
 
-        ]);
+            ]);
+        }
     }
     
 
@@ -106,19 +106,23 @@ class PostController extends Controller
         // dd($imageFiles);
         $manager = new ImageManager(new Driver());
 
-        foreach ($imageFiles as $imageFile) {    
-            $image_name = Str::random(18) . "." . $imageFile->extension();
-            $img = $manager->read($imageFile);
-            $img = $img->resize(800, 800);
-            $img = $img->toJpeg(80)->save(storage_path("app/public/posts/" . $image_name));
-            // Todo: Add multiple post images
-            $imagePath = "posts/" . $image_name;
-            $postImage = new Post_image();
-            $postImage->post_id =$post->id;
-            $postImage->img_path = $imagePath;
+        $storeDir = storage_path("app/public/posts/");
+        if (!file_exists( $storeDir ) || !is_dir( $storeDir) ) {   mkdir($storeDir); }
+        if($imageFiles) {
+            foreach ($imageFiles as $imageFile) {    
+                $image_name = Str::random(18) . "." . $imageFile->extension();
+                $img = $manager->read($imageFile);
+                $img = $img->resize(800, 800);
+                $img = $img->toJpeg(80)->save(storage_path("app/public/posts/" . $image_name));
+                // Todo: Add multiple post images
+                $imagePath = "posts/" . $image_name;
+                $postImage = new Post_image();
+                $postImage->post_id =$post->id;
+                $postImage->img_path = $imagePath;
 
-            // $postImage->save();
-            $post->images()->save($postImage);
+                // $postImage->save();
+                $post->images()->save($postImage);
+            }
         }
 
         // dd($extractedTags);
@@ -169,7 +173,6 @@ class PostController extends Controller
         $post = Post::findOrFail($id);
         $data = $request->validate([ 
             'caption' =>'nullable|max:255',
-            'images'=>'required'
         ]);
 
         // dd($extractedTags);
@@ -178,15 +181,17 @@ class PostController extends Controller
         $imageFiles = $request->file('images');
         // dd($imageFiles);
 
-        foreach ($imageFiles as $imageFile) {    
-            // Todo: Add multiple post images
-            $imagePath = $imageFile->store('posts' , 'public');
-            $postImage = new Post_image();
-            $postImage->post_id =$post->id;
-            $postImage->img_path = $imagePath;
+        if($imageFiles) {
+            foreach ($imageFiles as $imageFile) {    
+                // Todo: Add multiple post images
+                $imagePath = $imageFile->store('posts' , 'public');
+                $postImage = new Post_image();
+                $postImage->post_id =$post->id;
+                $postImage->img_path = $imagePath;
 
-            // $postImage->save();
-            $post->images()->save($postImage);
+                // $postImage->save();
+                $post->images()->save($postImage);
+            }
         }
 
         $extractedTags = PostController::getTags($data['caption']);
