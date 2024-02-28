@@ -4,6 +4,7 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\PostController;
 use App\Http\Controllers\LikeController;
+use App\Http\Controllers\CommentController;
 
 use App\Http\Controllers\ImageController;
 
@@ -41,4 +42,7 @@ Route::get('/posts/{id}/likes', [PostController::class, 'likes'] );
 Route::post('/posts/{id}/togglelike', [PostController::class, 'toggleLike'])->name('posts.toggle-like');
 
 Route::post('/posts/save', [PostController::class, 'savePost'])->name('posts.save-post');
+
+Route::delete('/posts/{id}/comments', [CommentController::class, 'destroy'])->name('comment.destroy')->middleware('auth.basic');
+Route::post('/posts/{id}/comments',[CommentController::class,'store']) ->name('comment.store')->middleware('auth.basic');
 

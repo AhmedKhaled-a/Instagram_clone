@@ -42,7 +42,7 @@ Route::post('/posts',[PostController::class,'store'])->name('posts.store')->midd
 Route::get('/search', [PostController::class, 'search'])
 ->name('posts.search')->middleware('auth');
 
-Route::get('/posts/{id}',[PostController::class,'show'] )->name('posts.show');
+Route::get('/posts/{id}',[PostController::class,'show'] )->name('posts.show')->middleware('auth');
 
 
 
@@ -64,8 +64,6 @@ Auth::routes();
 Route::get('/home', [App\Http\Controllers\HomeController::class, 'index'])->name('home');
 
 // comments route
-Route::post('/posts/{id}/comments',[CommentController::class,('store')]) ->name('comment.store');
-Route::delete('/posts/{id}/comments', [CommentController::class, 'destroy'])->name('comment.destroy');
 
 Route::get('/tags/{id}',[TagController::class,'show'] )-> name ('tags.show');
 
