@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\SavedPost;
 use Illuminate\Http\Request;
 use App\Models\Tag;
 use Illuminate\Support\Facades\Auth;
@@ -23,13 +24,18 @@ class TagController extends Controller
             array_push($likedPostsIDs, $likedPost->post_id);
         }
 
+        $savedPosts = SavedPost::join('posts', 'posts.id', '=', 'saved_posts.post_id')
+        ->join('users', 'saved_posts.user_id', '=', 'users.id')->where('users.id', '=', $user->id)->get();
+        $savedPostsIds = $savedPosts->map(function($savedpost) { return $savedpost->post_id; });
+
         $tag = Tag::find($id);
         $posts = $tag->posts()->paginate(6);
         // dd($posts, $tag);
         return view("tags.show" , [
             "tag" => $tag , "posts" => $posts , 
             "likedPostsIDs" => $likedPostsIDs,
-            "currentUser" => $user
+            "currentUser" => $user,
+            "savedPostsIds" => $savedPostsIds->toArray()
         ]);
     }
 }

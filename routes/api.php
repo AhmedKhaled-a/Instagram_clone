@@ -43,6 +43,8 @@ Route::post('/posts/{id}/togglelike', [PostController::class, 'toggleLike'])->na
 
 Route::post('/posts/save', [PostController::class, 'savePost'])->name('posts.save-post')->middleware('auth:sanctum');
 
+// comments route
+
 Route::delete('/posts/{id}/comments', [CommentController::class, 'destroy'])->name('comment.destroy')->middleware('auth:sanctum');
 Route::post('/posts/{id}/comments',[CommentController::class,'store']) ->name('comment.store')->middleware('auth:sanctum');
 
