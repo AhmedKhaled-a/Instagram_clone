@@ -1,6 +1,5 @@
-$(document).ready(function(){
-  $("#side").height( $("#main").height() );
-});
+// const token = document.querySelector(`meta[name=csrf-token]`).getAttribute('content');
+const token = document.querySelector(`meta[name=csrf-token]`).getAttribute('content');
 
 
 let likeBtns = document.getElementsByClassName("like-button");
@@ -27,7 +26,6 @@ Array.from(nextBtns).forEach(nextBtn => {
 });
 
 const BASE_URL = "http://localhost:8000";
-const token = document.querySelector("form > input[name='_token']").value;
 
 
 const token = document.querySelector("form > input[name='_token']").value;
@@ -41,7 +39,7 @@ async function cfetch(url, options) {
         .then((data) => {
             console.log(data);
         });  
-    })
+    });
 }
 
 async function toggleLike(event) {
@@ -58,6 +56,7 @@ async function toggleLike(event) {
     url: `/api/posts/${postId}/togglelike`,
     dataType: 'JSON',
     contentType: "application/json",
+    headers: {'X-CSRF-TOKEN': token},
     cache: false,
     processData: false,
     data: data,
@@ -79,13 +78,25 @@ async function toggleLike(event) {
     })
     .catch(function(e){
       console.log(e);
-});    
+  });    
 }
  
 function deletePost(button) {
-    cfetch(`/api/posts/${button.getAttribute("id")}`, {method: 'DELETE'});
+    $.ajax({
+      type: "DELETE",
+      url: `/api/posts/${button.getAttribute("id")}`,
+      dataType: 'JSON',
+      contentType: "application/json",
+      headers: {'X-CSRF-TOKEN': token},
+      cache: false,
+      processData: false,
+      data: data,
+      success: function() {
+          console.log("Done");
+      }
+    });
     
-    console.log(button.closest(".post"));
+    // console.log(button.closest(".post"));
     button.closest(".post").remove();
 }
 
@@ -105,6 +116,7 @@ function savePost(e) {
         dataType: 'JSON',
         contentType: "application/json",
         cache: false,
+        headers: {'X-CSRF-TOKEN': token},
         processData: false,
         data: data,
         success: function() {
