@@ -11,7 +11,7 @@
         <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
     </div>
     @endif
-    
+
     <div class="container">
         <div class="row">
             <div class="col-4 d-flex align-items-start justify-content-center">
@@ -199,7 +199,7 @@
             <hr class="mb-0">
         </div>
         <div class="row pt-5">
-            @if (Auth::user()->isBlocking($user))
+            @if (Auth::check() && Auth::user()->isBlocking($user))
                 <div class="card w-75 mb-3 text-center mx-auto bg-secondary text-white">
                     <div class="card-body">
                         <h5 class="card-title">Can't Access</h5>
