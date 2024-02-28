@@ -28,7 +28,6 @@ Array.from(nextBtns).forEach(nextBtn => {
 const BASE_URL = "http://localhost:8000";
 
 
-const token = document.querySelector("form > input[name='_token']").value;
 console.log(token);
 
 

@@ -1,5 +1,7 @@
 
 const fileInput = document.getElementById("images");
+const token = document.querySelector(`meta[name=csrf-token]`).getAttribute('content');
+
 
 const BASE_URL = "http://localhost:8000";
 
@@ -56,12 +58,25 @@ function imageClick (target) {
         sendDeleteReq(imageId);
 }
 
-async function sendDeleteReq(imageId) {
-    await fetch(BASE_URL + '/api/images/' + imageId, {
-        method: 'DELETE',
-    }).then((res) => {
-    console.log(res);
-    });    
+function sendDeleteReq(imageId) {
+    // await fetch(BASE_URL + '/api/images/' + imageId, {
+    //     method: 'DELETE',
+    // }).then((res) => {
+    // console.log(res);
+    // }); 
+    
+    $.ajax({
+        type: "DELETE",
+        url: `/api/images/${imageId}`,
+        dataType: 'JSON',
+        contentType: "application/json",
+        headers: {'X-CSRF-TOKEN': token},
+        cache: false,
+        processData: false,
+        success: function() {
+            console.log("Done");
+        }
+      })
 }
 
 function resetImages() {

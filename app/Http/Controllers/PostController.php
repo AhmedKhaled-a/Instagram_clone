@@ -34,6 +34,9 @@ class PostController extends Controller
 
             // dd($savedPosts);
             $posts = Post::with(['tags', 'images', 'user'])->paginate(6);
+            $following = $user->following;
+            dd($following);
+            $posts = Post::with(['tags', 'images', 'user']);
             $savedPostsIds = $savedPosts->map(function($savedpost) { return $savedpost->post_id; });
             $likedPostsIDs = [];
             
