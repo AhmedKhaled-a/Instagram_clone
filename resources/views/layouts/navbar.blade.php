@@ -1,4 +1,7 @@
 <nav class="main-menu">
+            @if(Auth::user())
+            <h5 id="username" style="display: none">{{ Auth::user()->name }}</h5>
+            @endif
             <ul>
                 <li>
                     <a href="{{route("home")}}">
@@ -54,3 +57,14 @@
                 </li>  
             </ul>
         </nav>
+        <script>
+            document.querySelector(".main-menu").addEventListener('mouseover' , function() {
+                document.getElementById('username').style.display = 'block';
+            });
+
+            document.querySelector(".main-menu").addEventListener('mouseout' , function() {
+                document.getElementById('username').style.display = 'none';
+            });
+
+            
+        </script>

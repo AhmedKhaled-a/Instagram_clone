@@ -16,8 +16,8 @@
             @csrf
             @method('PUT')
             <div class="mb-3">
-                <label for="images" class="form-label">Upload Image (png,jpg,jpeg)</label>
-                <input type="file" name="images[]" id="images" multiple="multiple" accept="image/jpeg, image/png, image/jpg">        
+                <label for="images" class="btn btn-primary">Add Images</label>
+                <input style="visibility:hidden;" type="file" name="images[]" id="images" multiple="multiple" accept="image/jpeg, image/png, image/jpg">        
             </div>
             <div class="mb-3">
                 <label for="caption" class="form-label">Caption</label>
