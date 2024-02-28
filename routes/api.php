@@ -31,18 +31,18 @@ Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
 
 // delete image
 Route::delete('/images/{id}', [ImageController::class, 'destroy'])
-->name('images.destroy');
+->name('images.destroy')->middleware('auth:sanctum');
 
 // delete post
-Route::delete('/posts/{id}', [PostController::class, 'destroy']);
+Route::delete('/posts/{id}', [PostController::class, 'destroy'])->middleware('auth:sanctum');
 
-Route::get('/posts/{id}/likes', [PostController::class, 'likes'] );
+Route::get('/posts/{id}/likes', [PostController::class, 'likes']);
 
 // toggle like
-Route::post('/posts/{id}/togglelike', [PostController::class, 'toggleLike'])->name('posts.toggle-like');
+Route::post('/posts/{id}/togglelike', [PostController::class, 'toggleLike'])->name('posts.toggle-like')->middleware('auth:sanctum');
 
-Route::post('/posts/save', [PostController::class, 'savePost'])->name('posts.save-post');
+Route::post('/posts/save', [PostController::class, 'savePost'])->name('posts.save-post')->middleware('auth:sanctum');
 
-Route::delete('/posts/{id}/comments', [CommentController::class, 'destroy'])->name('comment.destroy')->middleware('auth.basic');
-Route::post('/posts/{id}/comments',[CommentController::class,'store']) ->name('comment.store')->middleware('auth.basic');
+Route::delete('/posts/{id}/comments', [CommentController::class, 'destroy'])->name('comment.destroy')->middleware('auth:sanctum');
+Route::post('/posts/{id}/comments',[CommentController::class,'store']) ->name('comment.store')->middleware('auth:sanctum');
 

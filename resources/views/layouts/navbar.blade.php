@@ -21,7 +21,7 @@
                     
                 </li>
                 <li class="has-subnav">
-                    <a href="href="{{route("saved-posts.show")}}"">
+                    <a href="{{ route("saved-posts.show") }}">
                        <i class="fa fa-floppy-disk fa-2x"></i>
                         <span class="nav-text">
                             Saved Posts
