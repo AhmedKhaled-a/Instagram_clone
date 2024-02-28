@@ -41,41 +41,12 @@ Route::middleware('auth')->group(function () {
     Route::get('/profile', [ProfileController::class, 'edit'])->name('profile.edit');
     Route::patch('/profile', [ProfileController::class, 'update'])->name('profile.update');
     Route::delete('/profile', [ProfileController::class, 'destroy'])->name('profile.destroy');
-    Route::post('/block/{blockedUser}', [UserController::class, 'blockUser'])->name('users.block');
-    Route::post('/unblock/{blockedUser}', [UserController::class, 'unblockUser'])->name('users.unblock');
+    Route::get('/posts/create',[PostController::class,'create'])->name('posts.create');
+    Route::post('/posts',[PostController::class,'store'])->name('posts.store');
 });
 
-Route::get('/profile/{user}', [ProfileController::class, 'index'])->name('profile.index')->where('id', '[0-9]+');
+Route::get('/posts',[PostController::class ,'index'])->name('posts.index');
 
-Route::post('/profile/{user}/follow',[FollowerController::class,'follow'])->middleware('auth')->name('user.follow');
-Route::post('/profile/{user}/unfollow',[FollowerController::class,'unfollow'])->middleware('auth')->name('user.unfollow');
-
-Route::get('/email/verify', function () {
-    return view('auth.verify-email');
-})->middleware('auth')->name('verification.notice');
-
-use Illuminate\Foundation\Auth\EmailVerificationRequest;
- 
-Route::get('/email/verify/{id}/{hash}', function (EmailVerificationRequest $request) {
-    $request->fulfill();
- 
-    return redirect('/home');
-})->middleware(['auth', 'signed'])->name('verification.verify');
-
-use Illuminate\Http\Request;
- 
-Route::post('/email/verification-notification', function (Request $request) {
-    $request->user()->sendEmailVerificationNotification();
- 
-    return back()->with('message', 'Verification link sent!');
-})->middleware(['auth', 'throttle:6,1'])->name('verification.send');
-});
-
-Route::get('/posts',[PostController::class ,'index'])->name('posts.index')->middleware('auth');
-
-Route::get('/posts/create',[PostController::class,'create'])->name('posts.create')->middleware('auth');
-
-Route::post('/posts',[PostController::class,'store'])->name('posts.store')->middleware('auth');
 
 Route::get('/search', [PostController::class, 'search'])
 ->name('posts.search')->middleware('auth');
@@ -106,4 +77,4 @@ Route::get('/home', [App\Http\Controllers\HomeController::class, 'index'])->name
 
 Route::get('/tags/{id}',[TagController::class,'show'] )-> name ('tags.show');
 
-Route::get('/posts/saved/index',[PostController::class,'showSaved'] )->name('saved-posts.show');
+Route::get('/posts/saved/index',[PostController::class,'showSaved'])->name('saved-posts.show');
