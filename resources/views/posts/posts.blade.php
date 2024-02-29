@@ -4,7 +4,7 @@
 <section id="{{ $post->id }}" class="my-4">
     <header>
       <img
-        src="{{asset("avatar/avatar.jpg")}}"
+      src=" @if($post->user->avatar) {{ Storage::disk('public')->url($post->user->avatar) }} @else {{ asset("avatar/avatar.jpg") }} @endif"
         alt="profile image"
       />
       <h5>{{$post->user->username}}</h5>
@@ -26,7 +26,7 @@
         <div>
           <button>
             <div>
-                @if($currentUser != null)
+                @if( $currentUser != null )
                     @if(in_array( $post->id, $likedPostsIDs ) )
                         <i id="{{ $post->id }}" class="fa-solid fa-heart like-button mb-3 pd-5"></i>
                     @else

@@ -79,7 +79,7 @@
             <a href="" class="text-dark text-decoration-none mb-3 text-lg">{{ $post->user->name }} </a>
         </div>
 
-        <div class="post-caption">
+        <div class="post-caption text-dark">
             <p>{{ $post->caption }}</p>
         </div>
 

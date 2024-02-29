@@ -60,7 +60,7 @@
                 </div>
 
                 <div class="d-flex pt-4">
-                    <div class="pr-5"><strong>3</strong> posts</div>
+                    <div class="pr-5"><strong>{{ $posts->count() }}</strong> posts</div>
                     <div class="followers pr-5"><strong>{{ $user->followers->count() }}</strong> followers</div>
                     <div class="followings pr-5"><strong>{{ $user->following->count() }}</strong> following</div>
                     @if (Auth::id() == $user->id)
@@ -241,27 +241,22 @@
                 </div>
                         <div class="row justify-content-around align-items-center">
                         <div class="col-6">
-                            @if($user != null)
-                                @if($user->id == $post->user_id)
+                            @if($loggedIn != null)
+                                @if($loggedIn->id == $post->user_id)
                                     <form method="POST" action="{{ route('posts.destroy' ,$post->id) }}">
                                         @csrf
                                         @method('DELETE')
                                         <button type="submit" class="btn btn-danger btn-sm comment-delete-button">Delete</button>
                                     </form>
-                                @endif
-                            @endif
-                        </div>
-
-                        <div class="col-6">
-                            @if($user != null)
-                                @if($user->id == $post->user_id)
+                            </div>
+                            <div class="col-6">
                                     <form method="GET" action="{{ route('posts.edit' ,$post->id) }}">
                                         <button type="submit" class="btn btn-primary btn-sm comment-update-button">Update</button>
                                     </form>
-                                @endif
-                            @endif
+                            </div>
                         </div>
-                        </div>
+                        @endif
+                    @endif
                     
                 </section>
 

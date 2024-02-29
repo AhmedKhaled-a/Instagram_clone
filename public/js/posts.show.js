@@ -24,14 +24,12 @@ console.log(token);
             success: function() {
                 console.log("Done");
             }
-
         });  
 
         // delete the comment
 
         let commentCont = button.closest('.comment');
         commentCont.remove();
-
 
     }
 

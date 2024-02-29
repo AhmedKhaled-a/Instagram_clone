@@ -16,13 +16,15 @@ use Illuminate\View\View;
 class ProfileController extends Controller
 {
     public function index(User $user) {
+        $loggedIn = Auth::user();
+
         if ($user->isBlocking(Auth::user())) {
             return view('errors.403');
         }
         $posts = Post::with(['tags', 'images', 'user'])->where('user_id' , $user->id)->orderBy('created_at' , 'DESC')
             ->paginate(6);
         // dd($posts);
-        return view('profiles.index', ['user'=>$user, 'posts' => $posts]);
+        return view('profiles.index', ['user'=>$user, 'posts' => $posts,  'loggedIn' => $loggedIn,]);
     }
 
     public function edit(Request $request): View
