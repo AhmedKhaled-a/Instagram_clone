@@ -33,10 +33,13 @@ class PostController extends Controller
             ->join('users', 'saved_posts.user_id', '=', 'users.id')->where('users.id', '=', $user->id)->get();
 
             // dd($savedPosts);
-            $posts = Post::with(['tags', 'images', 'user'])->paginate(6);
             $following = $user->following;
-            dd($following);
-            $posts = Post::with(['tags', 'images', 'user']);
+            $followingIds = $following->map(function($follow) { return $follow->id; });
+            // dd($followingIds);
+
+            $posts = Post::with(['tags', 'images', 'user'])->whereIn('user_id' , $followingIds)->orderBy('created_at' , 'DESC')
+            ->paginate(6);
+            
             $savedPostsIds = $savedPosts->map(function($savedpost) { return $savedpost->post_id; });
             $likedPostsIDs = [];
             

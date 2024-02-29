@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Http\Requests\ProfileUpdateRequest;
 use App\Models\User;
+use App\Models\Post;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
@@ -18,7 +19,10 @@ class ProfileController extends Controller
         if ($user->isBlocking(Auth::user())) {
             return view('errors.403');
         }
-        return view('profiles.index', ['user'=>$user]);
+        $posts = Post::with(['tags', 'images', 'user'])->where('user_id' , $user->id)->orderBy('created_at' , 'DESC')
+            ->paginate(6);
+        // dd($posts);
+        return view('profiles.index', ['user'=>$user, 'posts' => $posts]);
     }
 
     public function edit(Request $request): View

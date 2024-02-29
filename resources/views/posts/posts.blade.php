@@ -7,10 +7,7 @@
         src="{{asset("avatar/avatar.jpg")}}"
         alt="profile image"
       />
-      <div>
-        <p>{{ $post->user->name }}</p>
-        <i class="ri-verified-badge-fill my-auto"></i>
-      </div>
+      <h5>{{$post->user->username}}</h5>
     </header>
 
     <div class="card">

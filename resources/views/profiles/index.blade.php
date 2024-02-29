@@ -2,6 +2,7 @@
 
 @section('title')
     <title>{{ $user->name }}</title>
+    <link rel="stylesheet" href="{{ asset("css/posts.css") }}">
 @endsection
 
 @section('content')
@@ -46,11 +47,6 @@
                                         @endif
                                     </button>
                                 </form>
-                                {{-- @if (session()->has('follow success'))
-                                    <div class="alert alert-success alert-dismissible fade show" role="alert">
-                                        {{ session('follow success') }}
-                                    </div>
-                                @endif --}}
                             @endif
                         @else
                             @auth
@@ -63,10 +59,6 @@
                     @endcan
                 </div>
 
-                {{-- @if (Auth::check() && Auth::id() == $user->id)
-                    <a href="{{ route('profile.edit') }}" class="btn btn-success">Edit Profile</a>
-                @endif --}}
-
                 <div class="d-flex pt-4">
                     <div class="pr-5"><strong>3</strong> posts</div>
                     <div class="followers pr-5"><strong>{{ $user->followers->count() }}</strong> followers</div>
@@ -74,6 +66,7 @@
                     @if (Auth::id() == $user->id)
                         <div class="blocked pr-5"><strong>{{ $user->blockedUsers->count() }}</strong> Blocked users</div>
                     @endif
+
                     {{-- Followers --}}
                     <div class="followers-container d-none text-white">
                         <div class="followers-list w-25">
@@ -107,6 +100,7 @@
                             @endforeach
                         </div>
                     </div>
+
                     {{-- Followings --}}
                     <div class="followings-container d-none text-white">
                         <div class="followings-list w-25">
@@ -207,41 +201,72 @@
                     </div>
                 </div>
             @else
-                <div class="col-4 pb-4">
-                    <a href="/posts/">
-                        <img src="https://images.pexels.com/photos/248533/pexels-photo-248533.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=1"
-                            class="w-100">
-                    </a>
-                </div>
+                
+            {{-- <p class="this-posts">{{ $posts }}</p> --}}
 
-                <div class="col-4 pb-4">
-                    <a href="/posts/">
-                        <img src="https://images.pexels.com/photos/248533/pexels-photo-248533.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=1"
-                            class="w-100">
-                    </a>
+            <div class="row">
+                @foreach ($posts as $post)
+                <section id="{{ $post->id }}" class="col-4">
+                    <header class="row">
+                            <img
+                                class="col-3"
+                                width="40px"
+                                height="40px"
+                                src=" @if($user->avatar) {{ Storage::disk('public')->url($user->avatar) }} @else {{ asset("avatar/avatar.jpg") }} @endif"
+                                alt="profile image"
+                            />
+                            <h5 class="col-6">{{$post->user->username}}</h5>
+                    </header>
+                    <div class="card">
+                        <a href="{{ route('posts.show' , ['id' => $post->id]) }}">
+                        <img class="my-auto d-block w-100 h-100 post-image" src="{{ Storage::disk('public')->url($post->images[0]->img_path) }}" alt="Post image">
+                        </a>
+                    </div>
+                <div class="row social justify-content-between align-items-center">
+                    <div class="inter">
+                        <div>
+                            <div>
+                                <span class="likes-count likesCount-{{ $post->id }}"> {{ $post->likes }} likes</span>
+                            </div>
+                        @if ($post->tags->count() > 0)
+                            <div class="mb-2">
+                                @foreach ($post->tags as $tag)
+                                <a class="badge badge-dark text-light bg-secondary me-1 my-auto" href="{{ route('tags.show' ,['id' => $tag->id]) }}">{{ $tag->tag_text }}</a>
+                                @endforeach
+                            </div>
+                            @endif
+                        <a href="{{ route('posts.show' , ['id' => $post->id]) }}" class="post-caption">{{ $post->caption }}</a>
+                    </div>
+                    </div>
                 </div>
+                        <div class="row justify-content-around align-items-center">
+                        <div class="col-6">
+                            @if($user != null)
+                                @if($user->id == $post->user_id)
+                                    <form method="POST" action="{{ route('posts.destroy' ,$post->id) }}">
+                                        @csrf
+                                        @method('DELETE')
+                                        <button type="submit" class="btn btn-danger btn-sm comment-delete-button">Delete</button>
+                                    </form>
+                                @endif
+                            @endif
+                        </div>
 
-                <div class="col-4 pb-4">
-                    <a href="/posts/">
-                        <img src="https://images.pexels.com/photos/248533/pexels-photo-248533.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=1"
-                            class="w-100">
-                    </a>
-                </div>
+                        <div class="col-6">
+                            @if($user != null)
+                                @if($user->id == $post->user_id)
+                                    <form method="GET" action="{{ route('posts.edit' ,$post->id) }}">
+                                        <button type="submit" class="btn btn-primary btn-sm comment-update-button">Update</button>
+                                    </form>
+                                @endif
+                            @endif
+                        </div>
+                        </div>
+                    
+                </section>
 
-                <div class="col-4 pb-4">
-                    <a href="/posts/">
-                        <img src="https://images.pexels.com/photos/248533/pexels-photo-248533.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=1"
-                            class="w-100">
-                    </a>
-                </div>
-        </div>
+                @endforeach
+            </div>
         @endif
-        {{-- @foreach ($user->posts as $post)
-        <div class="col-4 pb-4">
-            <a href="/p/{{ $post->id }}">
-                <img src="/storage/{{ $post->image }}" class="w-100">
-            </a>
-        </div>
-        @endforeach --}}
     </div>
 @endsection
