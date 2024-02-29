@@ -30,7 +30,7 @@
                     
                 </li>
                 <li class="has-subnav">
-                    <a href="#">
+                    <a href="{{ route('profile.index' , ['user' => Auth::user()]) }}">
                        <i class="fa fa-user fa-2x"></i>
                         <span class="nav-text">
                             Survey Profile
