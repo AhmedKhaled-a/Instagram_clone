@@ -33,7 +33,7 @@
                     <a href="{{ route('profile.index' , ['user' => Auth::user()]) }}">
                        <i class="fa fa-user fa-2x"></i>
                         <span class="nav-text">
-                            Survey Profile
+                            Profile
                         </span>
                     </a>
                    
@@ -41,7 +41,7 @@
                 
             <ul class="logout">
                 <li>
-                   <a id="logoutAnchor">
+                   <a id="logoutAnchor" style="cursor: pointer;">
                          <i class="fa fa-power-off fa-2x"></i>
                         <span class="nav-text">
                             Logout

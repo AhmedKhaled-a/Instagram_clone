@@ -12,6 +12,7 @@ use App\Http\Controllers\CommentController;
 
 use App\Http\Controllers\FollowerController;
 use App\Http\Controllers\UserController;
+use Illuminate\Support\Facades\Auth;
 
 /*
 |--------------------------------------------------------------------------
@@ -25,7 +26,12 @@ use App\Http\Controllers\UserController;
 */
 
 Route::get('/', function () {
-    return view('welcome');
+    if  (Auth::check()) { //user logged in
+        return redirect()->route('posts.index');
+    } else{
+        return view('auth/login');
+    }
+
 });
 Route::get('/send', function () {
     Mail::to('may.ahmed.kassem@gmail.com')->send( new testmail());
@@ -44,7 +50,7 @@ Route::middleware('auth')->group(function () {
 });
 
 // posts routes
-Route::get('/posts',[PostController::class ,'index'])->name('posts.index');
+Route::get('/posts',[PostController::class ,'index'])->name('posts.index')->middleware('auth');;
 
 Route::get('/posts/{id}',[PostController::class,'show'] )->name('posts.show')->middleware('auth');
 
