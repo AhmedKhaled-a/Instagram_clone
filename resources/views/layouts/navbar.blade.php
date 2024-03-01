@@ -48,7 +48,7 @@
                 </li>
             <ul class="logout">
                 <li>
-                   <a href="{{route("logout")}}">
+                   <a id="logoutAnchor">
                          <i class="fa fa-power-off fa-2x"></i>
                         <span class="nav-text">
                             Logout
@@ -57,6 +57,11 @@
                 </li>  
             </ul>
         </nav>
+
+        <form id="logoutForm" action="{{route("logout")}}" method="post">
+            @csrf
+        </form>
+
         <script>
             document.querySelector(".main-menu").addEventListener('mouseover' , function() {
                 document.getElementById('username').style.display = 'block';
@@ -65,6 +70,13 @@
             document.querySelector(".main-menu").addEventListener('mouseout' , function() {
                 document.getElementById('username').style.display = 'none';
             });
+            document.getElementById("logoutAnchor").addEventListener('click' , () => {
+                document.getElementById("logoutForm").submit();
+            })
+
+
+
+
 
             
         </script>
