@@ -185,13 +185,14 @@
             </div>
         </div>
 
-        <div class="col-12">
-            <h3 class="text-center mt-5 col-11 d-inline-block">posts</h3>
-            <a href="" title="saved posts"
-                class="col-1 link-dark link-offset-2 link-underline-opacity-25 link-underline-opacity-100-hover"><img
-                    src="{{ asset('imgs/icons/save-icon.png') }}" alt="save icon" style="width:30px;">Saved</a>
-            <hr class="mb-0">
+        <div class="col-12 mt-4 d-flex">
+            <h3 class="text-center col-11 d-inline-block">posts</h3>
+            <a href="{{ route('saved-posts.show', [], false) }}" title="saved posts"
+                class="col-1 link-dark link-offset-2 link-underline-opacity-25 link-underline-opacity-100-hover d-flex align-items-center">
+                <img
+                    src="{{ asset('imgs/icons/save-icon.png') }}" alt="save icon" style="width:30px;" class="h-50">Saved</a>
         </div>
+            <hr class="mb-0">
         <div class="row pt-5">
             @if (Auth::check() && Auth::user()->isBlocking($user))
                 <div class="card w-75 mb-3 text-center mx-auto bg-secondary text-white">
@@ -201,10 +202,11 @@
                     </div>
                 </div>
             @else
-                
+
             {{-- <p class="this-posts">{{ $posts }}</p> --}}
 
             <div class="row">
+                @if (($posts->count()) > 0)
                 @foreach ($posts as $post)
                 <section id="{{ $post->id }}" class="col-4">
                     <header class="row">
@@ -257,10 +259,13 @@
                         </div>
                         @endif
                     @endif
-                    
+
                 </section>
 
                 @endforeach
+                @else
+                    <p class="text-center">No posts to show</p>
+                @endif
             </div>
         @endif
     </div>
