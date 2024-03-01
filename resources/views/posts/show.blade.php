@@ -3,6 +3,7 @@
 @section("title", "Post " . $post->id)
 
 @section("custom-css")
+
     <link rel="stylesheet" href="{{ asset('css/posts.css')}}">
 
     <style>
@@ -52,26 +53,30 @@
     <!-- Button to go back to the index page -->
     <a id="btn" href="{{ route('posts.index') }}" class="btn btn-secondary h-9 py-2 mt-3">X</a>
 
-    <div class="post-images flex-column">
-        <div id="carouselExampleIndicators" class="carousel slide " data-ride="carousel">
-            <div class="carousel-inner">
-                @foreach($post->images as $index => $image)
-                <div class="carousel-item @if($index === 0) active @endif">
-                    <img src="{{ Storage::disk('public')->url($image->img_path) }}" class="d-block w-100" id="post-img" alt="Post image">
-                </div>
-                @endforeach
-            </div>
 
-            <a class="carousel-control-prev" href="#carouselExampleIndicators" role="button" data-slide="prev">
-                <span class="carousel-control-prev-icon" aria-hidden="true"></span>
-                <span class="sr-only">Previous</span>
-              </a>
-              <a class="carousel-control-next" href="#carouselExampleIndicators" role="button" data-slide="next">
-                <span class="carousel-control-next-icon" aria-hidden="true"></span>
-                <span class="sr-only">Next</span>
-              </a>
-        </div>
-    </div>
+    
+    
+            <div id="carouselExampleSlidesOnly" class="carousel slide carousel-fade post-images flex-column" data-bs-ride="carousel">
+                <div class="carousel-item active">
+                    <img width="510" height="510" src="{{ Storage::disk('public')->url($post->images[0]->img_path) }}" class="d-block w-100">
+                </div>
+                @foreach($post->images as $index => $image)
+                    @if($loop->index == 0)
+                        @continue
+                    @endif
+                    <div class="carousel-item">
+                        <img  src="{{ Storage::disk('public')->url($image->img_path) }}" class="d-block w-100">
+                    </div>
+                @endforeach
+                <button class="carousel-control-prev" type="button" data-bs-target="#carouselExampleSlidesOnly" data-bs-slide="prev">
+                    <span class="carousel-control-prev-icon" aria-hidden="true"></span>
+                    <span class="visually-hidden">Previous</span>
+                  </button>
+                  <button class="carousel-control-next" type="button" data-bs-target="#carouselExampleSlidesOnly" data-bs-slide="next">
+                    <span class="carousel-control-next-icon" aria-hidden="true"></span>
+                    <span class="visually-hidden">Next</span>
+                </button>
+            </div>  
 
     <div class="comments-container flex-column align-items-end" style="max-height: 400px; overflow-y: auto;">
         <div class="post-header">
@@ -98,9 +103,7 @@
                         <small>{{ $comment->created_at->diffForHumans() }}</small>
                     </div>
                     <div>
-                        {{-- <form id="deleteCommentForm_{{ $comment->id }}" method="POST" action="{{ route('comment.destroy', ['id' => $comment->id]) }}"> --}}
                             <button class="btn btn-danger btn-sm comment-delete-button" data-comment-id="{{ $comment->id }}">Delete</button>
-                        {{-- </form> --}}
                     </div>
                 </div>
             </div>
@@ -120,11 +123,9 @@
                             <small>{{ $comment->created_at->diffForHumans() }}</small>
                         </div>
                         <div>
-                            {{-- <form method="POST" action="{{ route('comment.destroy' ,$comment->id) }}"> --}}
                                 @csrf
                                 @method('DELETE')
                                 <button class="btn btn-danger btn-sm comment-delete-button" data-comment-id="{{ $comment->id }}">Delete</button>
-                            {{-- </form> --}}
                         </div>
                     </div>
                 </div>
@@ -136,15 +137,11 @@
         @if($post->comments->count() > 4)
             <button id="showMoreCommentsButton" class="btn btn-primary mt-3">Show More Comments</button>
         @endif
-
         <div class="comment-form mt-3">
-            {{-- <form id="commentForm" action="{{ route('comment.store', $post->id) }}" method="post"> --}}
                 <div class="input-group">
                     <input type="text" class="form-control" name="comment_body" id="comment_body" rows="1" placeholder="Add a comment..."></input>
                     <button data-post-id="{{ $post->id }}" id="postButton" class="bg-transparent text-primary mt-2">Post</button>
-                </div>
-            {{-- </form> --}}
-            
+                </div>            
         </div>
 
     </div>

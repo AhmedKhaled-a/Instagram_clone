@@ -1,5 +1,5 @@
 @import 'https://unpkg.com/open-props' layer(design.system);
-@import 'https://unpkg.com/open-props/normalize.dark.min.css'
+@import 'https://unpkg.com/open-props/normalize.light.min.css'
   layer(demo.support);
 
 @layer demo.base {
