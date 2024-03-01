@@ -2,9 +2,9 @@
 @import "bootstrap-custom-pag.css";
 
 body{
-    margin: 0; 
+    margin: 0;
     padding: 0;
-    background: #19161c;
+    /* background: #FFF; */
     height: 100vh;
     /* display: flex; */
     justify-content: space-evenly;
@@ -67,7 +67,7 @@ h1 {
   .preview:hover .image {
     opacity: 0.3;
 }
-  
+
   .preview:hover .middle {
     opacity: 1;
 }
@@ -119,7 +119,7 @@ h1 {
     width:100%;
     max-height: 20% !important;
 }
-/* 
+/*
 button {
     background-color: red !important;
 }
@@ -159,11 +159,11 @@ button {
 }
 
 .comment {
-background-color: #f0f0f0; 
-border-radius: 10px; 
-padding: 20px; 
-margin-top: 20px; 
-box-shadow: 0 0 10px rgba(0, 0, 0, 0.1); 
+background-color: #f0f0f0;
+border-radius: 10px;
+padding: 20px;
+margin-top: 20px;
+box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
 }
 
 
@@ -236,7 +236,7 @@ box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
     width: 50%; /* Set width to 50% */
     padding-left: 20px; /* Add some left padding for spacing */
     position: relative;
-    
+
     top:70%;/* Position the user info relative to this container */
 }
 
@@ -256,12 +256,12 @@ box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
 
 .comment p {
     margin: 0;
-    font-size: 16px; 
+    font-size: 16px;
 }
 
 .comment small {
     font-size: 12px;
-    color: #999; 
+    color: #999;
 }
 
 .comment-form {
@@ -269,7 +269,7 @@ box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
 }
 
 .comment-form textarea {
-    width: calc(100% - 20px); 
+    width: calc(100% - 20px);
     border-radius: 5px;
     border: 1px solid #ddd;
     padding: 10px;
@@ -288,7 +288,7 @@ box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
 
 .user-info {
     position: absolute;
-    top: 0; 
+    top: 0;
     left: 20px;
     display: flex;
     align-items: center;
@@ -304,7 +304,7 @@ box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
 }
 
 /* Custom Search Box */
-  
+
 
 .box{
     position: relative;
@@ -317,18 +317,23 @@ box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
     width: 80px;
     height: 80px;
     background: none;
-    border: 4px solid #fd1d1d;
+    border: 4px solid #000;
     border-radius: 50px;
     box-sizing: border-box;
     font-family: Comic Sans MS;
     font-size: 26px;
-    color: #ffd52d;
+    color: #000;
     outline: none;
     transition: .5s;
 }
+
+.input:focus {
+    border-color: #333;
+    outline: #333;
+}
 .box:hover input{
     width: 600px;
-    background: #3b3640;
+    background: #FFF;
     border-radius: 10px;
 }
 .box i{
@@ -337,7 +342,7 @@ box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
     right: 15px;
     transform: translate(-50%,-50%);
     font-size: 26px;
-    color: #fd1d1d;
+    color: #000;
     transition: .2s;
 }
 .box:hover i{
@@ -353,10 +358,9 @@ box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
 }
 
 .post-caption {
-    color: #ffffff;
+    color: #000;
     width: 8em; /* the element needs a fixed width (in px, em, %, etc) */
     overflow: hidden; /* make sure it hides the content that overflows */
     white-space: nowrap; /* don't break the line */
     text-overflow: ellipsis; /* give the beautiful '...' effect */
 }
-  

@@ -1,9 +1,9 @@
 <nav class="main-menu">
             @if(Auth::user())
-            <h5 id="username" style="display: none">{{ Auth::user()->name }}</h5>
+            <h5 id="username" style="display: none" class="text-white w-100 text-center">{{ Auth::user()->name }}</h5>
             @endif
             <ul>
-                <li>
+                <li class="mt-2 mb-2">
                     <a href="{{route("posts.index")}}">
                         <i class="fa fa-film fa-2x"></i>
                         <span class="nav-text">
@@ -11,43 +11,43 @@
                         </span>
                     </a>
                 </li>
-                <li class="has-subnav">
+                <li class="has-subnav mb-2">
                     <a href="{{route("posts.create")}}">
                         <i class="fa fa-paper-plane fa-2x"></i>
                         <span class="nav-text">
                             What's on your mind
                         </span>
                     </a>
-                    
+
                 </li>
-                <li class="has-subnav">
+                <li class="has-subnav mb-2">
                     <a href="{{ route("saved-posts.show") }}">
                        <i class="fa fa-floppy-disk fa-2x"></i>
                         <span class="nav-text">
                             Saved Posts
                         </span>
                     </a>
-                    
+
                 </li>
-                <li class="has-subnav">
+                <li class="has-subnav mb-2">
                     <a href="{{ route('profile.index' , ['user' => Auth::user()]) }}">
                        <i class="fa fa-user fa-2x"></i>
                         <span class="nav-text">
                             Profile
                         </span>
                     </a>
-                   
+
                 </li>
-                
+
             <ul class="logout">
-                <li>
+                <li class="mb-2 text-white">
                    <a id="logoutAnchor" style="cursor: pointer;">
                          <i class="fa fa-power-off fa-2x"></i>
                         <span class="nav-text">
                             Logout
                         </span>
                     </a>
-                </li>  
+                </li>
             </ul>
         </nav>
 
@@ -71,5 +71,5 @@
 
 
 
-            
+
         </script>

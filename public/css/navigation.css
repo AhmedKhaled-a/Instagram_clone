@@ -47,7 +47,7 @@ width:250px;
 }
 
 #username {
-  margin-left: 33%;
+  /* margin-left: 33%; */
   padding: 12px;
 }
 
@@ -63,7 +63,7 @@ width:250px;
   -webkit-transform:translateZ(0) scale(1,1);
   -webkit-transition:all .1s linear;
   transition:all .1s linear;
-  
+
 }
 
 .main-menu .nav-icon {
