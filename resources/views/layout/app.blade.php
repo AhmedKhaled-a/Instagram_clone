@@ -20,6 +20,7 @@
     <link href="{{ asset('css/bootstrap.css') }}" rel="stylesheet">
     <link href="{{ asset('css/app.css') }}" rel="stylesheet">
     <link rel="stylesheet" href="{{ asset('css/follow.css') }}">
+    <link rel="stylesheet" href="{{ asset('css/users.css') }}">
 
 </head>
 

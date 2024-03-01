@@ -25,6 +25,7 @@ use Illuminate\Support\Facades\Auth;
 |
 */
 
+
 Route::get('/', function () {
     if  (Auth::check()) { //user logged in
         return redirect()->route('posts.index');
@@ -78,11 +79,14 @@ Route::middleware('auth')->group(function () {
 
 });
 
+// a single user profile route
 Route::get('/profile/{user}', [ProfileController::class, 'index'])->name('profile.index')->where('id', '[0-9]+');
 
+// following routes
 Route::post('/profile/{user}/follow',[FollowerController::class,'follow'])->middleware('auth')->name('user.follow');
 Route::post('/profile/{user}/unfollow',[FollowerController::class,'unfollow'])->middleware('auth')->name('user.unfollow');
 
+//
 Route::get('/email/verify', function () {
     return view('auth.verify-email');
 })->middleware('auth')->name('verification.notice');
@@ -110,3 +114,6 @@ Route::get('/home', [App\Http\Controllers\HomeController::class, 'index'])->name
 Route::get('/tags/{id}',[TagController::class,'show'] )->name('tags.show');
 
 Route::get('/posts/saved/index',[PostController::class,'showSaved'])->name('saved-posts.show');
+
+// users page for users search page
+Route::get('/users', [UserController::class,'index'])->name('user.index');
