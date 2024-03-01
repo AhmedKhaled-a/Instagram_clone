@@ -26,7 +26,7 @@
 <body>
     <nav class="navbar navbar-expand-lg bg-body-tertiary shadow-sm">
         <div class="container-fluid">
-            <a class="navbar-brand d-flex" href="{{ url('/') }}">
+            <a class="navbar-brand d-flex" href="{{ route("posts.index") }}">
                 <div class="pe-2" style="border-right: 1px solid #333333">
                     <img src="{{ asset('img/instagram_logo.jpg') }}" width="30px">
                 </div>
