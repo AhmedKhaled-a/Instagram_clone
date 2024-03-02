@@ -2,18 +2,18 @@
 
 @section('title')
     <title>{{ $user->name }}</title>
-    <link rel="stylesheet" href="{{ asset("css/posts.css") }}">
+    <link rel="stylesheet" href="{{ asset('css/posts.css') }}">
 @endsection
 
 @section('content')
     @if (session()->has('success'))
-    <div class="alert alert-success alert-dismissible fade show w-25 mx-auto" role="alert">
-        <strong>Success,</strong> {{ session('success') }}
-        <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
-    </div>
+        <div class="alert alert-success alert-dismissible fade show w-25 mx-auto" role="alert">
+            <strong>Success,</strong> {{ session('success') }}
+            <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+        </div>
     @endif
 
-    <div class="container">
+    <div class="container mt-4">
         <div class="row">
             <div class="col-4 d-flex align-items-start justify-content-center">
                 <img src="{{ $user->getAvatarUrl() }}" class=" w-50 rounded-circle">
@@ -189,10 +189,10 @@
             <h3 class="text-center col-11 d-inline-block">posts</h3>
             <a href="{{ route('saved-posts.show', [], false) }}" title="saved posts"
                 class="col-1 link-dark link-offset-2 link-underline-opacity-25 link-underline-opacity-100-hover d-flex align-items-center">
-                <img
-                    src="{{ asset('imgs/icons/save-icon.png') }}" alt="save icon" style="width:30px;" class="h-50">Saved</a>
+                <img src="{{ asset('imgs/icons/save-icon.png') }}" alt="save icon" style="width:30px;"
+                    class="h-50">Saved</a>
         </div>
-            <hr class="mb-0">
+        <hr class="mb-0">
         <div class="row pt-5">
             @if (Auth::check() && Auth::user()->isBlocking($user))
                 <div class="card w-75 mb-3 text-center mx-auto bg-secondary text-white">
@@ -202,71 +202,36 @@
                     </div>
                 </div>
             @else
+                {{-- <p class="this-posts">{{ $posts }}</p> --}}
+                @if ($posts->count() > 0)
+                    @foreach ($posts as $post)
+                        <div class="col-4">
+                            <a href="{{ route('posts.show', ['id' => $post->id]) }}">
+                                <img class="" src="{{ Storage::disk('public')->url($post->images[0]->img_path) }}"
+                                    alt="Post image">
+                            </a>
 
-            {{-- <p class="this-posts">{{ $posts }}</p> --}}
 
-            <div class="row">
-                @if (($posts->count()) > 0)
-                @foreach ($posts as $post)
-                <section id="{{ $post->id }}" class="col-4">
-                    <header class="row">
-                            <img
-                                class="col-3"
-                                width="40px"
-                                height="40px"
-                                src=" @if($user->avatar) {{ Storage::disk('public')->url($user->avatar) }} @else {{ asset("avatar/avatar.jpg") }} @endif"
-                                alt="profile image"
-                            />
-                            <h5 class="col-6">{{$post->user->username}}</h5>
-                    </header>
-                    <div class="card">
-                        <a href="{{ route('posts.show' , ['id' => $post->id]) }}">
-                        <img class="my-auto d-block w-100 h-100 post-image" src="{{ Storage::disk('public')->url($post->images[0]->img_path) }}" alt="Post image">
-                        </a>
-                    </div>
-                <div class="row social justify-content-between align-items-center">
-                    <div class="inter">
-                        <div>
-                            <div>
-                                <span class="likes-count likesCount-{{ $post->id }}"> {{ $post->likes }} likes</span>
-                            </div>
-                        @if ($post->tags->count() > 0)
-                            <div class="mb-2">
-                                @foreach ($post->tags as $tag)
-                                <a class="badge badge-dark text-light bg-secondary me-1 my-auto" href="{{ route('tags.show' ,['id' => $tag->id]) }}">{{ $tag->tag_text }}</a>
-                                @endforeach
-                            </div>
-                            @endif
-                        <a href="{{ route('posts.show' , ['id' => $post->id]) }}" class="post-caption">{{ $post->caption }}</a>
-                    </div>
-                    </div>
-                </div>
-                        <div class="row justify-content-around align-items-center">
-                        <div class="col-6">
-                            @if($loggedIn != null)
-                                @if($loggedIn->id == $post->user_id)
-                                    <form method="POST" action="{{ route('posts.destroy' ,$post->id) }}">
-                                        @csrf
-                                        @method('DELETE')
-                                        <button type="submit" class="btn btn-danger btn-sm comment-delete-button">Delete</button>
-                                    </form>
-                            </div>
-                            <div class="col-6">
-                                    <form method="GET" action="{{ route('posts.edit' ,$post->id) }}">
-                                        <button type="submit" class="btn btn-primary btn-sm comment-update-button">Update</button>
-                                    </form>
-                            </div>
+                                @if ($loggedIn != null)
+                                    @if ($loggedIn->id == $post->user_id)
+                                        <form method="POST" action="{{ route('posts.destroy', $post->id) }}" id="delete">
+                                            @csrf
+                                            @method('DELETE')
+                                            <button type="submit"
+                                                class=""><i class="fa-solid fa-trash-can" title="Delete The Post"></i></button>
+                                        </form>
+
+                                        <form method="GET" action="{{ route('posts.edit', $post->id) }}" id="edit">
+                                            <button type="submit"
+                                                class=""><i class="fa-solid fa-pen-to-square" title="Edit The Post"></i></button>
+                                        </form>
+                                    @endif
+                                @endif
                         </div>
-                        @endif
-                    @endif
-
-                </section>
-
-                @endforeach
-                @else
-                    <p class="text-center">No posts to show</p>
-                @endif
-            </div>
+                    @endforeach
+    @else
+        <p class="text-center">No posts to show</p>
+        @endif
         @endif
     </div>
 @endsection

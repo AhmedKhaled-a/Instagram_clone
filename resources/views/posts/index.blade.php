@@ -11,7 +11,7 @@
 @endsection
 
 @section("content")
-    <h1>Instagram</h1>        
+    <h1>Instagram</h1>
     <div class="box my-5 d-flex justify-content-center">
         <form method="get" action={{ route('posts.search') }}>
             @csrf

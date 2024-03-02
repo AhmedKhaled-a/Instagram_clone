@@ -27,7 +27,7 @@ class PostController extends Controller
         // Todo: Change user id to Auth
         $user = Auth::user();
         // $userSaved = User::find($user->id)->with(['savedPosts'])->get();
-        
+
         if($user) {
             $savedPosts = SavedPost::join('posts', 'posts.id', '=', 'saved_posts.post_id')
             ->join('users', 'saved_posts.user_id', '=', 'users.id')->where('users.id', '=', $user->id)->get();
@@ -39,18 +39,18 @@ class PostController extends Controller
 
             $posts = Post::with(['tags', 'images', 'user'])->whereIn('user_id' , $followingIds)->orderBy('created_at' , 'DESC')
             ->paginate(6);
-            
+
             $savedPostsIds = $savedPosts->map(function($savedpost) { return $savedpost->post_id; });
             $likedPostsIDs = [];
-            
+
             $result = Like::join('posts', 'posts.id', '=', 'likes.post_id')
             ->join('users', 'likes.user_id', '=', 'users.id')->where('users.id', '=', $user->id)->get();
-                
-            
+
+
             foreach($result as $like) {
                 array_push($likedPostsIDs, $like->post_id);
             }
-     
+
             return view('posts.index', [
                 'posts' => $posts,
                 'likedPostsIDs' => $likedPostsIDs,
@@ -60,20 +60,20 @@ class PostController extends Controller
             ]);
         }
     }
-    
+
 
     /**
      * Show the form for creating a new resource.
      */
     public function create()
 
-    {      
-       /*  
+    {
+       /*
        if (Auth::guest()) {
            return redirect('/login');
        }*/
-       
-        return view('posts.create'); 
+
+        return view('posts.create');
 
     }
 
@@ -87,15 +87,15 @@ class PostController extends Controller
         $user_id = Auth::id();
 
         // Validate data
-        $data = $request->validate([ 
+        $data = $request->validate([
             'caption' => 'nullable|string|max:255',
             'images' => 'required',
             'tag_text' => 'nullable',
             // 'tag_text.*' => 'string|distinct'
         ]);
-        
-            
-    
+
+
+
         // Create new post
         $extractedTags = PostController::getTags($data['caption']);
         $caption = trim($extractedTags[0]);
@@ -105,9 +105,9 @@ class PostController extends Controller
             'caption' => $caption,
             'user_id' => $user_id,
         ]);
-    
+
         $imagePath = '';
-        
+
         $imageFiles = $request->file('images');
         // dd($imageFiles);
         $manager = new ImageManager(new Driver());
@@ -115,7 +115,7 @@ class PostController extends Controller
         $storeDir = storage_path("app/public/posts/");
         if (!file_exists( $storeDir ) || !is_dir( $storeDir) ) {   mkdir($storeDir); }
         if($imageFiles) {
-            foreach ($imageFiles as $imageFile) {    
+            foreach ($imageFiles as $imageFile) {
                 $image_name = Str::random(18) . "." . $imageFile->extension();
                 $img = $manager->read($imageFile);
                 $img = $img->resize(800, 800);
@@ -138,14 +138,14 @@ class PostController extends Controller
                 $tag = Tag::firstOrCreate(['tag_text' => $hashtag]);
                 $exists = $post->tags->contains($tag);
                 if(!$exists) {
-                    $post->tags()->attach($tag->id); 
-                }    
+                    $post->tags()->attach($tag->id);
+                }
             }
         }
-    
+
         return redirect()->route('posts.index');
     }
-    
+
 
     /**
      * Display the specified resource.
@@ -177,18 +177,18 @@ class PostController extends Controller
     public function update(Request $request, string $id)
     {
         $post = Post::findOrFail($id);
-        $data = $request->validate([ 
+        $data = $request->validate([
             'caption' =>'nullable|max:255',
         ]);
 
         // dd($extractedTags);
         $imagePath = '';
-        
+
         $imageFiles = $request->file('images');
         // dd($imageFiles);
 
         if($imageFiles) {
-            foreach ($imageFiles as $imageFile) {    
+            foreach ($imageFiles as $imageFile) {
                 // Todo: Add multiple post images
                 $imagePath = $imageFile->store('posts' , 'public');
                 $postImage = new Post_image();
@@ -206,19 +206,19 @@ class PostController extends Controller
 
         //creating new post
         $post->update(["caption" => $caption]);
-        
+
         // Attach tags to the post
         if($extractedTags !== null){
             foreach($extractedTags as $hashtag){
                 $tag = Tag::firstOrCreate(['tag_text' => $hashtag]);
                 $exists = $post->tags->contains($tag);
                 if(!$exists) {
-                    $post->tags()->attach($tag->id); 
-                }    
+                    $post->tags()->attach($tag->id);
+                }
             }
         }
 
-        return redirect()->route('posts.index');
+        return redirect()->route('posts.show', ['id' => $id]);
     }
 
     /**
@@ -248,7 +248,7 @@ class PostController extends Controller
 
     }
 
-    public function search(Request $request) 
+    public function search(Request $request)
     {
         $user = Auth::user();
 
@@ -259,17 +259,17 @@ class PostController extends Controller
         ->join('users', 'saved_posts.user_id', '=', 'users.id')->where('users.id', '=', $user->id)->get();
 
         $likedPostsIDs = [];
-        
+
         $result = Post::join('likes', 'posts.id', '=', 'likes.post_id')
         ->join('users', 'likes.user_id', '=', 'users.id')->get();
         $savedPostsIds = $savedPosts->map(function($savedpost) { return $savedpost->post_id; });
-        
-        
+
+
         foreach($result as $likedPost) {
             // dd($likedPost);
             array_push($likedPostsIDs, $likedPost->post_id);
         }
-     
+
         return view('posts.index', [
             'posts' => $posts,
             'likedPostsIDs' => $likedPostsIDs,
@@ -283,7 +283,7 @@ class PostController extends Controller
         return response()->json($likes, 200);
     }
 
-    public function toggleLike(string $id, Request $request) 
+    public function toggleLike(string $id, Request $request)
     {
         $data = json_decode($request->getContent(), true);
         // dd($data);
@@ -295,7 +295,7 @@ class PostController extends Controller
         if ($existingLike) {
             // If the user has already liked the post, unlike it
             $existingLike->delete();
-            
+
             $post->decrement('likes');
             return response()->json(['message' => 'Post unliked successfully']);
         } else {
@@ -335,18 +335,18 @@ class PostController extends Controller
     public function showSaved() {
         $user = Auth::user();
         // $userSaved = User::find($user->id)->with(['savedPosts'])->get();
-        
+
 
         $posts = Post::join('saved_posts', 'posts.id', '=', 'saved_posts.post_id')
         ->where('saved_posts.user_id', '=', $user->id)
         ->with(['tags', 'images', 'user'])
-        ->select("posts.*") 
+        ->select("posts.*")
         ->paginate(6);
 
         $savedPostsIds = $posts->map(function($savedpost) { return $savedpost->id; });
         // dd($savedPostsIds);
         $likedPostsIDs = [];
-        
+
         $result = Like::join('posts', 'posts.id', '=', 'likes.post_id')
         ->join('users', 'likes.user_id', '=', 'users.id')->where('users.id', '=', $user->id)->get();
 

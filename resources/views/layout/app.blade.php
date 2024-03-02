@@ -20,11 +20,13 @@
     <link href="{{ asset('css/bootstrap.css') }}" rel="stylesheet">
     <link href="{{ asset('css/app.css') }}" rel="stylesheet">
     <link rel="stylesheet" href="{{ asset('css/follow.css') }}">
+    @vite(['resources/css/app.css', 'resources/js/app.js'])
 
 </head>
 
 <body>
-    <nav class="navbar navbar-expand-lg bg-body-tertiary shadow-sm">
+    @include('layouts.navigation')
+    {{-- <nav class="navbar navbar-expand-lg bg-body-tertiary shadow-sm">
         <div class="container-fluid">
             <a class="navbar-brand d-flex" href="{{ route("posts.index") }}">
                 <div class="pe-2" style="border-right: 1px solid #333333">
@@ -73,7 +75,7 @@
                 </ul>
             </div>
         </div>
-    </nav>
+    </nav> --}}
 
     <div id="app">
         <main class="py-4">
