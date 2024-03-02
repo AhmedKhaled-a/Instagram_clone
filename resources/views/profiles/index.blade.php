@@ -193,10 +193,13 @@
 
         <div class="col-12 mt-4 d-flex">
             <h3 class="text-center col-11 d-inline-block">posts</h3>
+            @if (Auth::check() && Auth::id() == $user->id)
             <a href="{{ route('saved-posts.show', [], false) }}" title="saved posts"
-                class="col-1 link-dark link-offset-2 link-underline-opacity-25 link-underline-opacity-100-hover d-flex align-items-center">
+                class="col-1 link-dark link-offset-2 text-decoration-none d-flex align-items-center">
                 <img src="{{ asset('imgs/icons/save-icon.png') }}" alt="save icon" style="width:30px;"
                     class="h-50">Saved</a>
+            @endif
+            
         </div>
         <hr class="mb-0">
         <div class="row pt-5 mb-5">

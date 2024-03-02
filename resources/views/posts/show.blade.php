@@ -49,7 +49,7 @@
 @endsection
 
 @section('content')
-
+    <span id="username">{{ Auth::user()->username }}</span>
     @if ($post == '')
         No post with this id
     @else

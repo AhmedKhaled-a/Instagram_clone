@@ -17,13 +17,13 @@
             </div>
             <div class="mb-3">
                 <label for="caption" class="form-label">Caption</label>
-                <div class="container">
+                <div class="">
                     <input type="text" value="{{  old("caption")  }}" name="caption" id="caption" class="form-control">
                 </div>
             </div>
             <button type="submit" class="btn btn-primary mb-3 mt-2">Add Post</button>
     </form>
-    <div class="image-preview-container">
+    <div class="image-preview-container my-3 border-0">
     </div>
 </div>
 @endsection
