@@ -15,8 +15,8 @@
     <div class="box my-5 d-flex justify-content-center">
         <form method="get" action={{ route('posts.search') }}>
             @csrf
-                <input type="text" class="input" name="search" onmouseout="this.value = ''; this.blur();">
-                <i id="searchIcon" class="fas fa-search"></i>
+            <i id="searchIcon" class="fas fa-search"></i>
+            <input type="text" class="input" name="search" onmouseout="this.value = ''; this.blur();">    
         </form>
     </div>
     @if($currentUser)
