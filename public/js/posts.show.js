@@ -43,17 +43,18 @@ function postComment(event) {
     console.log("starting click event listener");
     let commentInput = document.getElementById("comment_body");
 
-    let username = document.getElementById('username').innerText;
+    let userEle = document.getElementById('username')
+    let userAvatar = userEle.getAttribute('data-user-avatar')
+    let username = userEle.innerText;
     // console.log(username);
-
 
     let postId = event.target.getAttribute('data-post-id');
 
     console.log(postId);
 
     let button = document.createElement('button');
-    button.className = "comment-delete-button";
-    button.innerHTML = '<i class="fa-solid fa-trash-can text-danger fs-5"></i>';
+    button.className = "btn btn-danger btn-sm comment-delete-button";
+    button.innerText = 'Delete';
     button.addEventListener('click' , commentDelete);
 
     $.ajax({
@@ -70,7 +71,7 @@ function postComment(event) {
         }
     });
 
-    let img_path = 'http://localhost:8000/avatar/avatar.jpg';
+    let img_path = `http://localhost:8000/storage/${userAvatar}`;
 
     let cont = document.createElement('div');
     cont.className = "comment";
@@ -101,10 +102,12 @@ function postComment(event) {
     commentInput.value = '';
 }
 
-// document.getElementById('showMoreCommentsButton').addEventListener('click' , function(e) {
-//     document.querySelectorAll('.remaining-comments .comment').forEach(comment => {
-//         document.querySelector('.comments-container').appendChild(comment);
-//     });
+document.getElementById('showMoreCommentsButton').addEventListener('click' , function(e) {
+    document.querySelectorAll('.remaining-comments .comment').forEach(comment => {
+        let postForm = document.getElementById("postForm");
+        postForm.insertAdjacentElement("beforebegin" , comment);
+        // document.querySelector('.comments-container').appendChild(); 
+    });
 
-//     e.target.style.display = 'none';
-// });
+    e.target.style.display = 'none';
+});

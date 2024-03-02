@@ -171,7 +171,7 @@
                     {{-- End Blocked Users --}}
                 </div>
                 <div class="pt-3">
-                    <strong>{{ $user->name }}</strong>
+                    <strong>{{ $user->username }}</strong>
                     <span
                         class="badge {{ $user->gender == 'male' ? 'text-bg-primary' : 'text-bg-danger' }}">{{ $user->gender }}
                     </span>

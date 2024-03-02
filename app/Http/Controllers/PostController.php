@@ -186,11 +186,18 @@ class PostController extends Controller
 
         $imageFiles = $request->file('images');
         // dd($imageFiles);
+        $manager = new ImageManager(new Driver());
 
+        $storeDir = storage_path("app/public/posts/");
+        if (!file_exists( $storeDir ) || !is_dir( $storeDir) ) {   mkdir($storeDir); }
         if($imageFiles) {
             foreach ($imageFiles as $imageFile) {
+                $image_name = Str::random(18) . "." . $imageFile->extension();
+                $img = $manager->read($imageFile);
+                $img = $img->resize(800, 800);
+                $img = $img->toJpeg(80)->save(storage_path("app/public/posts/" . $image_name));
                 // Todo: Add multiple post images
-                $imagePath = $imageFile->store('posts' , 'public');
+                $imagePath = "posts/" . $image_name;
                 $postImage = new Post_image();
                 $postImage->post_id =$post->id;
                 $postImage->img_path = $imagePath;
