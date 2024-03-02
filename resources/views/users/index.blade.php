@@ -12,7 +12,7 @@
             <ul class="list-unstyled">
                 @foreach ($users as $user)
                     <li class="user">
-                        <a href="{{ route('profile.index', ['user' => $user->id]) }}">
+                        <a href="{{ route('profile.index', ['user' => $user->id]) }}" class="d-flex align-items-center text-decoration-none text-dark">
                             <img class="rounded-circle me-2" width="40" src="{{ $user->getAvatarUrl() }}" alt="">
                             {{ $user->name }}
                         </a>
