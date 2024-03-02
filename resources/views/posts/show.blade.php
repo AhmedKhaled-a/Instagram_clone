@@ -2,14 +2,8 @@
 
 @section('title', 'Post ' . '(' . $post->user->username . ')')
 
-<<<<<<< HEAD
-@section("custom-css")
-
-    <link rel="stylesheet" href="{{ asset('css/posts.css')}}">
-=======
 @section('custom-css')
     <link rel="stylesheet" href="{{ asset('css/posts.css') }}">
->>>>>>> general-styles
 
     <style>
         .comments-container {
@@ -55,7 +49,7 @@
 @endsection
 
 @section('content')
-
+    <span id="username">{{ Auth::user()->username }}</span>
     @if ($post == '')
         No post with this id
     @else
@@ -75,97 +69,6 @@
                         @endforeach
                     </div>
 
-<<<<<<< HEAD
-
-    
-    
-            <div id="carouselExampleSlidesOnly" class="carousel slide carousel-fade post-images flex-column" data-bs-ride="carousel">
-                <div class="carousel-item active">
-                    <img width="510" height="510" src="{{ Storage::disk('public')->url($post->images[0]->img_path) }}" class="d-block w-100">
-                </div>
-                @foreach($post->images as $index => $image)
-                    @if($loop->index == 0)
-                        @continue
-                    @endif
-                    <div class="carousel-item">
-                        <img  src="{{ Storage::disk('public')->url($image->img_path) }}" class="d-block w-100">
-                    </div>
-                @endforeach
-                <button class="carousel-control-prev" type="button" data-bs-target="#carouselExampleSlidesOnly" data-bs-slide="prev">
-                    <span class="carousel-control-prev-icon" aria-hidden="true"></span>
-                    <span class="visually-hidden">Previous</span>
-                  </button>
-                  <button class="carousel-control-next" type="button" data-bs-target="#carouselExampleSlidesOnly" data-bs-slide="next">
-                    <span class="carousel-control-next-icon" aria-hidden="true"></span>
-                    <span class="visually-hidden">Next</span>
-                </button>
-            </div>  
-
-    <div class="comments-container flex-column align-items-end" style="max-height: 400px; overflow-y: auto;">
-        <div class="post-header">
-            <img src="{{ asset('avatar/avatar.jpg') }}" alt="User Image">
-            <a href="" class="text-dark text-decoration-none mb-3 text-lg">{{ $post->user->name }} </a>
-        </div>
-
-        <div class="post-caption text-dark">
-            <p>{{ $post->caption }}</p>
-        </div>
-
-        <h6 id="commentsTitle" class="text-dark">Comments</h6>
-        <div id="commentContainer">
-        @foreach($post->comments->reverse() as $comment)
-
-            <div class="comment">
-                <div class="d-flex mb-3">
-                    <img src="{{ asset('avatar/avatar.jpg') }}" alt="" class='w-10 rounded-circle'>
-                    <a href="" class="text-dark text-decoration-none text-lg">{{ $post->user->name }}</a>
-                </div>
-                <div class="d-flex justify-content-between">
-                    <div>
-                        <p>{{ $comment->comment_body }}</p>
-                        <small>{{ $comment->created_at->diffForHumans() }}</small>
-                    </div>
-                    <div>
-                            <button class="btn btn-danger btn-sm comment-delete-button" data-comment-id="{{ $comment->id }}">Delete</button>
-                    </div>
-                </div>
-            </div>
-
-        @endforeach
-
-        <div class="remaining-comments" style="display: none;">
-            @foreach($post->comments->reverse()->slice(4) as $comment)
-                <div class="comment">
-                    <div class="d-flex mb-3">
-                        <img src="{{ asset('avatar/avatar.jpg') }}" alt="" class='w-10 rounded-circle'>
-                        <a href="" class="text-dark text-decoration-none text-lg">{{ $post->user->name }} </a>
-                    </div>
-                    <div class="d-flex justify-content-between">
-                        <div>
-                            <p>{{ $comment->comment_body }}</p>
-                            <small>{{ $comment->created_at->diffForHumans() }}</small>
-                        </div>
-                        <div>
-                                @csrf
-                                @method('DELETE')
-                                <button class="btn btn-danger btn-sm comment-delete-button" data-comment-id="{{ $comment->id }}">Delete</button>
-                        </div>
-                    </div>
-                </div>
-            @endforeach
-        </div>
-    </div>
-
-
-        @if($post->comments->count() > 4)
-            <button id="showMoreCommentsButton" class="btn btn-primary mt-3">Show More Comments</button>
-        @endif
-        <div class="comment-form mt-3">
-                <div class="input-group">
-                    <input type="text" class="form-control" name="comment_body" id="comment_body" rows="1" placeholder="Add a comment..."></input>
-                    <button data-post-id="{{ $post->id }}" id="postButton" class="bg-transparent text-primary mt-2">Post</button>
-                </div>            
-=======
                     <a class="carousel-control-prev" href="#carouselExampleIndicators" role="button" data-slide="prev">
                         <span class="carousel-control-prev-icon" aria-hidden="true"></span>
                         <span class="sr-only">Previous</span>
@@ -267,7 +170,6 @@
                     </div>
                 </div>
             </div>
->>>>>>> general-styles
         </div>
 
     @endif

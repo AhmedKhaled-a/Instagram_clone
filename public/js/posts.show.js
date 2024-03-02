@@ -44,15 +44,16 @@ function postComment(event) {
     let commentInput = document.getElementById("comment_body");
 
     let username = document.getElementById('username').innerText;
-    console.log(username);
+    // console.log(username);
+
 
     let postId = event.target.getAttribute('data-post-id');
 
     console.log(postId);
 
     let button = document.createElement('button');
-    button.className = "btn btn-danger btn-sm comment-delete-button";
-    button.innerText = 'Delete';
+    button.className = "comment-delete-button";
+    button.innerHTML = '<i class="fa-solid fa-trash-can text-danger fs-5"></i>';
     button.addEventListener('click' , commentDelete);
 
     $.ajax({
