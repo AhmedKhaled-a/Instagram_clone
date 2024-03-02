@@ -11,9 +11,9 @@
                 </span>
             </a>
         </li>
-        <li>
+        <li class="mt-4 mb-3">
             <a href="{{ route('user.index') }}">
-                <i class="fa fa-search fa-2x"></i>
+                <i class="fa fa-search fa-2x fs-4 mt-3"></i>
                 <span class="nav-text">
                     Search
                 </span>
