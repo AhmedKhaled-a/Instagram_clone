@@ -13,7 +13,7 @@
         </div>
     @endif
 
-    <div class="container">
+    <div class="container mt-4">
         <div class="row">
             <div class="col-4 d-flex align-items-start justify-content-center">
                 <img src="{{ $user->getAvatarUrl() }}" class=" w-50 rounded-circle">
@@ -203,21 +203,35 @@
                 </div>
             @else
                 {{-- <p class="this-posts">{{ $posts }}</p> --}}
-                    @if ($posts->count() > 0)
+                @if ($posts->count() > 0)
+                    @foreach ($posts as $post)
+                        <div class="col-4">
+                            <a href="{{ route('posts.show', ['id' => $post->id]) }}">
+                                <img class="" src="{{ Storage::disk('public')->url($post->images[0]->img_path) }}"
+                                    alt="Post image">
+                            </a>
 
-                            @foreach ($posts as $post)
-                                <div class="col-4">
-                                    <a href="{{ route('posts.show', ['id' => $post->id]) }}">
-                                        <img class=""
-                                            src="{{ Storage::disk('public')->url($post->images[0]->img_path) }}"
-                                            alt="Post image">
-                                    </a>
-                                </div>
-                            @endforeach
 
-                    @else
-                        <p class="text-center">No posts to show</p>
-                    @endif
-            @endif
-        </div>
-    @endsection
+                                @if ($loggedIn != null)
+                                    @if ($loggedIn->id == $post->user_id)
+                                        <form method="POST" action="{{ route('posts.destroy', $post->id) }}" id="delete">
+                                            @csrf
+                                            @method('DELETE')
+                                            <button type="submit"
+                                                class=""><i class="fa-solid fa-trash-can" title="Delete The Post"></i></button>
+                                        </form>
+
+                                        <form method="GET" action="{{ route('posts.edit', $post->id) }}" id="edit">
+                                            <button type="submit"
+                                                class=""><i class="fa-solid fa-pen-to-square" title="Edit The Post"></i></button>
+                                        </form>
+                                    @endif
+                                @endif
+                        </div>
+                    @endforeach
+    @else
+        <p class="text-center">No posts to show</p>
+        @endif
+        @endif
+    </div>
+@endsection

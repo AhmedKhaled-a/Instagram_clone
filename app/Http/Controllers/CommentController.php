@@ -30,12 +30,13 @@ class CommentController extends Controller
         $comment->save();
         return response()->json(['message' => 'Comment Added', 'id' => $comment->id]);
     }
-    
+
     public function destroy($id){
-    
+
       $comment=Comment::findOrFail($id);
       $comment->delete();
-      return response()->json(['message' => 'Comment Deleted']);
-    
+      return redirect()->back();
+    //   return response()->json(['message' => 'Comment Deleted']);
+
     }
 }

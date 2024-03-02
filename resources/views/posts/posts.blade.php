@@ -2,9 +2,8 @@
 @foreach ($posts as $post)
     <section id="{{ $post->id }}" class="my-4">
         <header>
-            <img src=" @if ($post->user->avatar) {{ Storage::disk('public')->url($post->user->avatar) }} @else {{ asset('avatar/avatar.jpg') }} @endif"
-                alt="profile image" />
-            <h5>{{ $post->user->username }}</h5>
+            <img src="{{ $post->user->getAvatarUrl() }}" alt="profile image" />
+            <a href="{{ route('profile.index', ['user'=>$post->user->id], false) }}" class="text-dark text-decoration-none"><h5>{{ $post->user->username }}</h5></a>
         </header>
 
         <div class="card">
