@@ -8,6 +8,22 @@ use Illuminate\Http\Request;
 
 class UserController extends Controller
 {
+    // Searching Function
+    public function index(Request $request)
+    {
+            $search = $request->input('search');
+            $users = [];
+            if ($search) {
+                $users = User::where('name', 'like', '%' . $search . '%')
+                    ->orWhere('username', 'like', '%' . $search . '%')
+                    ->get();
+            }
+            return view('users.index', compact('users', 'search'));
+        
+        
+    }
+    
+    
     public function blockUser(Request $request, User $blockedUser)
     {
         $user = $request->user();
