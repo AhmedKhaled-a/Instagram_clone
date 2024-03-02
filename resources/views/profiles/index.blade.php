@@ -7,7 +7,7 @@
 
 @section('content')
     @if (session()->has('success'))
-        <div class="alert alert-success alert-dismissible fade show w-25 mx-auto" role="alert">
+        <div class="alert alert-success alert-dismissible fade show w-25 mx-auto" role="alert" id="block-alert">
             <strong>Success,</strong> {{ session('success') }}
             <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
         </div>
@@ -74,8 +74,10 @@
                             <hr style="background-color: #5d6062">
                             @foreach ($user->followers as $follower)
                                 <div class="d-flex justify-content-between align-items-center">
-                                    <a
-                                        href="{{ route('profile.index', ['user' => $follower->id]) }}">{{ $follower->name }}</a>
+                                    <a href="{{ route('profile.index', ['user' => $follower->id]) }}" class=" text-decoration-none d-flex justify-content-start align-items-center text-white">
+                                        <img src="{{ $follower->getAvatarUrl() }}" alt="user photo" class=" rounded-circle me-2" style="width: 40px; height:40px;">
+                                        {{ $follower->name }}
+                                    </a>
                                     @auth
                                         @if (Auth::id() == $user->id)
                                             {{-- Block Button --}}
@@ -83,13 +85,13 @@
                                                 <form action="{{ route('users.unblock', $follower) }}" method="POST"
                                                     class=" d-inline-block">
                                                     @csrf
-                                                    <button type="submit" class="btn btn-dark">unblock</button>
+                                                    <button type="submit" class="btn btn-secondary">unblock</button>
                                                 </form>
                                             @else
                                                 <form action="{{ route('users.block', $follower) }}" method="POST"
                                                     class=" d-inline-block">
                                                     @csrf
-                                                    <button type="submit" class="btn btn-dark">Block</button>
+                                                    <button type="submit" class="btn btn-secondary">Block</button>
                                                 </form>
                                             @endif
                                             {{-- End Block Button --}}
@@ -108,8 +110,10 @@
                             <hr style="background-color: #5d6062">
                             @foreach ($user->following as $followedUser)
                                 <div class="d-flex justify-content-between align-items-center">
-                                    <a
-                                        href="{{ route('profile.index', ['user' => $followedUser->id]) }}">{{ $followedUser->name }}</a>
+                                    <a href="{{ route('profile.index', ['user' => $followedUser->id]) }}" class=" text-decoration-none d-flex justify-content-start align-items-center text-white">
+                                        <img src="{{ $followedUser->getAvatarUrl() }}" alt="user photo" class=" rounded-circle me-2" style="width: 40px; height:40px;">
+                                        {{ $followedUser->name }}
+                                    </a>
                                     @auth
                                         @if (Auth::id() == $user->id)
                                             {{-- Block Button --}}
@@ -117,13 +121,13 @@
                                                 <form action="{{ route('users.unblock', $followedUser) }}" method="POST"
                                                     class=" d-inline-block">
                                                     @csrf
-                                                    <button type="submit" class="btn btn-dark">unblock</button>
+                                                    <button type="submit" class="btn btn-secondary">unblock</button>
                                                 </form>
                                             @else
                                                 <form action="{{ route('users.block', $followedUser) }}" method="POST"
                                                     class=" d-inline-block">
                                                     @csrf
-                                                    <button type="submit" class="btn btn-dark">Block</button>
+                                                    <button type="submit" class="btn btn-secondary">Block</button>
                                                 </form>
                                             @endif
                                             {{-- End Block Button --}}
@@ -142,8 +146,10 @@
                             <hr style="background-color: #5d6062">
                             @foreach ($user->blockedUsers as $blockedUser)
                                 <div class="d-flex justify-content-between align-items-center">
-                                    <a
-                                        href="{{ route('profile.index', ['user' => $blockedUser->id]) }}">{{ $blockedUser->name }}</a>
+                                    <a href="{{ route('profile.index', ['user' => $blockedUser->id]) }}" class=" text-decoration-none d-flex justify-content-start align-items-center text-white">
+                                        <img src="{{ $blockedUser->getAvatarUrl() }}" alt="user photo" class=" rounded-circle me-2" style="width: 40px; height:40px;">
+                                        {{ $blockedUser->name }}
+                                    </a>
                                     @auth
                                         @if (Auth::id() == $user->id)
                                             {{-- Block Button --}}
@@ -151,7 +157,7 @@
                                                 <form action="{{ route('users.unblock', $blockedUser) }}" method="POST"
                                                     class=" d-inline-block">
                                                     @csrf
-                                                    <button type="submit" class="btn btn-dark">unblock</button>
+                                                    <button type="submit" class="btn btn-secondary">unblock</button>
                                                 </form>
                                             @endif
                                             {{-- End Block Button --}}
@@ -193,11 +199,11 @@
                     class="h-50">Saved</a>
         </div>
         <hr class="mb-0">
-        <div class="row pt-5">
+        <div class="row pt-5 mb-5">
             @if (Auth::check() && Auth::user()->isBlocking($user))
-                <div class="card w-75 mb-3 text-center mx-auto bg-secondary text-white">
-                    <div class="card-body">
-                        <h5 class="card-title">Can't Access</h5>
+                <div class="card w-75 mb-3 mx-auto bg-secondary text-white">
+                    <div class="card-body text-center mx-auto">
+                        <h5 class="card-title"><i class="fa-solid fa-user-lock text-dark fs-4"></i> Can't Access</h5>
                         <p class="card-text">Unblock the user to see his posts</p>
                     </div>
                 </div>

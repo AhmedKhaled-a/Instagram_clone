@@ -28,8 +28,8 @@
     cursor: pointer;
 }
 
-.alert {
-    position: absolute;
+#block-alert {
+    position: fixed;
     bottom: 25px;
     right: 40px;
 }

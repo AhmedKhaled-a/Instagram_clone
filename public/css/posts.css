@@ -32,9 +32,11 @@ body{
 
 #delete i,
 #edit i {
-    color: #183153;
     font-size: 1.2rem;
 }
+
+#delete i {color: red;}
+#edit i {color: #183153;}
 
 .col-4:hover #delete,
 .col-4:hover #edit {
